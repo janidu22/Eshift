@@ -165,6 +165,120 @@ namespace Eshift.Repoistory
             return null;
         }
 
+        public bool UpdateCustomer(int userId, string newName, string newEmail, string newUsername, string newAddress, string newPhone)
+        {
+            using (var connection = _dbHelper.GetConnection())
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. Update Users table
+                        string updateUserQuery = @"
+                    UPDATE Users
+                    SET Username = @Username,
+                        Email = @Email
+                    WHERE UserId = @UserId";
+
+                        using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                        {
+                            userCmd.Parameters.AddWithValue("@Username", newUsername);
+                            userCmd.Parameters.AddWithValue("@Email", newEmail);
+                            userCmd.Parameters.AddWithValue("@UserId", userId);
+                            userCmd.ExecuteNonQuery();
+                        }
+
+                        // 2. Update Customers table
+                        string updateCustomerQuery = @"
+                    UPDATE Customers
+                    SET Name = @Name,
+                        Address = @Address,
+                        Phone = @Phone,
+                        Email = @Email
+                    WHERE UserId = @UserId";
+
+                        using (var customerCmd = new SqlCommand(updateCustomerQuery, connection, transaction))
+                        {
+                            customerCmd.Parameters.AddWithValue("@Name", newName);
+                            customerCmd.Parameters.AddWithValue("@Address", newAddress ?? string.Empty);
+                            customerCmd.Parameters.AddWithValue("@Phone", newPhone ?? string.Empty);
+                            customerCmd.Parameters.AddWithValue("@Email", newEmail);
+                            customerCmd.Parameters.AddWithValue("@UserId", userId);
+                            customerCmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (SqlException ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("An error occurred while updating the customer: " + ex.Message);
+                        return false;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("An error occurred while updating the customer: " + ex.Message);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public Customer? GetCustomerByUsername(string username)
+        {
+            using (var connection = _dbHelper.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = @"
+                SELECT u.UserId, u.Username, u.Email AS UserEmail, u.IsActive, u.CreatedAt,
+                       c.CustomerId, c.Name, c.Address, c.Phone, c.Email AS CustomerEmail
+                FROM Users u
+                JOIN Customers c ON u.UserId = c.UserId
+                JOIN UserRoles ur ON u.UserId = ur.UserId
+                JOIN Roles r ON ur.RoleId = r.RoleId
+                WHERE u.Username = @Username AND r.RoleName = 'Customer'";
+
+                    using (var cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Username", username);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Customer
+                                {
+                                    CustomerId = (int)reader["CustomerId"],
+                                    UserId = (int)reader["UserId"],
+                                    Username = reader["Username"].ToString(),
+                                    Name = reader["Name"].ToString(),
+                                    Address = reader["Address"].ToString(),
+                                    Phone = reader["Phone"].ToString(),
+                                    Email = reader["CustomerEmail"].ToString(),
+                                    CreatedAt = (DateTime)reader["CreatedAt"],
+                                    IsActive = (bool)reader["IsActive"]
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while retrieving customer: " + ex.Message);
+                }
+            }
+
+            return null;
+        }
+
+
+
         private bool IsUsernameExists(string username, SqlConnection connection, SqlTransaction transaction)
         {
             string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";

@@ -29,20 +29,13 @@ namespace Eshift.Repoistory
                 {
                     try
                     {
-                        // Check if email already exists
-                        if (IsEmailExists(email, connection, transaction))
-                        {
+                        // Check if email or username already exists
+                        if (IsEmailExists(email, connection, transaction) || IsUsernameExists(username, connection, transaction))
                             return false;
-                        }
-
-                        if (IsUsernameExists(username, connection, transaction))
-                        {
-                            return false;
-                        }
 
                         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-                        // Insert into Users table
+                        // Insert into Users
                         string insertUserQuery = @"
                             INSERT INTO Users (Username, PasswordHash, Email, IsActive, CreatedAt) 
                             VALUES (@Username, @PasswordHash, @Email, @IsActive, @CreatedAt);
@@ -59,12 +52,14 @@ namespace Eshift.Repoistory
 
                             userId = (int)userCmd.ExecuteScalar();
                         }
+
+                        // Get Admin Role ID
                         int adminRoleId = GetRoleId("Admin", connection, transaction);
 
-                        // Insert into UserRoles table
+                        // Insert into UserRoles
                         string insertUserRoleQuery = @"
                             INSERT INTO UserRoles (UserId, RoleId) 
-                            VALUES (@UserId, @RoleId)";
+                            VALUES (@UserId, @RoleId);";
 
                         using (var userRoleCmd = new SqlCommand(insertUserRoleQuery, connection, transaction))
                         {
@@ -73,25 +68,26 @@ namespace Eshift.Repoistory
                             userRoleCmd.ExecuteNonQuery();
                         }
 
-                        // Insert into Admins table
+                        // Insert into Admins
                         string insertAdminQuery = @"
-                            INSERT INTO Admins (Name, Email, CreatedAt) 
-                            VALUES (@Name, @Email, @CreatedAt);";
-                        using (var cmd = new SqlCommand(insertAdminQuery, connection, transaction))
+                            INSERT INTO Admins (UserId, Name, Email) 
+                            VALUES (@UserId, @Name, @Email);";
+
+                        using (var adminCmd = new SqlCommand(insertAdminQuery, connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@Name", name);
-                            cmd.Parameters.AddWithValue("@Email", email);
-                            cmd.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
-                            cmd.ExecuteNonQuery();
+                            adminCmd.Parameters.AddWithValue("@UserId", userId);
+                            adminCmd.Parameters.AddWithValue("@Name", name);
+                            adminCmd.Parameters.AddWithValue("@Email", email);
+                            adminCmd.ExecuteNonQuery();
                         }
+
                         transaction.Commit();
                         return true;
                     }
                     catch (Exception ex)
                     {
-
                         transaction.Rollback();
-                        MessageBox.Show("An error occurred while registering the customer: " + ex.Message);
+                        MessageBox.Show("An error occurred while registering the admin: " + ex.Message);
                         return false;
                     }
                 }
@@ -107,45 +103,45 @@ namespace Eshift.Repoistory
                     connection.Open();
 
                     string query = @"
-                SELECT u.UserId,u.Username,u.passwordhash, u.Email, u.IsActive, u.CreatedAt ,
-		        a.AdminID, a.UserId, a.Name, a.Email
-		        FROM Users u
-		        INNER JOIN Admins a ON u.UserId = a.AdminId
-		        INNER JOIN UserRoles ur ON u.UserId = ur.UserId
-		        INNER JOIN Roles r ON ur.RoleId = r.RoleId
-		        WHERE u.Username = Username AND r.RoleName = 'Admin' AND u.IsActive = 1;";
+                        SELECT u.UserId, u.Username, u.PasswordHash, u.Email AS UserEmail, u.IsActive, u.CreatedAt,
+                               a.AdminId, a.UserId AS AdminUserId, a.Name, a.Email AS AdminEmail
+                        FROM Users u
+                        INNER JOIN Admins a ON u.UserId = a.UserId
+                        INNER JOIN UserRoles ur ON u.UserId = ur.UserId
+                        INNER JOIN Roles r ON ur.RoleId = r.RoleId
+                        WHERE u.Username = @Username AND r.RoleName = 'Admin' AND u.IsActive = 1;";
 
-                    using (var cmd = new SqlCommand(query,connection))
+                    using (var cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@Username", username);
+
                         using (var reader = cmd.ExecuteReader())
                         {
-                           if(reader.Read())
+                            if (reader.Read())
                             {
                                 string storedHash = reader["PasswordHash"].ToString();
 
-                                if(BCrypt.Net.BCrypt.Verify(password,storedHash))
+                                if (BCrypt.Net.BCrypt.Verify(password, storedHash))
                                 {
                                     return new Admin
                                     {
                                         AdminId = (int)reader["AdminId"],
-                                        UserId = (int)reader["UserId"],
+                                        UserId = (int)reader["AdminUserId"],
                                         Name = reader["Name"].ToString(),
-                                        Email = reader["Email"].ToString(), 
+                                        Email = reader["AdminEmail"].ToString()
                                     };
                                 }
                             }
-
                         }
                     }
                 }
                 catch (SqlException ex)
                 {
-                    MessageBox.Show("An error occurred while Login as an Admin: " + ex.Message);
+                    MessageBox.Show("An error occurred while logging in as Admin: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred while Login as an Admin: " + ex.Message);
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
                 }
             }
             return null;

@@ -55,7 +55,7 @@ namespace Eshift.Forms.Customer
 
                     // Navigate to main dashboard or customer form
                     // Replace this with your actual main form
-                    CustomerDashboard dashboard = new CustomerDashboard();
+                    CustomerDashboard dashboard = new CustomerDashboard(username);
                     dashboard.Show();
                     this.Hide();
                 }
