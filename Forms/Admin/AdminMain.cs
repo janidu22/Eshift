@@ -16,5 +16,70 @@ namespace Eshift.Forms.Admin
         {
             InitializeComponent();
         }
+
+        private void NewJobs_Click(object sender, EventArgs e)
+        {
+            NewJob newJob = new NewJob();
+            newJob.TopLevel = false;
+            newJob.FormBorderStyle = FormBorderStyle.None;
+            newJob.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(newJob);
+            newJob.Show();
+
+
+        }
+
+        private void ViewJobs_Click(object sender, EventArgs e)
+        {
+            ViewJobs viewJobs = new ViewJobs();
+            viewJobs.TopLevel = false;
+            viewJobs.FormBorderStyle = FormBorderStyle.None;
+            viewJobs.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(viewJobs);
+            viewJobs.Show();
+
+        }
+
+        private void TrackStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UpdateJobs_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ViewInvoice_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ProfileMange_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ManageAdmins_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ManageProducts_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

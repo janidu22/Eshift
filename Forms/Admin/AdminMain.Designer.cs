@@ -28,39 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            ViewJobs = new Button();
             lblEmail = new Label();
             lblPhone = new Label();
-            button6 = new Button();
-            button5 = new Button();
-            button4 = new Button();
-            button3 = new Button();
+            UpdateJobs = new Button();
+            NewJobs = new Button();
+            ProfileMange = new Button();
+            ManageAdmins = new Button();
             lblAddress = new Label();
             lblName = new Label();
             panel2 = new Panel();
-            button7 = new Button();
-            button2 = new Button();
-            panel1 = new Panel();
-            button8 = new Button();
-            button9 = new Button();
-            button10 = new Button();
             button11 = new Button();
+            button10 = new Button();
+            button9 = new Button();
+            ManageProducts = new Button();
+            ViewInvoice = new Button();
+            TrackStatus = new Button();
+            panel1 = new Panel();
+            PanelMain = new Panel();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // ViewJobs
             // 
-            button1.BackColor = Color.FromArgb(64, 64, 64);
-            button1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(-2, 24);
-            button1.Name = "button1";
-            button1.Size = new Size(255, 60);
-            button1.TabIndex = 0;
-            button1.Text = "View Jobs";
-            button1.TextAlign = ContentAlignment.MiddleLeft;
-            button1.UseVisualStyleBackColor = false;
+            ViewJobs.BackColor = Color.FromArgb(64, 64, 64);
+            ViewJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ViewJobs.ForeColor = Color.White;
+            ViewJobs.Location = new Point(1, 20);
+            ViewJobs.Name = "ViewJobs";
+            ViewJobs.Size = new Size(256, 60);
+            ViewJobs.TabIndex = 0;
+            ViewJobs.Text = "View Jobs";
+            ViewJobs.TextAlign = ContentAlignment.MiddleLeft;
+            ViewJobs.UseVisualStyleBackColor = false;
+            ViewJobs.Click += ViewJobs_Click;
             // 
             // lblEmail
             // 
@@ -82,57 +84,61 @@
             lblPhone.Size = new Size(0, 25);
             lblPhone.TabIndex = 3;
             // 
-            // button6
+            // UpdateJobs
             // 
-            button6.BackColor = Color.FromArgb(64, 64, 64);
-            button6.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button6.ForeColor = Color.White;
-            button6.Location = new Point(0, 221);
-            button6.Name = "button6";
-            button6.Size = new Size(256, 60);
-            button6.TabIndex = 5;
-            button6.Text = "Update Jobs";
-            button6.TextAlign = ContentAlignment.MiddleLeft;
-            button6.UseVisualStyleBackColor = false;
+            UpdateJobs.BackColor = Color.FromArgb(64, 64, 64);
+            UpdateJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            UpdateJobs.ForeColor = Color.White;
+            UpdateJobs.Location = new Point(2, 215);
+            UpdateJobs.Name = "UpdateJobs";
+            UpdateJobs.Size = new Size(255, 60);
+            UpdateJobs.TabIndex = 5;
+            UpdateJobs.Text = "Manage Admins";
+            UpdateJobs.TextAlign = ContentAlignment.MiddleLeft;
+            UpdateJobs.UseVisualStyleBackColor = false;
+            UpdateJobs.Click += UpdateJobs_Click;
             // 
-            // button5
+            // NewJobs
             // 
-            button5.BackColor = Color.FromArgb(64, 64, 64);
-            button5.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button5.ForeColor = Color.White;
-            button5.Location = new Point(-2, 89);
-            button5.Name = "button5";
-            button5.Size = new Size(255, 60);
-            button5.TabIndex = 4;
-            button5.Text = "New Job Request";
-            button5.TextAlign = ContentAlignment.MiddleLeft;
-            button5.UseVisualStyleBackColor = false;
+            NewJobs.BackColor = Color.FromArgb(64, 64, 64);
+            NewJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            NewJobs.ForeColor = Color.White;
+            NewJobs.Location = new Point(1, 83);
+            NewJobs.Name = "NewJobs";
+            NewJobs.Size = new Size(256, 60);
+            NewJobs.TabIndex = 4;
+            NewJobs.Text = "Manage Jobs";
+            NewJobs.TextAlign = ContentAlignment.MiddleLeft;
+            NewJobs.UseVisualStyleBackColor = false;
+            NewJobs.Click += NewJobs_Click;
             // 
-            // button4
+            // ProfileMange
             // 
-            button4.BackColor = Color.FromArgb(64, 64, 64);
-            button4.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button4.ForeColor = Color.White;
-            button4.Location = new Point(0, 353);
-            button4.Name = "button4";
-            button4.Size = new Size(256, 60);
-            button4.TabIndex = 3;
-            button4.Text = "Profile Manage";
-            button4.TextAlign = ContentAlignment.MiddleLeft;
-            button4.UseVisualStyleBackColor = false;
+            ProfileMange.BackColor = Color.FromArgb(64, 64, 64);
+            ProfileMange.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ProfileMange.ForeColor = Color.White;
+            ProfileMange.Location = new Point(2, 413);
+            ProfileMange.Name = "ProfileMange";
+            ProfileMange.Size = new Size(257, 60);
+            ProfileMange.TabIndex = 3;
+            ProfileMange.Text = "View and Manage Payments";
+            ProfileMange.TextAlign = ContentAlignment.MiddleLeft;
+            ProfileMange.UseVisualStyleBackColor = false;
+            ProfileMange.Click += ProfileMange_Click;
             // 
-            // button3
+            // ManageAdmins
             // 
-            button3.BackColor = Color.FromArgb(64, 64, 64);
-            button3.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(0, 419);
-            button3.Name = "button3";
-            button3.Size = new Size(255, 60);
-            button3.TabIndex = 2;
-            button3.Text = "Manage Admins";
-            button3.TextAlign = ContentAlignment.MiddleLeft;
-            button3.UseVisualStyleBackColor = false;
+            ManageAdmins.BackColor = Color.FromArgb(64, 64, 64);
+            ManageAdmins.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ManageAdmins.ForeColor = Color.White;
+            ManageAdmins.Location = new Point(2, 545);
+            ManageAdmins.Name = "ManageAdmins";
+            ManageAdmins.Size = new Size(255, 60);
+            ManageAdmins.TabIndex = 2;
+            ManageAdmins.Text = "View and Manage Invoices";
+            ManageAdmins.TextAlign = ContentAlignment.MiddleLeft;
+            ManageAdmins.UseVisualStyleBackColor = false;
+            ManageAdmins.Click += ManageAdmins_Click;
             // 
             // lblAddress
             // 
@@ -159,44 +165,101 @@
             panel2.Controls.Add(button11);
             panel2.Controls.Add(button10);
             panel2.Controls.Add(button9);
-            panel2.Controls.Add(button8);
-            panel2.Controls.Add(button7);
-            panel2.Controls.Add(button6);
-            panel2.Controls.Add(button5);
-            panel2.Controls.Add(button4);
-            panel2.Controls.Add(button3);
-            panel2.Controls.Add(button2);
-            panel2.Controls.Add(button1);
+            panel2.Controls.Add(ManageProducts);
+            panel2.Controls.Add(ViewInvoice);
+            panel2.Controls.Add(UpdateJobs);
+            panel2.Controls.Add(NewJobs);
+            panel2.Controls.Add(ProfileMange);
+            panel2.Controls.Add(ManageAdmins);
+            panel2.Controls.Add(TrackStatus);
+            panel2.Controls.Add(ViewJobs);
             panel2.Location = new Point(3, 21);
             panel2.Name = "panel2";
             panel2.Size = new Size(261, 750);
             panel2.TabIndex = 0;
             // 
-            // button7
+            // button11
             // 
-            button7.BackColor = Color.FromArgb(64, 64, 64);
-            button7.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button7.ForeColor = Color.White;
-            button7.Location = new Point(0, 287);
-            button7.Name = "button7";
-            button7.Size = new Size(255, 60);
-            button7.TabIndex = 6;
-            button7.Text = "View Invoice";
-            button7.TextAlign = ContentAlignment.MiddleLeft;
-            button7.UseVisualStyleBackColor = false;
+            button11.BackColor = Color.FromArgb(64, 64, 64);
+            button11.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            button11.ForeColor = Color.White;
+            button11.Location = new Point(2, 479);
+            button11.Name = "button11";
+            button11.Size = new Size(255, 60);
+            button11.TabIndex = 10;
+            button11.Text = "View Reports";
+            button11.TextAlign = ContentAlignment.MiddleLeft;
+            button11.UseVisualStyleBackColor = false;
+            button11.Click += button11_Click;
             // 
-            // button2
+            // button10
             // 
-            button2.BackColor = Color.FromArgb(64, 64, 64);
-            button2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(0, 155);
-            button2.Name = "button2";
-            button2.Size = new Size(255, 60);
-            button2.TabIndex = 1;
-            button2.Text = "Track Status";
-            button2.TextAlign = ContentAlignment.MiddleLeft;
-            button2.UseVisualStyleBackColor = false;
+            button10.BackColor = Color.FromArgb(64, 64, 64);
+            button10.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            button10.ForeColor = Color.White;
+            button10.Location = new Point(2, 677);
+            button10.Name = "button10";
+            button10.Size = new Size(255, 60);
+            button10.TabIndex = 9;
+            button10.Text = "Logout";
+            button10.TextAlign = ContentAlignment.MiddleLeft;
+            button10.UseVisualStyleBackColor = false;
+            // 
+            // button9
+            // 
+            button9.BackColor = Color.FromArgb(64, 64, 64);
+            button9.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            button9.ForeColor = Color.White;
+            button9.Location = new Point(2, 347);
+            button9.Name = "button9";
+            button9.Size = new Size(255, 60);
+            button9.TabIndex = 8;
+            button9.Text = "Manage Transport Unit";
+            button9.TextAlign = ContentAlignment.MiddleLeft;
+            button9.UseVisualStyleBackColor = false;
+            button9.Click += button9_Click;
+            // 
+            // ManageProducts
+            // 
+            ManageProducts.BackColor = Color.FromArgb(64, 64, 64);
+            ManageProducts.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ManageProducts.ForeColor = Color.White;
+            ManageProducts.Location = new Point(2, 611);
+            ManageProducts.Name = "ManageProducts";
+            ManageProducts.Size = new Size(255, 60);
+            ManageProducts.TabIndex = 7;
+            ManageProducts.Text = "Profile Management";
+            ManageProducts.TextAlign = ContentAlignment.MiddleLeft;
+            ManageProducts.UseVisualStyleBackColor = false;
+            ManageProducts.Click += ManageProducts_Click;
+            // 
+            // ViewInvoice
+            // 
+            ViewInvoice.BackColor = Color.FromArgb(64, 64, 64);
+            ViewInvoice.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ViewInvoice.ForeColor = Color.White;
+            ViewInvoice.Location = new Point(1, 281);
+            ViewInvoice.Name = "ViewInvoice";
+            ViewInvoice.Size = new Size(256, 60);
+            ViewInvoice.TabIndex = 6;
+            ViewInvoice.Text = "Manage Products";
+            ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
+            ViewInvoice.UseVisualStyleBackColor = false;
+            ViewInvoice.Click += ViewInvoice_Click;
+            // 
+            // TrackStatus
+            // 
+            TrackStatus.BackColor = Color.FromArgb(64, 64, 64);
+            TrackStatus.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            TrackStatus.ForeColor = Color.White;
+            TrackStatus.Location = new Point(1, 149);
+            TrackStatus.Name = "TrackStatus";
+            TrackStatus.Size = new Size(256, 60);
+            TrackStatus.TabIndex = 1;
+            TrackStatus.Text = "Manage Customers";
+            TrackStatus.TextAlign = ContentAlignment.MiddleLeft;
+            TrackStatus.UseVisualStyleBackColor = false;
+            TrackStatus.Click += TrackStatus_Click;
             // 
             // panel1
             // 
@@ -210,66 +273,22 @@
             panel1.ForeColor = Color.White;
             panel1.Location = new Point(0, -9);
             panel1.Name = "panel1";
-            panel1.Size = new Size(279, 785);
+            panel1.Size = new Size(266, 785);
             panel1.TabIndex = 1;
             // 
-            // button8
+            // PanelMain
             // 
-            button8.BackColor = Color.FromArgb(64, 64, 64);
-            button8.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button8.ForeColor = Color.White;
-            button8.Location = new Point(0, 485);
-            button8.Name = "button8";
-            button8.Size = new Size(255, 60);
-            button8.TabIndex = 7;
-            button8.Text = "Manage Products";
-            button8.TextAlign = ContentAlignment.MiddleLeft;
-            button8.UseVisualStyleBackColor = false;
-            // 
-            // button9
-            // 
-            button9.BackColor = Color.FromArgb(64, 64, 64);
-            button9.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button9.ForeColor = Color.White;
-            button9.Location = new Point(0, 551);
-            button9.Name = "button9";
-            button9.Size = new Size(255, 60);
-            button9.TabIndex = 8;
-            button9.Text = "Manage Transport Unit";
-            button9.TextAlign = ContentAlignment.MiddleLeft;
-            button9.UseVisualStyleBackColor = false;
-            // 
-            // button10
-            // 
-            button10.BackColor = Color.FromArgb(64, 64, 64);
-            button10.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button10.ForeColor = Color.White;
-            button10.Location = new Point(0, 683);
-            button10.Name = "button10";
-            button10.Size = new Size(255, 60);
-            button10.TabIndex = 9;
-            button10.Text = "Manage Admins";
-            button10.TextAlign = ContentAlignment.MiddleLeft;
-            button10.UseVisualStyleBackColor = false;
-            // 
-            // button11
-            // 
-            button11.BackColor = Color.FromArgb(64, 64, 64);
-            button11.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button11.ForeColor = Color.White;
-            button11.Location = new Point(0, 617);
-            button11.Name = "button11";
-            button11.Size = new Size(255, 60);
-            button11.TabIndex = 10;
-            button11.Text = "View Reports";
-            button11.TextAlign = ContentAlignment.MiddleLeft;
-            button11.UseVisualStyleBackColor = false;
+            PanelMain.Location = new Point(272, 4);
+            PanelMain.Name = "PanelMain";
+            PanelMain.Size = new Size(1105, 758);
+            PanelMain.TabIndex = 2;
             // 
             // AdminMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1381, 767);
+            Controls.Add(PanelMain);
             Controls.Add(panel1);
             Name = "AdminMain";
             StartPosition = FormStartPosition.CenterScreen;
@@ -282,22 +301,23 @@
 
         #endregion
 
-        private Button button1;
+        private Button ViewJobs;
         private Label lblEmail;
         private Label lblPhone;
-        private Button button6;
-        private Button button5;
-        private Button button4;
-        private Button button3;
+        private Button UpdateJobs;
+        private Button NewJobs;
+        private Button ProfileMange;
+        private Button ManageAdmins;
         private Label lblAddress;
         private Label lblName;
         private Panel panel2;
         private Button button10;
         private Button button9;
-        private Button button8;
-        private Button button7;
-        private Button button2;
+        private Button ManageProducts;
+        private Button ViewInvoice;
+        private Button TrackStatus;
         private Panel panel1;
         private Button button11;
+        private Panel PanelMain;
     }
 }

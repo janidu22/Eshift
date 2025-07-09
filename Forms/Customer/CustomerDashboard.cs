@@ -73,7 +73,7 @@ namespace Eshift.Forms.Customer
 
         private void ViewJobs_Click(object sender, EventArgs e)
         {
-            cusViewJobs viewJobs = new cusViewJobs();
+            cusViewJobs viewJobs = new cusViewJobs(_username);
             viewJobs.TopLevel = false;
             viewJobs.FormBorderStyle = FormBorderStyle.None;
             viewJobs.Dock = DockStyle.Fill;
@@ -134,11 +134,21 @@ namespace Eshift.Forms.Customer
         {
             CusMyProfile cusMyProfile = new CusMyProfile();
             cusMyProfile.TopLevel = false;
-            cusMyProfile.FormBorderStyle = FormBorderStyle.None;    
+            cusMyProfile.FormBorderStyle = FormBorderStyle.None;
             cusMyProfile.Dock = DockStyle.Fill;
             PanelMain.Controls.Clear();
             PanelMain.Controls.Add(cusMyProfile);
             cusMyProfile.Show();
+        }
+
+        private void PanelMain_Paint(object sender, PaintEventArgs e)
+        {
+            cusViewJobs viewJobs = new cusViewJobs(_username);
+            viewJobs.TopLevel = false;
+            viewJobs.FormBorderStyle = FormBorderStyle.None;
+            viewJobs.Dock = DockStyle.Fill;
+            PanelMain.Controls.Add(viewJobs);
+            viewJobs.Show();
         }
     }
 }

@@ -137,3 +137,17 @@ CREATE TABLE JobStatusHistory (
     FOREIGN KEY (JobId) REFERENCES Jobs(JobId),
     FOREIGN KEY (ChangedByAdminId) REFERENCES Admins(AdminId)
 ); 
+
+-- 15. Payments
+CREATE TABLE Payments (
+    PaymentId INT IDENTITY(1,1) PRIMARY KEY,
+    JobId INT NOT NULL,
+    CustomerId INT NOT NULL,
+    Amount DECIMAL(10,2) NOT NULL,
+    Method NVARCHAR(20) NOT NULL, -- 'Cash' or 'Card'
+    Status NVARCHAR(20) NOT NULL, -- 'Pending', 'Paid', 'Failed', 'Received'
+    PaidAt DATETIME NULL,
+    CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+    FOREIGN KEY (JobId) REFERENCES Jobs(JobId),
+    FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
+);

@@ -3,6 +3,7 @@ using Eshift.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -275,6 +276,53 @@ namespace Eshift.Repoistory
             }
 
             return null;
+        }
+
+        public DataTable GetJobsByCustomerId(int customerId)
+        {
+            DataTable dt = new DataTable();
+
+            string query = @"
+        SELECT
+            j.JobId,
+            j.StartLocation,
+            j.Destination,
+            j.RequestedDate,
+            j.Status,
+            l.PlateNumber AS Lorry,
+            d.Name AS Driver,
+            a.Name AS Assistant,
+            ISNULL(p.Status, 'No Payment') AS PaymentStatus,
+            p.Method AS PaymentMethod,
+            p.Amount,
+            p.PaidAt,
+            j.CreatedAt,
+            j.UpdatedAt
+        FROM Jobs j
+        LEFT JOIN Loads ld ON j.JobId = ld.JobId
+        LEFT JOIN TransportUnits tu ON ld.TransportUnitId = tu.TransportUnitId
+        LEFT JOIN Lorries l ON tu.LorryId = l.LorryId
+        LEFT JOIN Drivers d ON tu.DriverId = d.DriverId
+        LEFT JOIN Assistants a ON tu.AssistantId = a.AssistantId
+        LEFT JOIN Payments p ON j.JobId = p.JobId
+        WHERE j.CustomerId = @CustomerId
+        GROUP BY
+            j.JobId, j.StartLocation, j.Destination, j.RequestedDate, j.Status,
+            l.PlateNumber, d.Name, a.Name, p.Status, p.Method, p.Amount, p.PaidAt,
+            j.CreatedAt, j.UpdatedAt
+        ORDER BY j.JobId DESC;
+    ";
+
+            using (var connection = _dbHelper.GetConnection())
+            using (var command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@CustomerId", customerId);
+
+                var adapter = new SqlDataAdapter(command);
+                adapter.Fill(dt);
+            }
+
+            return dt;
         }
 
 

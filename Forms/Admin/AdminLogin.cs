@@ -30,10 +30,7 @@ namespace Eshift.Forms.Admin
                     adminMain.Show();   
                     this.Hide();
                 }
-                else
-                {
-                    MessageBox.Show("login error");
-                }
+         
             }
             catch (Exception ex)
             {

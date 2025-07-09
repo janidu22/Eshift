@@ -1,6 +1,6 @@
-﻿namespace Eshift.Forms.Customer
+﻿namespace Eshift.Forms.Admin
 {
-    partial class CusTrackStatus
+    partial class ViewReports
     {
         /// <summary>
         /// Required designer variable.
@@ -55,17 +55,16 @@
             label1.Name = "label1";
             label1.Size = new Size(117, 19);
             label1.TabIndex = 1;
-            label1.Text = "Track Status";
+            label1.Text = "View Reports";
             // 
-            // CusTrackStatus
+            // ViewReports
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
             ClientSize = new Size(800, 450);
             Controls.Add(panel1);
-            Name = "CusTrackStatus";
-            Text = "CusTrackStatus";
+            Name = "ViewReports";
+            Text = "ViewReports";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

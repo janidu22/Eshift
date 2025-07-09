@@ -1,6 +1,6 @@
-﻿namespace Eshift.Forms.Customer
+﻿namespace Eshift.Forms.Admin
 {
-    partial class CusTrackStatus
+    partial class UpdateJobs
     {
         /// <summary>
         /// Required designer variable.
@@ -53,19 +53,18 @@
             label1.ImageAlign = ContentAlignment.TopCenter;
             label1.Location = new Point(337, 9);
             label1.Name = "label1";
-            label1.Size = new Size(117, 19);
+            label1.Size = new Size(108, 19);
             label1.TabIndex = 1;
-            label1.Text = "Track Status";
+            label1.Text = "Update Jobs";
             // 
-            // CusTrackStatus
+            // UpdateJobs
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
             ClientSize = new Size(800, 450);
             Controls.Add(panel1);
-            Name = "CusTrackStatus";
-            Text = "CusTrackStatus";
+            Name = "UpdateJobs";
+            Text = "UpdateJobs";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

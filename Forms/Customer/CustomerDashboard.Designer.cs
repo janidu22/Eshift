@@ -290,6 +290,7 @@
             PanelMain.Name = "PanelMain";
             PanelMain.Size = new Size(1115, 768);
             PanelMain.TabIndex = 1;
+            PanelMain.Paint += PanelMain_Paint;
             // 
             // CustomerDashboard
             // 
