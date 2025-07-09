@@ -41,7 +41,7 @@
             panel1.ForeColor = Color.Navy;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 36);
+            panel1.Size = new Size(1089, 36);
             panel1.TabIndex = 1;
             // 
             // label1
@@ -51,7 +51,7 @@
             label1.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
             label1.ImageAlign = ContentAlignment.TopCenter;
-            label1.Location = new Point(337, 9);
+            label1.Location = new Point(481, 9);
             label1.Name = "label1";
             label1.Size = new Size(117, 19);
             label1.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1089, 719);
             Controls.Add(panel1);
             Name = "TrackStatus";
             Text = "TrackStatus";

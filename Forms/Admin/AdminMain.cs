@@ -14,15 +14,15 @@ namespace Eshift.Forms.Admin
 {
     public partial class AdminMain : Form
     {
-      
 
-    public AdminMain()
-    {
-        InitializeComponent();
-       
 
-        // Optional: lblName.Text = _admin.Name;
-    }
+        public AdminMain()
+        {
+            InitializeComponent();
+
+
+            // Optional: lblName.Text = _admin.Name;
+        }
 
         private void NewJobs_Click(object sender, EventArgs e)
         {
@@ -51,7 +51,7 @@ namespace Eshift.Forms.Admin
 
         private void AdminManagement_Click(object sender, EventArgs e)
         {
-            
+
             ManageAdmin manageAdmin = new ManageAdmin();
             manageAdmin.TopLevel = false;
             manageAdmin.FormBorderStyle = FormBorderStyle.None;
@@ -63,7 +63,13 @@ namespace Eshift.Forms.Admin
 
         private void PanelMain_Paint(object sender, PaintEventArgs e)
         {
-
+            ViewJobs viewJobs = new ViewJobs();
+            viewJobs.TopLevel = false;
+            viewJobs.FormBorderStyle = FormBorderStyle.None;
+            viewJobs.Dock = DockStyle.Fill;
+            PanelMain.Controls.Add(viewJobs);
+            viewJobs.Show();
         }
     }
 }
+

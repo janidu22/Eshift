@@ -57,7 +57,7 @@
             panel1.ForeColor = Color.Navy;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(902, 36);
+            panel1.Size = new Size(1089, 36);
             panel1.TabIndex = 0;
             // 
             // label1
@@ -67,7 +67,7 @@
             label1.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
             label1.ImageAlign = ContentAlignment.TopCenter;
-            label1.Location = new Point(388, 9);
+            label1.Location = new Point(481, 9);
             label1.Name = "label1";
             label1.Size = new Size(126, 19);
             label1.TabIndex = 1;
@@ -77,51 +77,51 @@
             // 
             tbName.Anchor = AnchorStyles.None;
             tbName.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbName.Location = new Point(52, 184);
+            tbName.Location = new Point(58, 241);
             tbName.Name = "tbName";
             tbName.PlaceholderText = "Name";
-            tbName.Size = new Size(198, 29);
+            tbName.Size = new Size(285, 29);
             tbName.TabIndex = 3;
             // 
             // tbEmail
             // 
             tbEmail.Anchor = AnchorStyles.None;
             tbEmail.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbEmail.Location = new Point(52, 219);
+            tbEmail.Location = new Point(58, 289);
             tbEmail.Name = "tbEmail";
             tbEmail.PlaceholderText = "Email";
-            tbEmail.Size = new Size(198, 29);
+            tbEmail.Size = new Size(285, 29);
             tbEmail.TabIndex = 4;
             // 
             // tbUsername
             // 
             tbUsername.Anchor = AnchorStyles.None;
             tbUsername.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbUsername.Location = new Point(52, 254);
+            tbUsername.Location = new Point(58, 342);
             tbUsername.Name = "tbUsername";
             tbUsername.PlaceholderText = "Username";
-            tbUsername.Size = new Size(198, 29);
+            tbUsername.Size = new Size(285, 29);
             tbUsername.TabIndex = 5;
             // 
             // tbPassword
             // 
             tbPassword.Anchor = AnchorStyles.None;
             tbPassword.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbPassword.Location = new Point(52, 289);
+            tbPassword.Location = new Point(58, 402);
             tbPassword.Name = "tbPassword";
             tbPassword.PasswordChar = '*';
             tbPassword.PlaceholderText = "Password";
-            tbPassword.Size = new Size(198, 29);
+            tbPassword.Size = new Size(285, 29);
             tbPassword.TabIndex = 6;
             // 
             // label3
             // 
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
-            label3.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(52, 138);
+            label3.Font = new Font("JetBrains Mono", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Location = new Point(58, 179);
             label3.Name = "label3";
-            label3.Size = new Size(198, 19);
+            label3.Size = new Size(285, 27);
             label3.TabIndex = 7;
             label3.Text = "Administrator Details";
             // 
@@ -131,9 +131,9 @@
             btnAddAdmin.BackColor = Color.FromArgb(0, 64, 0);
             btnAddAdmin.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAddAdmin.ForeColor = Color.White;
-            btnAddAdmin.Location = new Point(52, 333);
+            btnAddAdmin.Location = new Point(58, 478);
             btnAddAdmin.Name = "btnAddAdmin";
-            btnAddAdmin.Size = new Size(198, 36);
+            btnAddAdmin.Size = new Size(285, 36);
             btnAddAdmin.TabIndex = 8;
             btnAddAdmin.Text = "Create Account";
             btnAddAdmin.UseVisualStyleBackColor = false;
@@ -144,9 +144,9 @@
             TableLayoutPanel.Anchor = AnchorStyles.None;
             TableLayoutPanel.BackColor = SystemColors.Control;
             TableLayoutPanel.Controls.Add(viewAdminsDt);
-            TableLayoutPanel.Location = new Point(277, 138);
+            TableLayoutPanel.Location = new Point(418, 158);
             TableLayoutPanel.Name = "TableLayoutPanel";
-            TableLayoutPanel.Size = new Size(574, 274);
+            TableLayoutPanel.Size = new Size(644, 311);
             TableLayoutPanel.TabIndex = 9;
             // 
             // viewAdminsDt
@@ -173,7 +173,7 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             viewAdminsDt.DefaultCellStyle = dataGridViewCellStyle2;
             viewAdminsDt.GridColor = Color.Black;
-            viewAdminsDt.Location = new Point(30, 36);
+            viewAdminsDt.Location = new Point(65, 42);
             viewAdminsDt.Name = "viewAdminsDt";
             viewAdminsDt.ReadOnly = true;
             viewAdminsDt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -187,9 +187,9 @@
             btnDeleteAdmin.BackColor = Color.Maroon;
             btnDeleteAdmin.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnDeleteAdmin.ForeColor = Color.White;
-            btnDeleteAdmin.Location = new Point(708, 418);
+            btnDeleteAdmin.Location = new Point(840, 475);
             btnDeleteAdmin.Name = "btnDeleteAdmin";
-            btnDeleteAdmin.Size = new Size(143, 36);
+            btnDeleteAdmin.Size = new Size(143, 44);
             btnDeleteAdmin.TabIndex = 14;
             btnDeleteAdmin.Text = "Delete Admin";
             btnDeleteAdmin.UseVisualStyleBackColor = false;
@@ -201,9 +201,9 @@
             btnUpdateAdmin.BackColor = Color.MediumSeaGreen;
             btnUpdateAdmin.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUpdateAdmin.ForeColor = Color.White;
-            btnUpdateAdmin.Location = new Point(566, 418);
+            btnUpdateAdmin.Location = new Point(688, 478);
             btnUpdateAdmin.Name = "btnUpdateAdmin";
-            btnUpdateAdmin.Size = new Size(136, 36);
+            btnUpdateAdmin.Size = new Size(136, 41);
             btnUpdateAdmin.TabIndex = 15;
             btnUpdateAdmin.Text = "Update Admin ";
             btnUpdateAdmin.TextAlign = ContentAlignment.BottomCenter;
@@ -214,10 +214,10 @@
             // 
             label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
-            label2.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(463, 112);
+            label2.Font = new Font("JetBrains Mono", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(654, 95);
             label2.Name = "label2";
-            label2.Size = new Size(135, 19);
+            label2.Size = new Size(239, 36);
             label2.TabIndex = 12;
             label2.Text = "Current Admins";
             // 
@@ -227,9 +227,9 @@
             add.BackColor = Color.Navy;
             add.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             add.ForeColor = Color.White;
-            add.Location = new Point(361, 418);
+            add.Location = new Point(481, 478);
             add.Name = "add";
-            add.Size = new Size(199, 36);
+            add.Size = new Size(199, 41);
             add.TabIndex = 15;
             add.Text = "Add New Admin";
             add.UseVisualStyleBackColor = false;
@@ -239,7 +239,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(902, 605);
+            ClientSize = new Size(1089, 719);
             Controls.Add(add);
             Controls.Add(TableLayoutPanel);
             Controls.Add(btnDeleteAdmin);

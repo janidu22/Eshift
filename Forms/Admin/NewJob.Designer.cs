@@ -64,7 +64,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(panel1);
             Name = "NewJob";
-            Text = "NewJob";
+            Text = "1105, 758";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);

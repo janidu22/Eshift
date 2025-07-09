@@ -271,9 +271,9 @@
             // 
             // PanelMain
             // 
-            PanelMain.Location = new Point(272, 4);
+            PanelMain.Location = new Point(266, 2);
             PanelMain.Name = "PanelMain";
-            PanelMain.Size = new Size(1105, 758);
+            PanelMain.Size = new Size(1111, 760);
             PanelMain.TabIndex = 2;
             PanelMain.Paint += PanelMain_Paint;
             // 

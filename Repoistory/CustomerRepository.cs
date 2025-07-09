@@ -228,6 +228,8 @@ namespace Eshift.Repoistory
             }
         }
 
+      
+
         public Customer? GetCustomerByUsername(string username)
         {
             using (var connection = _dbHelper.GetConnection())
@@ -324,6 +326,55 @@ namespace Eshift.Repoistory
 
             return dt;
         }
+
+        public DataTable GetAllJobs()
+        {
+            DataTable dt = new DataTable();
+
+            string query = @"
+        SELECT
+            j.JobId,
+            c.Name AS CustomerName,
+            j.StartLocation,
+            j.Destination,
+            j.RequestedDate,
+            j.Status,
+            l.PlateNumber AS Lorry,
+            d.Name AS Driver,
+            a.Name AS Assistant,
+            ISNULL(p.Status, 'No Payment') AS PaymentStatus,
+            p.Method AS PaymentMethod,
+            p.Amount,
+            p.PaidAt,
+            j.CreatedAt,
+            j.UpdatedAt,
+            ad.Name AS AdminName
+        FROM Jobs j
+        INNER JOIN Customers c ON j.CustomerId = c.CustomerId
+        LEFT JOIN Loads ld ON j.JobId = ld.JobId
+        LEFT JOIN TransportUnits tu ON ld.TransportUnitId = tu.TransportUnitId
+        LEFT JOIN Lorries l ON tu.LorryId = l.LorryId
+        LEFT JOIN Drivers d ON tu.DriverId = d.DriverId
+        LEFT JOIN Assistants a ON tu.AssistantId = a.AssistantId
+        LEFT JOIN Payments p ON j.JobId = p.JobId
+        LEFT JOIN Admins ad ON j.AdminId = ad.AdminId
+        GROUP BY
+            j.JobId, c.Name, j.StartLocation, j.Destination, j.RequestedDate, j.Status,
+            l.PlateNumber, d.Name, a.Name, p.Status, p.Method, p.Amount, p.PaidAt,
+            j.CreatedAt, j.UpdatedAt, ad.Name
+        ORDER BY j.JobId DESC;
+    ";
+
+            using (var connection = _dbHelper.GetConnection())
+            using (var command = new SqlCommand(query, connection))
+            {
+                var adapter = new SqlDataAdapter(command);
+                adapter.Fill(dt);
+            }
+
+            return dt;
+        }
+
 
         private bool IsUsernameExists(string username, SqlConnection connection, SqlTransaction transaction)
         {
