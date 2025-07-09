@@ -25,8 +25,8 @@ namespace Eshift.Forms.Customer
             this.TopLevel = false;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Dock = DockStyle.Fill;
-
             viewJobsDt.Dock = DockStyle.Fill;
+
         }
 
         private void cusViewJobs_Load(object sender, EventArgs e)

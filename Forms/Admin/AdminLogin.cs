@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eshift.Repoistory;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,31 +13,51 @@ namespace Eshift.Forms.Admin
 {
     public partial class AdminLogin : Form
     {
+
+        private readonly AdminRepository _adminRepository ;
         public AdminLogin()
         {
             InitializeComponent();
+            _adminRepository = new AdminRepository();   
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            var Password = tbPassword.Text;
-            var Username = tbUsername.Text.Trim();
-
             try
             {
-                if(Username =="admin" && Password == "123")
+                string username = tbUsername.Text.Trim();
+                string password = tbPassword.Text;
+
+                // Basic validation
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                {
+                    MessageBox.Show("Please enter both username and password.", "Validation Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var admin = _adminRepository.LoginAdmin(username, password);
+                
+
+                if(admin != null)
                 {
                     AdminMain adminMain = new AdminMain();
-                    adminMain.Show();   
+                    adminMain.Show();
                     this.Hide();
+                     
                 }
-         
+                else
+                {
+
+                }
             }
             catch (Exception ex)
             {
 
-                MessageBox.Show($"An error occurred during login: {ex.Message}", "Error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);    
+                MessageBox.Show("Invalid username or password.", "Login Failed",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tbPassword.Clear();
+                tbUsername.Focus();
             }
         }
 

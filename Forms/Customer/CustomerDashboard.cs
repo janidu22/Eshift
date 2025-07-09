@@ -150,5 +150,12 @@ namespace Eshift.Forms.Customer
             PanelMain.Controls.Add(viewJobs);
             viewJobs.Show();
         }
+
+        private void Logout_Click(object sender, EventArgs e)
+        {
+            Login login = new Login();  
+            login.Show();   
+            this.Hide();
+        }
     }
 }

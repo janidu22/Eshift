@@ -325,8 +325,6 @@ namespace Eshift.Repoistory
             return dt;
         }
 
-
-
         private bool IsUsernameExists(string username, SqlConnection connection, SqlTransaction transaction)
         {
             string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";

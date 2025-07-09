@@ -98,7 +98,7 @@
             label1.Size = new Size(112, 37);
             label1.TabIndex = 7;
             label1.Text = "Register";
-            label1.Click += label1_Click;
+      
             // 
             // tbAddress
             // 
@@ -154,7 +154,7 @@
             Name = "Register";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "fffff";
-            Load += Register_Load;
+     
             ResumeLayout(false);
             PerformLayout();
         }

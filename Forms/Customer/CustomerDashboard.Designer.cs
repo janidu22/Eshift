@@ -253,6 +253,7 @@
             Logout.Text = "Logout";
             Logout.TextAlign = ContentAlignment.MiddleLeft;
             Logout.UseVisualStyleBackColor = false;
+            Logout.Click += Logout_Click;
             // 
             // TrackStatus
             // 

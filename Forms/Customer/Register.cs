@@ -74,10 +74,6 @@ namespace Eshift.Forms.Customer
 
         }
 
-        private void Register_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void ClearForm()
         {
@@ -89,9 +85,5 @@ namespace Eshift.Forms.Customer
             tbPhone.Clear();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

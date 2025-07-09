@@ -31,7 +31,7 @@
             ViewJobs = new Button();
             lblEmail = new Label();
             lblPhone = new Label();
-            UpdateJobs = new Button();
+            AdminManagement = new Button();
             NewJobs = new Button();
             ProfileMange = new Button();
             ManageAdmins = new Button();
@@ -84,19 +84,19 @@
             lblPhone.Size = new Size(0, 25);
             lblPhone.TabIndex = 3;
             // 
-            // UpdateJobs
+            // AdminManagement
             // 
-            UpdateJobs.BackColor = Color.FromArgb(64, 64, 64);
-            UpdateJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            UpdateJobs.ForeColor = Color.White;
-            UpdateJobs.Location = new Point(2, 215);
-            UpdateJobs.Name = "UpdateJobs";
-            UpdateJobs.Size = new Size(255, 60);
-            UpdateJobs.TabIndex = 5;
-            UpdateJobs.Text = "Manage Admins";
-            UpdateJobs.TextAlign = ContentAlignment.MiddleLeft;
-            UpdateJobs.UseVisualStyleBackColor = false;
-            UpdateJobs.Click += UpdateJobs_Click;
+            AdminManagement.BackColor = Color.FromArgb(64, 64, 64);
+            AdminManagement.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            AdminManagement.ForeColor = Color.White;
+            AdminManagement.Location = new Point(2, 215);
+            AdminManagement.Name = "AdminManagement";
+            AdminManagement.Size = new Size(255, 60);
+            AdminManagement.TabIndex = 5;
+            AdminManagement.Text = "Manage Admins";
+            AdminManagement.TextAlign = ContentAlignment.MiddleLeft;
+            AdminManagement.UseVisualStyleBackColor = false;
+            AdminManagement.Click += AdminManagement_Click;
             // 
             // NewJobs
             // 
@@ -124,7 +124,6 @@
             ProfileMange.Text = "View and Manage Payments";
             ProfileMange.TextAlign = ContentAlignment.MiddleLeft;
             ProfileMange.UseVisualStyleBackColor = false;
-            ProfileMange.Click += ProfileMange_Click;
             // 
             // ManageAdmins
             // 
@@ -138,7 +137,6 @@
             ManageAdmins.Text = "View and Manage Invoices";
             ManageAdmins.TextAlign = ContentAlignment.MiddleLeft;
             ManageAdmins.UseVisualStyleBackColor = false;
-            ManageAdmins.Click += ManageAdmins_Click;
             // 
             // lblAddress
             // 
@@ -167,7 +165,7 @@
             panel2.Controls.Add(button9);
             panel2.Controls.Add(ManageProducts);
             panel2.Controls.Add(ViewInvoice);
-            panel2.Controls.Add(UpdateJobs);
+            panel2.Controls.Add(AdminManagement);
             panel2.Controls.Add(NewJobs);
             panel2.Controls.Add(ProfileMange);
             panel2.Controls.Add(ManageAdmins);
@@ -190,7 +188,6 @@
             button11.Text = "View Reports";
             button11.TextAlign = ContentAlignment.MiddleLeft;
             button11.UseVisualStyleBackColor = false;
-            button11.Click += button11_Click;
             // 
             // button10
             // 
@@ -217,7 +214,6 @@
             button9.Text = "Manage Transport Unit";
             button9.TextAlign = ContentAlignment.MiddleLeft;
             button9.UseVisualStyleBackColor = false;
-            button9.Click += button9_Click;
             // 
             // ManageProducts
             // 
@@ -231,7 +227,6 @@
             ManageProducts.Text = "Profile Management";
             ManageProducts.TextAlign = ContentAlignment.MiddleLeft;
             ManageProducts.UseVisualStyleBackColor = false;
-            ManageProducts.Click += ManageProducts_Click;
             // 
             // ViewInvoice
             // 
@@ -245,7 +240,6 @@
             ViewInvoice.Text = "Manage Products";
             ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
             ViewInvoice.UseVisualStyleBackColor = false;
-            ViewInvoice.Click += ViewInvoice_Click;
             // 
             // TrackStatus
             // 
@@ -259,7 +253,6 @@
             TrackStatus.Text = "Manage Customers";
             TrackStatus.TextAlign = ContentAlignment.MiddleLeft;
             TrackStatus.UseVisualStyleBackColor = false;
-            TrackStatus.Click += TrackStatus_Click;
             // 
             // panel1
             // 
@@ -282,6 +275,7 @@
             PanelMain.Name = "PanelMain";
             PanelMain.Size = new Size(1105, 758);
             PanelMain.TabIndex = 2;
+            PanelMain.Paint += PanelMain_Paint;
             // 
             // AdminMain
             // 
@@ -304,7 +298,7 @@
         private Button ViewJobs;
         private Label lblEmail;
         private Label lblPhone;
-        private Button UpdateJobs;
+        private Button AdminManagement;
         private Button NewJobs;
         private Button ProfileMange;
         private Button ManageAdmins;

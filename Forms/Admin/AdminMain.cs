@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using Eshift.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,10 +14,15 @@ namespace Eshift.Forms.Admin
 {
     public partial class AdminMain : Form
     {
-        public AdminMain()
-        {
-            InitializeComponent();
-        }
+      
+
+    public AdminMain()
+    {
+        InitializeComponent();
+       
+
+        // Optional: lblName.Text = _admin.Name;
+    }
 
         private void NewJobs_Click(object sender, EventArgs e)
         {
@@ -42,42 +49,19 @@ namespace Eshift.Forms.Admin
 
         }
 
-        private void TrackStatus_Click(object sender, EventArgs e)
+        private void AdminManagement_Click(object sender, EventArgs e)
         {
-
+            
+            ManageAdmin manageAdmin = new ManageAdmin();
+            manageAdmin.TopLevel = false;
+            manageAdmin.FormBorderStyle = FormBorderStyle.None;
+            manageAdmin.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(manageAdmin);
+            manageAdmin.Show();
         }
 
-        private void UpdateJobs_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ViewInvoice_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ProfileMange_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ManageAdmins_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ManageProducts_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button11_Click(object sender, EventArgs e)
+        private void PanelMain_Paint(object sender, PaintEventArgs e)
         {
 
         }
