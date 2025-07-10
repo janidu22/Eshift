@@ -20,7 +20,7 @@ namespace Eshift.Repoistory
         {
             _databaseHelper = new DatabaseHelper();
         }
-        
+
         #region Admin Registration and Login
         public bool RegisterAdmin(string name, string email, string username, string password)
         {
@@ -52,7 +52,7 @@ namespace Eshift.Repoistory
                             userCmd.Parameters.AddWithValue("@IsActive", true);
                             userCmd.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
 
-                            userId = (int)userCmd.ExecuteScalar();
+                            userId = (userCmd.ExecuteScalar() as int?) ?? 0;
                         }
 
                         // Get Admin Role ID
@@ -124,12 +124,16 @@ namespace Eshift.Repoistory
 
                                 if (BCrypt.Net.BCrypt.Verify(password, storedHash))
                                 {
+                                    int adminIdOrdinal = reader.GetOrdinal("AdminId");
+                                    int adminUserIdOrdinal = reader.GetOrdinal("AdminUserId");
+                                    int nameOrdinal = reader.GetOrdinal("Name");
+                                    int emailOrdinal = reader.GetOrdinal("AdminEmail");
                                     return new Admin
                                     {
-                                        AdminId = (int)reader["AdminId"],
-                                        UserId = (int)reader["AdminUserId"],
-                                        Name = reader["Name"].ToString(),
-                                        Email = reader["AdminEmail"].ToString()
+                                        AdminId = !reader.IsDBNull(adminIdOrdinal) ? reader.GetInt32(adminIdOrdinal) : 0,
+                                        UserId = !reader.IsDBNull(adminUserIdOrdinal) ? reader.GetInt32(adminUserIdOrdinal) : 0,
+                                        Name = !reader.IsDBNull(nameOrdinal) ? reader.GetString(nameOrdinal) : string.Empty,
+                                        Email = !reader.IsDBNull(emailOrdinal) ? reader.GetString(emailOrdinal) : string.Empty
                                     };
                                 }
                             }
@@ -222,11 +226,11 @@ namespace Eshift.Repoistory
                             {
                                 return new Admin
                                 {
-                                    AdminId = (int)reader["AdminId"],
-                                    UserId = (int)reader["UserId"],
-                                    Name = reader["AdminName"].ToString(),
-                                    Email = reader["AdminEmail"].ToString(),
-                                    Username = reader["Username"].ToString(),   
+                                    AdminId = Convert.ToInt32(reader["AdminId"]),
+                                    UserId = Convert.ToInt32(reader["UserId"]),
+                                    Name = reader["AdminName"]?.ToString() ?? string.Empty,
+                                    Email = reader["AdminEmail"]?.ToString() ?? string.Empty,
+                                    Username = reader["Username"]?.ToString() ?? string.Empty,
                                 };
                             }
                         }
@@ -240,6 +244,46 @@ namespace Eshift.Repoistory
 
             return null;
         }
+
+        public async Task<Admin?> GetAdminByUsernameAsync(string username)
+        {
+            using var connection = _databaseHelper.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+
+                string query = @"
+            SELECT 
+                a.AdminId, 
+                a.Name AS AdminName, 
+                u.Username, 
+                a.Email AS AdminEmail
+            FROM Admins a
+            INNER JOIN Users u ON a.UserId = u.UserId
+            WHERE u.Username = @Username";
+
+                using var cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@Username", username);
+
+                using var reader = await cmd.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    return new Admin
+                    {
+                        AdminId = Convert.ToInt32(reader["AdminId"]),
+                        Name = reader["AdminName"]?.ToString() ?? "",
+                        Username = reader["Username"]?.ToString() ?? "",
+                        Email = reader["AdminEmail"]?.ToString() ?? ""
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fetch error: " + ex.Message);
+            }
+            return null;
+        }
+
         #endregion 
         #region Update and Delete Admin
         public bool UpdateAdmin(int adminId, string name, string email, string username, string password)
@@ -251,46 +295,38 @@ namespace Eshift.Repoistory
                 {
                     try
                     {
-           
-                        string? passwordHash = null;
-                        if (!string.IsNullOrEmpty(password))
+                        // 1. Update Users table
+                        string updateUserQuery = @"
+                    UPDATE Users
+                    SET Username = @Username,
+                        Email = @Email,
+                        PasswordHash = @PasswordHash
+                    WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId)";
+
+                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+                        using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
                         {
-                            passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+                            userCmd.Parameters.AddWithValue("@Username", username);
+                            userCmd.Parameters.AddWithValue("@Email", email);
+                            userCmd.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                            userCmd.Parameters.AddWithValue("@AdminId", adminId);
+                            userCmd.ExecuteNonQuery();
                         }
 
-                        // Update Admin table
+                        // 2. Update Admins table
                         string updateAdminQuery = @"
                     UPDATE Admins
                     SET Name = @Name,
                         Email = @Email
-                    WHERE AdminId = @AdminId;";
+                    WHERE AdminId = @AdminId";
 
-                        using (var cmd = new SqlCommand(updateAdminQuery, connection, transaction))
+                        using (var adminCmd = new SqlCommand(updateAdminQuery, connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@Name", name);
-                            cmd.Parameters.AddWithValue("@Email", email);
-                            cmd.Parameters.AddWithValue("@AdminId", adminId);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Update Users table
-                        string updateUserQuery = @"
-                    UPDATE Users
-                    SET Email = @Email,
-                        Username = @Username,
-                        PasswordHash = CASE 
-                            WHEN @PasswordHash IS NOT NULL AND @PasswordHash <> '' THEN @PasswordHash
-                            ELSE PasswordHash
-                        END
-                    WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId);";
-
-                        using (var cmd = new SqlCommand(updateUserQuery, connection, transaction))
-                        {
-                            cmd.Parameters.AddWithValue("@Email", email);
-                            cmd.Parameters.AddWithValue("@Username", username);
-                            cmd.Parameters.AddWithValue("@PasswordHash", (object?)passwordHash ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@AdminId", adminId);
-                            cmd.ExecuteNonQuery();
+                            adminCmd.Parameters.AddWithValue("@Name", name);
+                            adminCmd.Parameters.AddWithValue("@Email", email);
+                            adminCmd.Parameters.AddWithValue("@AdminId", adminId);
+                            adminCmd.ExecuteNonQuery();
                         }
 
                         transaction.Commit();
@@ -299,7 +335,7 @@ namespace Eshift.Repoistory
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        MessageBox.Show("Error updating admin: " + ex.Message);
+                        MessageBox.Show("An error occurred while updating the admin: " + ex.Message);
                         return false;
                     }
                 }
@@ -314,49 +350,34 @@ namespace Eshift.Repoistory
                 {
                     try
                     {
-                        // First get the UserId for this admin
-                        int userId;
-                        string getUserIdQuery = "SELECT UserId FROM Admins WHERE AdminId = @AdminId;";
-                        using (var cmd = new SqlCommand(getUserIdQuery, connection, transaction))
+                        // 1. Delete from Admins table
+                        string deleteAdminQuery = @"DELETE FROM Admins WHERE AdminId = @AdminId";
+                        using (var adminCmd = new SqlCommand(deleteAdminQuery, connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@AdminId", adminId);
-                            var result = cmd.ExecuteScalar();
-                            if (result == null)
-                                return false; // Admin not found
-                            userId = (int)result;
+                            adminCmd.Parameters.AddWithValue("@AdminId", adminId);
+                            adminCmd.ExecuteNonQuery();
                         }
 
-                        // Delete from UserRoles
-                        string deleteUserRolesQuery = "DELETE FROM UserRoles WHERE UserId = @UserId;";
-                        using (var cmd = new SqlCommand(deleteUserRolesQuery, connection, transaction))
+                        // 2. Delete from UserRoles and Users
+                        string deleteUserRoleQuery = @"DELETE FROM UserRoles WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId)";
+                        using (var userRoleCmd = new SqlCommand(deleteUserRoleQuery, connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@UserId", userId);
-                            cmd.ExecuteNonQuery();
+                            userRoleCmd.Parameters.AddWithValue("@AdminId", adminId);
+                            userRoleCmd.ExecuteNonQuery();
                         }
-
-                        // Delete from Admins
-                        string deleteAdminQuery = "DELETE FROM Admins WHERE AdminId = @AdminId;";
-                        using (var cmd = new SqlCommand(deleteAdminQuery, connection, transaction))
+                        string deleteUserQuery = @"DELETE FROM Users WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId)";
+                        using (var userCmd = new SqlCommand(deleteUserQuery, connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@AdminId", adminId);
-                            cmd.ExecuteNonQuery();
+                            userCmd.Parameters.AddWithValue("@AdminId", adminId);
+                            userCmd.ExecuteNonQuery();
                         }
-
-                        // Delete from Users
-                        string deleteUserQuery = "DELETE FROM Users WHERE UserId = @UserId;";
-                        using (var cmd = new SqlCommand(deleteUserQuery, connection, transaction))
-                        {
-                            cmd.Parameters.AddWithValue("@UserId", userId);
-                            cmd.ExecuteNonQuery();
-                        }
-
                         transaction.Commit();
                         return true;
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        MessageBox.Show("Error deleting admin: " + ex.Message);
+                        MessageBox.Show("An error occurred while deleting the admin: " + ex.Message);
                         return false;
                     }
                 }
@@ -370,7 +391,8 @@ namespace Eshift.Repoistory
             using (var cmd = new SqlCommand(query, connection, transaction))
             {
                 cmd.Parameters.AddWithValue("@Username", username);
-                return (int)cmd.ExecuteScalar() > 0;
+                int count = (cmd.ExecuteScalar() as int?) ?? 0;
+                return count > 0;
             }
         }
         private bool IsEmailExists(string email, SqlConnection connection, SqlTransaction transaction)
@@ -379,7 +401,8 @@ namespace Eshift.Repoistory
             using (var cmd = new SqlCommand(query, connection, transaction))
             {
                 cmd.Parameters.AddWithValue("@Email", email);
-                return (int)cmd.ExecuteScalar() > 0;
+                int count = (cmd.ExecuteScalar() as int?) ?? 0;
+                return count > 0;
             }
         }
         private int GetRoleId(string roleName, SqlConnection connection, SqlTransaction transaction)

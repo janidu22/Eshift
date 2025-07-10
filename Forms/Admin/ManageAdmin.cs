@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
@@ -40,11 +41,17 @@ namespace Eshift.Forms.Admin
                 var username = tbUsername.Text.Trim();
                 var password = tbPassword.Text;
 
+                // Validate inputs
+                if (!ValidateAdminForm(name, email, username, password))
+                {
+                    return;
+                }
+
                 bool success = _adminRepository.RegisterAdmin(name, email, username, password);
 
                 if (success)
                 {
-                    MessageBox.Show("Admin Created Successfully");
+                    MessageBox.Show("Admin Created Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearForm();
                     LoadAllAdmins();
                 }
@@ -61,11 +68,102 @@ namespace Eshift.Forms.Admin
             }
         }
 
+        private bool ValidateAdminForm(string name, string email, string username, string password)
+        {
+            // Validate Name
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Please enter the admin's full name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbName.Focus();
+                return false;
+            }
+
+            if (name.Length < 2)
+            {
+                MessageBox.Show("Name must be at least 2 characters long.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbName.Focus();
+                return false;
+            }
+
+            if (!Regex.IsMatch(name, @"^[a-zA-Z\s]+$"))
+            {
+                MessageBox.Show("Name can only contain letters and spaces.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbName.Focus();
+                return false;
+            }
+
+            // Validate Email
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MessageBox.Show("Please enter the admin's email address.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbEmail.Focus();
+                return false;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Please enter a valid email address.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbEmail.Focus();
+                return false;
+            }
+
+            // Validate Username
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                MessageBox.Show("Please enter a username.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbUsername.Focus();
+                return false;
+            }
+
+            if (username.Length < 3)
+            {
+                MessageBox.Show("Username must be at least 3 characters long.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbUsername.Focus();
+                return false;
+            }
+
+            if (!Regex.IsMatch(username, @"^[a-zA-Z0-9_]+$"))
+            {
+                MessageBox.Show("Username can only contain letters, numbers, and underscores.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbUsername.Focus();
+                return false;
+            }
+
+            // Validate Password
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Please enter a password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbPassword.Focus();
+                return false;
+            }
+
+            if (password.Length < 6)
+            {
+                MessageBox.Show("Password must be at least 6 characters long.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbPassword.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private void LoadAllAdmins()
         {
             DataTable adminDataTable = _adminRepository.GetAllAdmins();
             viewAdminsDt.DataSource = adminDataTable;
-
 
             viewAdminsDt.Dock = DockStyle.Fill;
             viewAdminsDt.RowHeadersVisible = false;
@@ -74,7 +172,6 @@ namespace Eshift.Forms.Admin
             viewAdminsDt.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             viewAdminsDt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             viewAdminsDt.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
 
             string[] hideColNames = { "AdminId", "UserId", "CreatedAt", "UserEmail" };
             foreach (string colName in hideColNames)
@@ -103,15 +200,53 @@ namespace Eshift.Forms.Admin
             return null;
         }
 
-        private void LoadAdminDetails(int adminId)
+        private void btnUpdateAdmin_Click(object sender, EventArgs e)
         {
-            var admin = _adminRepository.GetAdminById(adminId);
-            if (admin != null)
+            int? adminId = GetSelectedAdminId();
+
+            if (adminId == null)
             {
-                tbName.Text = admin.Name;
-                tbEmail.Text = admin.Email;
-                tbUsername.Text = admin.Username;
-                tbPassword.Text = "password";
+                MessageBox.Show("Please select an admin to update.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var name = tbName.Text.Trim();
+            var email = tbEmail.Text.Trim();
+            var username = tbUsername.Text.Trim();
+            var password = tbPassword.Text;
+
+            // Validate inputs
+            if (!ValidateAdminForm(name, email, username, password))
+            {
+                return;
+            }
+
+            bool success = _adminRepository.UpdateAdmin(adminId.Value, name, email, username, password);
+
+            if (success)
+            {
+                MessageBox.Show("Admin updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadAllAdmins();
+            }
+            else
+            {
+                MessageBox.Show("Failed to update admin.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void viewAdminsDt_SelectionChanged(object? sender, EventArgs e)
+        {
+            int? adminId = GetSelectedAdminId();
+            if (adminId != null)
+            {
+                var admin = _adminRepository.GetAdminById(adminId.Value);
+                if (admin != null)
+                {
+                    tbName.Text = admin.Name;
+                    tbEmail.Text = admin.Email;
+                    tbUsername.Text = admin.Username;
+                    tbPassword.Text = "password";
+                }
             }
         }
 
@@ -123,45 +258,6 @@ namespace Eshift.Forms.Admin
             tbPassword.Clear();
         }
 
-        private void btnUpdateAdmin_Click(object sender, EventArgs e)
-        {
-            int? adminId = GetSelectedAdminId();
-
-            if (adminId == null)
-            {
-                MessageBox.Show("Please select an admin to update.");
-                return;
-            }
-
-            var name = tbName.Text.Trim();
-            var email = tbEmail.Text.Trim();
-            var username = tbUsername.Text.Trim();
-            var password = tbPassword.Text;
-
-            bool success = _adminRepository.UpdateAdmin(adminId.Value, name, email, username, password);
-
-            if (success)
-            {
-                MessageBox.Show("Admin updated successfully.");
-                ClearForm();
-                LoadAllAdmins();
-            }
-            else
-            {
-                MessageBox.Show("Failed to update admin. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
-
-        private void viewAdminsDt_SelectionChanged(object sender, EventArgs e)
-        {
-            int? selectedAdminId = GetSelectedAdminId();
-            if (selectedAdminId.HasValue)
-            {
-                LoadAdminDetails(selectedAdminId.Value);
-            }
-        }
-
         private void add_Click(object sender, EventArgs e)
         {
             ClearForm();
@@ -169,33 +265,21 @@ namespace Eshift.Forms.Admin
 
         private void btnDeleteAdmin_Click(object sender, EventArgs e)
         {
-
             int? adminId = GetSelectedAdminId();
-
             if (adminId == null)
             {
                 MessageBox.Show("Please select an admin to delete.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            var confirmResult = MessageBox.Show("Are you sure to delete this admin?",
-                                                "Confirm Delete",
-                                                MessageBoxButtons.YesNo,
-                                                MessageBoxIcon.Question);
-
-            if (confirmResult == DialogResult.Yes)
+            bool success = _adminRepository.DeleteAdmin(adminId.Value);
+            if (success)
             {
-                bool isDeleted = _adminRepository.DeleteAdmin(adminId.Value);
-                if (isDeleted)
-                {
-                    MessageBox.Show("Admin deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadAllAdmins(); // Refresh the grid
-                    ClearForm();     // Clear input fields if needed
-                }
-                else
-                {
-                    MessageBox.Show("Failed to delete the admin.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Admin deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadAllAdmins();
+            }
+            else
+            {
+                MessageBox.Show("Failed to delete admin.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace Eshift.Forms.Customer
     public partial class CustomerDashboard : Form
     {
         private string _username;
-        private Form activeForm = null;
+        private Form? activeForm = null;
         private CustomerRepository _customerRepository = new CustomerRepository();
 
         public CustomerDashboard(string username)
@@ -28,21 +28,17 @@ namespace Eshift.Forms.Customer
             LoadCustomerDetails();
         }
 
-
-        private void LoadCustomerDetails()
+        private async void LoadCustomerDetails()
         {
             try
             {
-                var customer = _customerRepository.GetCustomerByUsername(_username);
+                var customer = await _customerRepository.GetCustomerByUsernameAsync(_username);
                 if (customer != null)
                 {
                     lbName.Text = customer.Name;
                     lbUsername.Text = customer.Username;
                     lbEmail.Text = customer.Email;
                     lbPhone.Text = customer.Phone;
-
-
-
                 }
                 else
                 {
@@ -86,7 +82,7 @@ namespace Eshift.Forms.Customer
 
         private void NewJobRequest_Click(object sender, EventArgs e)
         {
-            cusNewJob cusNewJob = new cusNewJob();
+            cusNewJob cusNewJob = new cusNewJob(_username);
             cusNewJob.TopLevel = false;
             cusNewJob.FormBorderStyle = FormBorderStyle.None;
             cusNewJob.Dock = DockStyle.Fill;

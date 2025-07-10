@@ -14,7 +14,7 @@ namespace Eshift.Forms.Admin
     public partial class AdminLogin : Form
     {
 
-        private readonly AdminRepository _adminRepository ;
+        private readonly AdminRepository _adminRepository;
         public AdminLogin()
         {
             InitializeComponent();
@@ -28,11 +28,9 @@ namespace Eshift.Forms.Admin
                 string username = tbUsername.Text.Trim();
                 string password = tbPassword.Text;
 
-                // Basic validation
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                // Validate inputs
+                if (!ValidateLoginForm(username, password))
                 {
-                    MessageBox.Show("Please enter both username and password.", "Validation Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -41,24 +39,64 @@ namespace Eshift.Forms.Admin
 
                 if(admin != null)
                 {
-                    AdminMain adminMain = new AdminMain();
+                    MessageBox.Show($"Welcome, {admin.Name}!", "Login Successful",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                    AdminMain adminMain = new AdminMain(username);
                     adminMain.Show();
                     this.Hide();
                      
                 }
                 else
                 {
-
+                    MessageBox.Show("Invalid username or password.", "Login Failed",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tbPassword.Clear();
+                    tbUsername.Focus();
                 }
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show("Invalid username or password.", "Login Failed",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An error occurred during login: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tbPassword.Clear();
                 tbUsername.Focus();
             }
+        }
+
+        private bool ValidateLoginForm(string username, string password)
+        {
+            // Validate Username
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                MessageBox.Show("Please enter your username.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbUsername.Focus();
+                return false;
+            }
+
+            if (username.Length < 3)
+            {
+                MessageBox.Show("Username must be at least 3 characters long.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbUsername.Focus();
+                return false;
+            }
+
+            // Validate Password
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Please enter your password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbPassword.Focus();
+                return false;
+            }
+
+            if (password.Length < 1)
+            {
+                MessageBox.Show("Please enter your password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbPassword.Focus();
+                return false;
+            }
+
+            return true;
         }
 
         private void AdminLogin_Load(object sender, EventArgs e)

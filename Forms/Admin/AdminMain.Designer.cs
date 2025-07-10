@@ -32,18 +32,20 @@
             lblEmail = new Label();
             lblPhone = new Label();
             AdminManagement = new Button();
-            NewJobs = new Button();
-            ProfileMange = new Button();
             ManageAdmins = new Button();
             lblAddress = new Label();
             lblName = new Label();
             panel2 = new Panel();
+            lblAdminEmail = new Label();
+            lblAdminUsername = new Label();
+            lblAdminName = new Label();
+            label1 = new Label();
             button11 = new Button();
             button10 = new Button();
             button9 = new Button();
             ManageProducts = new Button();
             ViewInvoice = new Button();
-            TrackStatus = new Button();
+            manageCustomers = new Button();
             panel1 = new Panel();
             PanelMain = new Panel();
             panel2.SuspendLayout();
@@ -55,11 +57,11 @@
             ViewJobs.BackColor = Color.FromArgb(64, 64, 64);
             ViewJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             ViewJobs.ForeColor = Color.White;
-            ViewJobs.Location = new Point(1, 20);
+            ViewJobs.Location = new Point(1, 163);
             ViewJobs.Name = "ViewJobs";
             ViewJobs.Size = new Size(256, 60);
             ViewJobs.TabIndex = 0;
-            ViewJobs.Text = "View Jobs";
+            ViewJobs.Text = "Manage & View Jobs";
             ViewJobs.TextAlign = ContentAlignment.MiddleLeft;
             ViewJobs.UseVisualStyleBackColor = false;
             ViewJobs.Click += ViewJobs_Click;
@@ -89,7 +91,7 @@
             AdminManagement.BackColor = Color.FromArgb(64, 64, 64);
             AdminManagement.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             AdminManagement.ForeColor = Color.White;
-            AdminManagement.Location = new Point(2, 215);
+            AdminManagement.Location = new Point(1, 229);
             AdminManagement.Name = "AdminManagement";
             AdminManagement.Size = new Size(255, 60);
             AdminManagement.TabIndex = 5;
@@ -98,39 +100,12 @@
             AdminManagement.UseVisualStyleBackColor = false;
             AdminManagement.Click += AdminManagement_Click;
             // 
-            // NewJobs
-            // 
-            NewJobs.BackColor = Color.FromArgb(64, 64, 64);
-            NewJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            NewJobs.ForeColor = Color.White;
-            NewJobs.Location = new Point(1, 83);
-            NewJobs.Name = "NewJobs";
-            NewJobs.Size = new Size(256, 60);
-            NewJobs.TabIndex = 4;
-            NewJobs.Text = "Manage Jobs";
-            NewJobs.TextAlign = ContentAlignment.MiddleLeft;
-            NewJobs.UseVisualStyleBackColor = false;
-            NewJobs.Click += NewJobs_Click;
-            // 
-            // ProfileMange
-            // 
-            ProfileMange.BackColor = Color.FromArgb(64, 64, 64);
-            ProfileMange.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            ProfileMange.ForeColor = Color.White;
-            ProfileMange.Location = new Point(2, 413);
-            ProfileMange.Name = "ProfileMange";
-            ProfileMange.Size = new Size(257, 60);
-            ProfileMange.TabIndex = 3;
-            ProfileMange.Text = "View and Manage Payments";
-            ProfileMange.TextAlign = ContentAlignment.MiddleLeft;
-            ProfileMange.UseVisualStyleBackColor = false;
-            // 
             // ManageAdmins
             // 
             ManageAdmins.BackColor = Color.FromArgb(64, 64, 64);
             ManageAdmins.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             ManageAdmins.ForeColor = Color.White;
-            ManageAdmins.Location = new Point(2, 545);
+            ManageAdmins.Location = new Point(1, 556);
             ManageAdmins.Name = "ManageAdmins";
             ManageAdmins.Size = new Size(255, 60);
             ManageAdmins.TabIndex = 2;
@@ -160,28 +135,75 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(lblAdminEmail);
+            panel2.Controls.Add(lblAdminUsername);
+            panel2.Controls.Add(lblAdminName);
+            panel2.Controls.Add(label1);
             panel2.Controls.Add(button11);
             panel2.Controls.Add(button10);
             panel2.Controls.Add(button9);
             panel2.Controls.Add(ManageProducts);
             panel2.Controls.Add(ViewInvoice);
             panel2.Controls.Add(AdminManagement);
-            panel2.Controls.Add(NewJobs);
-            panel2.Controls.Add(ProfileMange);
             panel2.Controls.Add(ManageAdmins);
-            panel2.Controls.Add(TrackStatus);
+            panel2.Controls.Add(manageCustomers);
             panel2.Controls.Add(ViewJobs);
-            panel2.Location = new Point(3, 21);
+            panel2.Location = new Point(3, 11);
             panel2.Name = "panel2";
-            panel2.Size = new Size(261, 750);
+            panel2.Size = new Size(261, 760);
             panel2.TabIndex = 0;
+            panel2.Paint += panel2_Paint;
+            // 
+            // lblAdminEmail
+            // 
+            lblAdminEmail.AutoSize = true;
+            lblAdminEmail.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
+            lblAdminEmail.ForeColor = Color.Black;
+            lblAdminEmail.Location = new Point(22, 128);
+            lblAdminEmail.Name = "lblAdminEmail";
+            lblAdminEmail.Size = new Size(210, 25);
+            lblAdminEmail.TabIndex = 14;
+            lblAdminEmail.Text = "Welcome Back Admin";
+            // 
+            // lblAdminUsername
+            // 
+            lblAdminUsername.AutoSize = true;
+            lblAdminUsername.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
+            lblAdminUsername.ForeColor = Color.Black;
+            lblAdminUsername.Location = new Point(22, 103);
+            lblAdminUsername.Name = "lblAdminUsername";
+            lblAdminUsername.Size = new Size(210, 25);
+            lblAdminUsername.TabIndex = 13;
+            lblAdminUsername.Text = "Welcome Back Admin";
+            // 
+            // lblAdminName
+            // 
+            lblAdminName.AutoSize = true;
+            lblAdminName.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
+            lblAdminName.ForeColor = Color.Navy;
+            lblAdminName.Location = new Point(22, 53);
+            lblAdminName.Name = "lblAdminName";
+            lblAdminName.Size = new Size(210, 25);
+            lblAdminName.TabIndex = 12;
+            lblAdminName.Text = "Welcome Back Admin";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
+            label1.ForeColor = Color.Black;
+            label1.Location = new Point(22, 28);
+            label1.Name = "label1";
+            label1.Size = new Size(210, 25);
+            label1.TabIndex = 11;
+            label1.Text = "Welcome Back Admin";
             // 
             // button11
             // 
             button11.BackColor = Color.FromArgb(64, 64, 64);
             button11.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             button11.ForeColor = Color.White;
-            button11.Location = new Point(2, 479);
+            button11.Location = new Point(1, 490);
             button11.Name = "button11";
             button11.Size = new Size(255, 60);
             button11.TabIndex = 10;
@@ -194,20 +216,21 @@
             button10.BackColor = Color.FromArgb(64, 64, 64);
             button10.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             button10.ForeColor = Color.White;
-            button10.Location = new Point(2, 677);
+            button10.Location = new Point(2, 688);
             button10.Name = "button10";
             button10.Size = new Size(255, 60);
             button10.TabIndex = 9;
             button10.Text = "Logout";
             button10.TextAlign = ContentAlignment.MiddleLeft;
             button10.UseVisualStyleBackColor = false;
+            button10.Click += button10_Click;
             // 
             // button9
             // 
             button9.BackColor = Color.FromArgb(64, 64, 64);
             button9.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             button9.ForeColor = Color.White;
-            button9.Location = new Point(2, 347);
+            button9.Location = new Point(0, 424);
             button9.Name = "button9";
             button9.Size = new Size(255, 60);
             button9.TabIndex = 8;
@@ -220,7 +243,7 @@
             ManageProducts.BackColor = Color.FromArgb(64, 64, 64);
             ManageProducts.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             ManageProducts.ForeColor = Color.White;
-            ManageProducts.Location = new Point(2, 611);
+            ManageProducts.Location = new Point(0, 622);
             ManageProducts.Name = "ManageProducts";
             ManageProducts.Size = new Size(255, 60);
             ManageProducts.TabIndex = 7;
@@ -233,7 +256,7 @@
             ViewInvoice.BackColor = Color.FromArgb(64, 64, 64);
             ViewInvoice.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             ViewInvoice.ForeColor = Color.White;
-            ViewInvoice.Location = new Point(1, 281);
+            ViewInvoice.Location = new Point(0, 358);
             ViewInvoice.Name = "ViewInvoice";
             ViewInvoice.Size = new Size(256, 60);
             ViewInvoice.TabIndex = 6;
@@ -241,18 +264,19 @@
             ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
             ViewInvoice.UseVisualStyleBackColor = false;
             // 
-            // TrackStatus
+            // manageCustomers
             // 
-            TrackStatus.BackColor = Color.FromArgb(64, 64, 64);
-            TrackStatus.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            TrackStatus.ForeColor = Color.White;
-            TrackStatus.Location = new Point(1, 149);
-            TrackStatus.Name = "TrackStatus";
-            TrackStatus.Size = new Size(256, 60);
-            TrackStatus.TabIndex = 1;
-            TrackStatus.Text = "Manage Customers";
-            TrackStatus.TextAlign = ContentAlignment.MiddleLeft;
-            TrackStatus.UseVisualStyleBackColor = false;
+            manageCustomers.BackColor = Color.FromArgb(64, 64, 64);
+            manageCustomers.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            manageCustomers.ForeColor = Color.White;
+            manageCustomers.Location = new Point(1, 292);
+            manageCustomers.Name = "manageCustomers";
+            manageCustomers.Size = new Size(256, 60);
+            manageCustomers.TabIndex = 1;
+            manageCustomers.Text = "Manage Customers";
+            manageCustomers.TextAlign = ContentAlignment.MiddleLeft;
+            manageCustomers.UseVisualStyleBackColor = false;
+            manageCustomers.Click += manageCustomers_Click;
             // 
             // panel1
             // 
@@ -288,6 +312,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminMain";
             panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -299,8 +324,6 @@
         private Label lblEmail;
         private Label lblPhone;
         private Button AdminManagement;
-        private Button NewJobs;
-        private Button ProfileMange;
         private Button ManageAdmins;
         private Label lblAddress;
         private Label lblName;
@@ -309,9 +332,13 @@
         private Button button9;
         private Button ManageProducts;
         private Button ViewInvoice;
-        private Button TrackStatus;
+        private Button manageCustomers;
         private Panel panel1;
         private Button button11;
         private Panel PanelMain;
+        private Label label1;
+        private Label lblAdminName;
+        private Label lblAdminEmail;
+        private Label lblAdminUsername;
     }
 }

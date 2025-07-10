@@ -1,5 +1,7 @@
 ﻿
+using Eshift.Forms.Customer;
 using Eshift.Models;
+using Eshift.Repoistory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,28 +16,16 @@ namespace Eshift.Forms.Admin
 {
     public partial class AdminMain : Form
     {
+        private readonly string _username;
+        private readonly AdminRepository adminRepository = new AdminRepository();
 
-
-        public AdminMain()
+        public AdminMain(string username)
         {
             InitializeComponent();
-
-
-            // Optional: lblName.Text = _admin.Name;
+            _username = username;
         }
 
-        private void NewJobs_Click(object sender, EventArgs e)
-        {
-            NewJob newJob = new NewJob();
-            newJob.TopLevel = false;
-            newJob.FormBorderStyle = FormBorderStyle.None;
-            newJob.Dock = DockStyle.Fill;
-            PanelMain.Controls.Clear();
-            PanelMain.Controls.Add(newJob);
-            newJob.Show();
 
-
-        }
 
         private void ViewJobs_Click(object sender, EventArgs e)
         {
@@ -69,6 +59,32 @@ namespace Eshift.Forms.Admin
             viewJobs.Dock = DockStyle.Fill;
             PanelMain.Controls.Add(viewJobs);
             viewJobs.Show();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            this.Hide();
+        }
+
+        private async void panel2_Paint(object sender, PaintEventArgs e)
+        {
+            var admin = await adminRepository.GetAdminByUsernameAsync(_username);
+            lblAdminName.Text = admin.Name;
+            lblAdminUsername.Text = admin.Username;
+            lblAdminEmail.Text = admin.Email;
+        }
+
+        private void manageCustomers_Click(object sender, EventArgs e)
+        {
+            ManageCustomer  manageCustomer = new ManageCustomer();  
+            manageCustomer.TopLevel = false;
+            manageCustomer.FormBorderStyle = FormBorderStyle.None;
+            manageCustomer.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(manageCustomer);
+            manageCustomer.Show();
         }
     }
 }
