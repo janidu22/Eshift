@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panel1 = new Panel();
             label4 = new Label();
             label1 = new Label();
@@ -104,23 +104,23 @@
             viewCustmerDt.AllowUserToAddRows = false;
             viewCustmerDt.AllowUserToDeleteRows = false;
             viewCustmerDt.BackgroundColor = Color.White;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            viewCustmerDt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            viewCustmerDt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             viewCustmerDt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            viewCustmerDt.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            viewCustmerDt.DefaultCellStyle = dataGridViewCellStyle2;
             viewCustmerDt.Dock = DockStyle.Fill;
             viewCustmerDt.GridColor = Color.Black;
             viewCustmerDt.Location = new Point(0, 0);
@@ -129,6 +129,7 @@
             viewCustmerDt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             viewCustmerDt.Size = new Size(1065, 311);
             viewCustmerDt.TabIndex = 15;
+            viewCustmerDt.SelectionChanged += viewCustmerDt_SelectionChanged;
             // 
             // btnAddAdmin
             // 
@@ -142,6 +143,7 @@
             btnAddAdmin.TabIndex = 22;
             btnAddAdmin.Text = "Create Account";
             btnAddAdmin.UseVisualStyleBackColor = false;
+            btnAddAdmin.Click += btnAddAdmin_Click;
             // 
             // label3
             // 
@@ -166,6 +168,7 @@
             add.TabIndex = 26;
             add.Text = "Add New Customer";
             add.UseVisualStyleBackColor = false;
+            add.Click += add_Click;
             // 
             // btnDeleteCustomer
             // 
@@ -179,6 +182,7 @@
             btnDeleteCustomer.TabIndex = 25;
             btnDeleteCustomer.Text = "Delete Customer";
             btnDeleteCustomer.UseVisualStyleBackColor = false;
+            btnDeleteCustomer.Click += DeleteCustomer;
             // 
             // btnUpdateCustomer
             // 
@@ -192,6 +196,7 @@
             btnUpdateCustomer.TabIndex = 27;
             btnUpdateCustomer.Text = "Update Customer";
             btnUpdateCustomer.UseVisualStyleBackColor = false;
+            btnUpdateCustomer.Click += btnUpdateCustomer_Click;
             // 
             // tbPhone
             // 

@@ -135,7 +135,7 @@ namespace Eshift.Repoistory
             return null;
         }
 
-        public async Task<bool> UpdateCustomerAsync(int userId, string newName, string newEmail, string newUsername, string newAddress, string newPhone)
+        public async Task<bool> UpdateCustomerAsync(int userId, string newName, string newEmail, string newUsername,string password, string newAddress, string newPhone)
         {
             using var connection = _dbHelper.GetConnection();
             await connection.OpenAsync();
@@ -145,12 +145,13 @@ namespace Eshift.Repoistory
             {
                 string updateUserQuery = @"
                     UPDATE Users
-                    SET Username = @Username, Email = @Email
+                    SET Username = @Username, PasswordHash = @PasswordHash, Email = @Email
                     WHERE UserId = @UserId";
 
                 using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
                 {
                     userCmd.Parameters.AddWithValue("@Username", newUsername);
+                    userCmd.Parameters.AddWithValue("@PasswordHash", BCrypt.Net.BCrypt.HashPassword(password)); 
                     userCmd.Parameters.AddWithValue("@Email", newEmail);
                     userCmd.Parameters.AddWithValue("@UserId", userId);
                     await userCmd.ExecuteNonQueryAsync();
@@ -191,13 +192,13 @@ namespace Eshift.Repoistory
                 await connection.OpenAsync();
 
                 string query = @"
-             SELECT u.UserId, u.Username, u.IsActive,
-                   c.CustomerId, c.Name, c.Address, c.Phone, c.Email AS CustomerEmail
-            FROM Users u
-            JOIN Customers c ON u.UserId = c.UserId
-            JOIN UserRoles ur ON u.UserId = ur.UserId
-            JOIN Roles r ON ur.RoleId = r.RoleId
-            WHERE r.RoleName = 'Customer'";
+                SELECT u.UserId, u.Username, u.IsActive,
+                c.CustomerId, c.Name, c.Address, c.Phone, c.Email AS CustomerEmail
+                FROM Users u
+                JOIN Customers c ON u.UserId = c.UserId
+                JOIN UserRoles ur ON u.UserId = ur.UserId
+                JOIN Roles r ON ur.RoleId = r.RoleId
+                 WHERE r.RoleName = 'Customer'";
 
                 using (var cmd = new SqlCommand(query, connection))
                 using (var adapter = new SqlDataAdapter(cmd))
@@ -352,9 +353,6 @@ namespace Eshift.Repoistory
             return jobsTable;
         }
 
-
-
-        // Helper Async Methods
         private async Task<bool> IsUsernameExistsAsync(string username, SqlConnection connection, SqlTransaction transaction)
         {
             string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
@@ -381,5 +379,43 @@ namespace Eshift.Repoistory
             var result = await cmd.ExecuteScalarAsync();
             return result != null ? (int)result : 0;
         }
+
+        public async Task<bool> DeleteUserAndCustomerAsync(int userId)
+        {
+            using var connection = _dbHelper.GetConnection();
+            await connection.OpenAsync();
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                // Step 1: Delete Customer(s) linked to this UserId
+                var deleteCustomerQuery = "DELETE FROM Customers WHERE UserId = @UserId";
+                using (var deleteCustomerCmd = new SqlCommand(deleteCustomerQuery, connection, transaction))
+                {
+                    deleteCustomerCmd.Parameters.AddWithValue("@UserId", userId);
+                    await deleteCustomerCmd.ExecuteNonQueryAsync();
+                }
+
+                // Step 2: Delete the User
+                var deleteUserQuery = "DELETE FROM Users WHERE UserId = @UserId";
+                using (var deleteUserCmd = new SqlCommand(deleteUserQuery, connection, transaction))
+                {
+                    deleteUserCmd.Parameters.AddWithValue("@UserId", userId);
+                    await deleteUserCmd.ExecuteNonQueryAsync();
+                }
+
+                // Step 3: Commit all changes
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                // Rollback in case of error
+                await transaction.RollbackAsync();
+                return false;
+            }
+        }
+
+
     }
 }
