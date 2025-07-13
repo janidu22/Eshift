@@ -185,7 +185,7 @@ namespace Eshift.Repoistory
 
         public async Task<DataTable> GetAllCustomersAsync()
         {
-            var customers = new List<Customer>();
+            var customers = new List<Customer>(); 
             using var connection = _dbHelper.GetConnection();
             try
             {

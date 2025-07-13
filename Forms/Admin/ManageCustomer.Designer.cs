@@ -137,7 +137,7 @@
             btnAddAdmin.BackColor = Color.FromArgb(0, 64, 0);
             btnAddAdmin.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAddAdmin.ForeColor = Color.White;
-            btnAddAdmin.Location = new Point(25, 654);
+            btnAddAdmin.Location = new Point(96, 654);
             btnAddAdmin.Name = "btnAddAdmin";
             btnAddAdmin.Size = new Size(273, 36);
             btnAddAdmin.TabIndex = 22;
@@ -150,7 +150,7 @@
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("JetBrains Mono", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(44, 376);
+            label3.Location = new Point(115, 376);
             label3.Name = "label3";
             label3.Size = new Size(220, 27);
             label3.TabIndex = 21;
@@ -162,7 +162,7 @@
             add.BackColor = Color.Navy;
             add.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             add.ForeColor = Color.White;
-            add.Location = new Point(814, 592);
+            add.Location = new Point(725, 649);
             add.Name = "add";
             add.Size = new Size(173, 41);
             add.TabIndex = 26;
@@ -176,7 +176,7 @@
             btnDeleteCustomer.BackColor = Color.Maroon;
             btnDeleteCustomer.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnDeleteCustomer.ForeColor = Color.White;
-            btnDeleteCustomer.Location = new Point(814, 535);
+            btnDeleteCustomer.Location = new Point(904, 646);
             btnDeleteCustomer.Name = "btnDeleteCustomer";
             btnDeleteCustomer.Size = new Size(173, 44);
             btnDeleteCustomer.TabIndex = 25;
@@ -190,7 +190,7 @@
             btnUpdateCustomer.BackColor = Color.MediumSeaGreen;
             btnUpdateCustomer.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUpdateCustomer.ForeColor = Color.White;
-            btnUpdateCustomer.Location = new Point(814, 639);
+            btnUpdateCustomer.Location = new Point(537, 652);
             btnUpdateCustomer.Name = "btnUpdateCustomer";
             btnUpdateCustomer.Size = new Size(173, 41);
             btnUpdateCustomer.TabIndex = 27;
@@ -201,7 +201,7 @@
             // tbPhone
             // 
             tbPhone.Font = new Font("Segoe UI", 14.25F);
-            tbPhone.Location = new Point(25, 579);
+            tbPhone.Location = new Point(96, 579);
             tbPhone.Name = "tbPhone";
             tbPhone.PlaceholderText = "Phone";
             tbPhone.Size = new Size(273, 33);
@@ -210,7 +210,7 @@
             // tbEmail
             // 
             tbEmail.Font = new Font("Segoe UI", 14.25F);
-            tbEmail.Location = new Point(25, 462);
+            tbEmail.Location = new Point(96, 462);
             tbEmail.Name = "tbEmail";
             tbEmail.PlaceholderText = "Email";
             tbEmail.Size = new Size(273, 33);
@@ -219,7 +219,7 @@
             // tbUsername
             // 
             tbUsername.Font = new Font("Segoe UI", 14.25F);
-            tbUsername.Location = new Point(25, 501);
+            tbUsername.Location = new Point(96, 501);
             tbUsername.Name = "tbUsername";
             tbUsername.PlaceholderText = "Username";
             tbUsername.Size = new Size(273, 33);
@@ -228,7 +228,7 @@
             // tbAddress
             // 
             tbAddress.Font = new Font("Segoe UI", 14.25F);
-            tbAddress.Location = new Point(25, 615);
+            tbAddress.Location = new Point(96, 615);
             tbAddress.Name = "tbAddress";
             tbAddress.PlaceholderText = "Address";
             tbAddress.Size = new Size(273, 33);
@@ -237,7 +237,7 @@
             // tbPassword
             // 
             tbPassword.Font = new Font("Segoe UI", 14.25F);
-            tbPassword.Location = new Point(25, 540);
+            tbPassword.Location = new Point(96, 540);
             tbPassword.Name = "tbPassword";
             tbPassword.PasswordChar = '*';
             tbPassword.PlaceholderText = "Password";
@@ -247,7 +247,7 @@
             // tbName
             // 
             tbName.Font = new Font("Segoe UI", 14.25F);
-            tbName.Location = new Point(25, 423);
+            tbName.Location = new Point(96, 423);
             tbName.Name = "tbName";
             tbName.PlaceholderText = "Name";
             tbName.Size = new Size(273, 33);

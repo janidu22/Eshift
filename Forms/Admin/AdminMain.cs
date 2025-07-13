@@ -78,13 +78,36 @@ namespace Eshift.Forms.Admin
 
         private void manageCustomers_Click(object sender, EventArgs e)
         {
-            ManageCustomer  manageCustomer = new ManageCustomer();  
+            ManageCustomer manageCustomer = new ManageCustomer();
             manageCustomer.TopLevel = false;
             manageCustomer.FormBorderStyle = FormBorderStyle.None;
             manageCustomer.Dock = DockStyle.Fill;
             PanelMain.Controls.Clear();
             PanelMain.Controls.Add(manageCustomer);
             manageCustomer.Show();
+        }
+
+        private void ViewInvoice_Click(object sender, EventArgs e)
+        {
+            ManageProducts manageProducts = new ManageProducts();
+            manageProducts.TopLevel = false;
+            manageProducts.FormBorderStyle = FormBorderStyle.None;
+            manageProducts.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(manageProducts);
+            manageProducts.Show();
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            ManageTransportUnit manageTransportUnit = new ManageTransportUnit();
+            manageTransportUnit.TopLevel = false;
+            manageTransportUnit.FormBorderStyle = FormBorderStyle.None;
+            manageTransportUnit.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(manageTransportUnit);
+            manageTransportUnit.Show();
         }
     }
 }

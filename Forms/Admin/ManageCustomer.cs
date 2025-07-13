@@ -136,12 +136,14 @@ namespace Eshift.Forms.Admin
             return userId;
         }
 
-
-
         private void ClearForm()
         {
-            tbName.Clear(); tbEmail.Clear(); tbUsername.Clear();
-            tbPassword.Clear(); tbAddress.Clear(); tbPhone.Clear();
+            tbName.Clear(); 
+            tbEmail.Clear();
+            tbUsername.Clear();
+            tbPassword.Clear(); 
+            tbAddress.Clear();
+            tbPhone.Clear();
         }
 
         private bool IsValidEmail(string email) =>

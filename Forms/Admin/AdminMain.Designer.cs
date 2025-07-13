@@ -237,6 +237,7 @@
             button9.Text = "Manage Transport Unit";
             button9.TextAlign = ContentAlignment.MiddleLeft;
             button9.UseVisualStyleBackColor = false;
+            button9.Click += button9_Click;
             // 
             // ManageProducts
             // 
@@ -263,6 +264,7 @@
             ViewInvoice.Text = "Manage Products";
             ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
             ViewInvoice.UseVisualStyleBackColor = false;
+            ViewInvoice.Click += ViewInvoice_Click;
             // 
             // manageCustomers
             // 
