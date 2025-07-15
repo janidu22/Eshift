@@ -40,5 +40,31 @@ namespace Eshift.Forms.Admin
             DtTableAssistants.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
+
+        private void DtTableAssistants_SelectionChanged(object sender, EventArgs e)
+        {
+            if (DtTableAssistants.SelectedRows.Count > 0)
+            {
+                tbName.Text = DtTableAssistants.SelectedRows[0].Cells["Name"].Value.ToString();
+                tbPhone.Text = DtTableAssistants.SelectedRows[0].Cells["Phone"].Value.ToString();
+                Add.Visible = false;
+                Clear.Visible = true;
+            }
+        }
+
+        private void Clear_Click(object sender, EventArgs e)
+        {
+            Clear.Visible = false;
+            Add.Visible = true;
+            ClearForm();
+
+        }
+
+        private void ClearForm()
+        {
+            tbName.Clear();
+            tbPhone.Clear();
+
+        }
     }
 }

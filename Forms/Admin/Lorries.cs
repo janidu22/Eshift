@@ -16,9 +16,14 @@ namespace Eshift.Forms.Admin
     public partial class Lorries : Form
     {
         private readonly TrasnportUnitRepository trasnportUnit = new TrasnportUnitRepository();
+        private int lorryId = 0;
         public Lorries()
         {
             InitializeComponent();
+
+            NudCapacity.Minimum = 0;
+            NudCapacity.Maximum = 10000;
+            NudCapacity.Increment = 10;
         }
 
         private void Lorries_Load(object sender, EventArgs e)
@@ -50,22 +55,22 @@ namespace Eshift.Forms.Admin
 
             try
             {
-                if(string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber) )
+                if (string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber))
                 {
-                 MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 return;
+                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                if(Capacity == null)
+                if (Capacity == null)
                 {
-                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
                 var result = trasnportUnit.AddLorryAsync(PlateNumber, Model, Capacity);
                 MessageBox.Show("lorry added successfully");
                 clear();
                 LoadData();
-                
+
             }
             catch (Exception)
             {
@@ -81,5 +86,86 @@ namespace Eshift.Forms.Admin
             tbPlateNumber.Clear();
             NudCapacity.Value = 0;
         }
+
+        private void Clear_Click(object sender, EventArgs e)
+        {
+            Add.Visible = true;
+            Clear.Visible = false;
+            clear();
+        }
+
+        private void DtTable_SelectionChanged(object sender, EventArgs e)
+        {
+            if (DtTable.SelectedRows.Count > 0)
+            {
+                tbModel.Text = DtTable.SelectedRows[0].Cells["Model"].Value.ToString();
+                tbPlateNumber.Text = DtTable.SelectedRows[0].Cells["Plate Number"].Value.ToString();
+                lorryId = Convert.ToInt32(DtTable.SelectedRows[0].Cells["LorryId"].Value);
+
+                decimal capacity = Convert.ToDecimal(DtTable.SelectedRows[0].Cells["Capacity"].Value);
+
+
+                if (capacity > NudCapacity.Maximum)
+                    NudCapacity.Maximum = capacity;
+
+                NudCapacity.Value = capacity;
+
+                Add.Visible = false;
+            }
+        }
+
+        private async void Update_Click(object sender, EventArgs e)
+        {
+            var PlateNumber = tbPlateNumber.Text;
+            var Model = tbModel.Text;
+            var Capacity = NudCapacity.Value;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber))
+                {
+                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (Capacity == null)
+                {
+                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                var result = await trasnportUnit.UpdateLorryAsync(lorryId, PlateNumber, Model, Capacity);
+                MessageBox.Show("lorry updated successfully");
+                clear();
+                LoadData();
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("An error occurred while updating the lorry. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
+            }
+        }
+
+        private async void Delete_Click(object sender, EventArgs e)
+        {
+            if (lorryId <= 0)
+            {
+                MessageBox.Show("Please select a valid lorry.");
+                return;
+            }
+
+            bool deleted = await trasnportUnit.DeleteLorryAsync(lorryId);
+
+            if (deleted)
+            {
+                MessageBox.Show("Lorry deleted successfully");
+                LoadData(); 
+            }
+            else
+            {
+                MessageBox.Show("Lorry is in use and cannot be deleted.");
+            }
+        }
     }
 }
+

@@ -87,6 +87,7 @@
             DtTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DtTable.Size = new Size(867, 307);
             DtTable.TabIndex = 0;
+            DtTable.SelectionChanged += DtTable_SelectionChanged;
             // 
             // tbPlateNumber
             // 
@@ -132,6 +133,7 @@
             Delete.TabIndex = 7;
             Delete.Text = "Delete";
             Delete.UseVisualStyleBackColor = false;
+            Delete.Click += Delete_Click;
             // 
             // Update
             // 
@@ -143,6 +145,7 @@
             Update.TabIndex = 8;
             Update.Text = "Update";
             Update.UseVisualStyleBackColor = false;
+            Update.Click += Update_Click;
             // 
             // Clear
             // 
@@ -154,6 +157,7 @@
             Clear.TabIndex = 9;
             Clear.Text = "Add New";
             Clear.UseVisualStyleBackColor = false;
+            Clear.Click += Clear_Click;
             // 
             // label2
             // 

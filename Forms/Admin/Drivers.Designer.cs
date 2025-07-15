@@ -57,6 +57,7 @@
             Clear.TabIndex = 18;
             Clear.Text = "Add New";
             Clear.UseVisualStyleBackColor = false;
+            Clear.Click += Clear_Click;
             // 
             // Update
             // 
@@ -123,6 +124,7 @@
             DtTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DtTable.Size = new Size(867, 307);
             DtTable.TabIndex = 0;
+            DtTable.SelectionChanged += DtTable_SelectionChanged;
             // 
             // panel1
             // 

@@ -237,7 +237,7 @@
             Controls.Add(Add);
             Name = "Transport_units";
             Text = "Transport_units";
-            Load += this.Transport_units_Load;
+       
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);

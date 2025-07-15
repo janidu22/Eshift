@@ -61,8 +61,18 @@ namespace Eshift.Repoistory
             using var cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@LorryId", lorryId);
 
-            return await cmd.ExecuteNonQueryAsync() > 0;
+            try
+            {
+                return await cmd.ExecuteNonQueryAsync() > 0;
+            }
+            catch (SqlException ex)
+            {
+              MessageBox.Show($"An error occurred while deleting the lorry: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                throw; 
+            }
         }
+
         #endregion
 
         #region CRUD Drivers
@@ -321,9 +331,13 @@ namespace Eshift.Repoistory
                 string query = @"
         SELECT 
             tu.TransportUnitId AS 'UnitID',
+            tu.LorryId,
             l.PlateNumber AS 'Lorry',
+            tu.DriverId,
             d.Name AS 'Driver',
+            tu.AssistantId,
             a.Name AS 'Assistant',
+            tu.ContainerId,
             c.Type AS 'Container'
         FROM TransportUnits tu
         JOIN Lorries l ON tu.LorryId = l.LorryId
@@ -344,6 +358,7 @@ namespace Eshift.Repoistory
                 return new DataTable();
             }
         }
+
 
         public async Task<DataTable> GetAllLorriesAsync()
         {

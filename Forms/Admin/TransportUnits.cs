@@ -35,6 +35,11 @@ namespace Eshift.Forms.Admin
             DtTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DtTable.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             DtTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DtTable.Columns["LorryId"].Visible = false;
+            DtTable.Columns["DriverId"].Visible = false;
+            DtTable.Columns["AssistantId"].Visible = false;
+            DtTable.Columns["ContainerId"].Visible = false;
+
         }
 
         private async Task LoadAllDropdowns()
@@ -103,6 +108,7 @@ namespace Eshift.Forms.Admin
         private void Clear_Click(object sender, EventArgs e)
         {
             Add.Visible = true;
+            Clear.Visible = false;
         }
 
         private async void Update_Click(object sender, EventArgs e)
@@ -140,13 +146,18 @@ namespace Eshift.Forms.Admin
 
         private void DtTable_SelectionChanged(object sender, EventArgs e)
         {
-            if (DtTable.SelectedRows.Count > 0)
-            {
-               cbDriver.Text = DtTable.SelectedRows[0].Cells["DisplayText"].Value.ToString();    
-                cbLorry.Text = DtTable.SelectedRows[0].Cells["DisplayText"].Value.ToString(); 
-                cbAssistant.Text = DtTable.SelectedRows[0].Cells["DisplayText"].Value.ToString();
-                cbContainer.Text = DtTable.SelectedRows[0].Cells["DisplayText"].Value.ToString(); 
+            if (DtTable.SelectedRows.Count == 0) return;
+            Clear.Visible = true;
+            var row = DtTable.SelectedRows[0];
 
+            if (row.Cells["LorryId"].Value != DBNull.Value)
+            {
+                cbLorry.SelectedValue = Convert.ToInt32(row.Cells["LorryId"].Value);
+                cbDriver.SelectedValue = Convert.ToInt32(row.Cells["DriverId"].Value);
+                cbAssistant.SelectedValue = Convert.ToInt32(row.Cells["AssistantId"].Value);
+                cbContainer.SelectedValue = Convert.ToInt32(row.Cells["ContainerId"].Value);
+
+                Add.Visible = false;
             }
         }
     }

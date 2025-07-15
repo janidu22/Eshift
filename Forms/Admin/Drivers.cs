@@ -19,6 +19,8 @@ namespace Eshift.Forms.Admin
         public Drivers()
         {
             InitializeComponent();
+         
+           
         }
 
         private void Drivers_Load(object sender, EventArgs e)
@@ -43,7 +45,7 @@ namespace Eshift.Forms.Admin
 
         }
 
-        private async  void Add_Click(object sender, EventArgs e)
+        private async void Add_Click(object sender, EventArgs e)
         {
             var Name = tbName.Text;
             var licenseNumber = tbLicenseNumber.Text;
@@ -62,7 +64,8 @@ namespace Eshift.Forms.Admin
                 {
                     MessageBox.Show("Failed to add driver. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
-                }else
+                }
+                else
                 {
                     MessageBox.Show("Driver added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -80,6 +83,24 @@ namespace Eshift.Forms.Admin
             tbPhone.Clear();
             tbName.Clear();
             tbLicenseNumber.Clear();
+        }
+
+        private void DtTable_SelectionChanged(object sender, EventArgs e)
+        {
+            if (DtTable.SelectedRows.Count > 0)
+            {
+                tbName.Text = DtTable.SelectedRows[0].Cells["Name"].Value.ToString();
+                tbLicenseNumber.Text = DtTable.SelectedRows[0].Cells["License Number"].Value.ToString();
+                tbPhone.Text = DtTable.SelectedRows[0].Cells["Phone"].Value.ToString();
+                Add.Visible = false;
+            }
+        }
+
+        private void Clear_Click(object sender, EventArgs e)
+        {
+            Add.Visible = true;
+            Clear.Visible = false;  
+            ClearFields();
         }
     }
 }

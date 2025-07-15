@@ -83,6 +83,7 @@
             DtTableAssistants.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DtTableAssistants.Size = new Size(867, 307);
             DtTableAssistants.TabIndex = 0;
+            DtTableAssistants.SelectionChanged += DtTableAssistants_SelectionChanged;
             // 
             // Clear
             // 
@@ -94,6 +95,7 @@
             Clear.TabIndex = 18;
             Clear.Text = "Add New";
             Clear.UseVisualStyleBackColor = false;
+            Clear.Click += Clear_Click;
             // 
             // Update
             // 
