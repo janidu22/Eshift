@@ -3,8 +3,10 @@ using Eshift.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Eshift.Repoistory
@@ -17,8 +19,10 @@ namespace Eshift.Repoistory
             _databaseHelper = new DatabaseHelper();
         }
 
+        // Customer creates a job: only insert into Jobs and Payments, store requested products as JSON
+        // Change this:
         public async Task<bool> CreateJobAsync(int customerId, string startLocation, string destination,
-     DateTime requestedDate, List<JobItem> items, string paymentMethod, decimal amount)
+            DateTime requestedDate, string requestedProducts, string paymentMethod, decimal amount, int quantity,int weight)
         {
             using (var connection = _databaseHelper.GetConnection())
             {
@@ -27,10 +31,11 @@ namespace Eshift.Repoistory
                 {
                     try
                     {
+                        // No need to serialize, just use the string
                         string jobQuery = @"
-                INSERT INTO Jobs (CustomerId, StartLocation, Destination, RequestedDate, Status, CreatedAt, UpdatedAt)
-                VALUES (@CustomerId, @StartLocation, @Destination, @RequestedDate, 'Pending', GETDATE(), GETDATE());
-                SELECT SCOPE_IDENTITY();";
+                    INSERT INTO Jobs (CustomerId, StartLocation, Destination, RequestedDate, Status, CreatedAt, UpdatedAt, RequestedProducts,RequestedQuantity,RequestedWeight)
+                    VALUES (@CustomerId, @StartLocation, @Destination, @RequestedDate, 'Pending', GETDATE(), GETDATE(), @RequestedProducts,@RequestedQuantity,@RequestedWeight);
+                    SELECT SCOPE_IDENTITY();";
 
                         int jobId;
                         using (var cmd = new SqlCommand(jobQuery, connection, transaction))
@@ -39,36 +44,17 @@ namespace Eshift.Repoistory
                             cmd.Parameters.AddWithValue("@StartLocation", startLocation);
                             cmd.Parameters.AddWithValue("@Destination", destination);
                             cmd.Parameters.AddWithValue("@RequestedDate", requestedDate);
+                            cmd.Parameters.AddWithValue("@RequestedProducts", requestedProducts ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@RequestedQuantity",quantity);
+                            cmd.Parameters.AddWithValue("@RequestedWeight", weight );
 
                             jobId = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                         }
 
-                        foreach (var item in items)
-                        {
-                            string loadQuery = @"
-                             INSERT INTO Loads (JobId, ProductId, TransportUnitId, Quantity, Weight, Notes)
-                             VALUES (@JobId, @ProductId, @TransportUnitId, @Quantity, @Weight, @Notes);";
-
-                            int transportUnitId = await GetAvailableTransportUnitAsync(connection, transaction); 
-
-                            using (var loadCmd = new SqlCommand(loadQuery, connection, transaction))
-                            {
-                                loadCmd.Parameters.AddWithValue("@JobId", jobId);
-                                loadCmd.Parameters.AddWithValue("@ProductId", item.ProductId);
-                                loadCmd.Parameters.AddWithValue("@TransportUnitId", transportUnitId); 
-                                loadCmd.Parameters.AddWithValue("@Quantity", item.Quantity);
-                                loadCmd.Parameters.AddWithValue("@Weight", item.Weight ?? (object)DBNull.Value);
-                                loadCmd.Parameters.AddWithValue("@Notes", item.Notes ?? (object)DBNull.Value);
-
-                                await loadCmd.ExecuteNonQueryAsync();
-                            }
-                        }
-
-
                         string paymentStatus = paymentMethod == "Card" ? "Paid" : "Pending";
                         string paymentQuery = @"
-                INSERT INTO Payments (JobId, CustomerId, Amount, Method, Status, CreatedAt)
-                VALUES (@JobId, @CustomerId, @Amount, @Method, @Status, GETDATE());";
+                    INSERT INTO Payments (JobId, CustomerId, Amount, Method, Status, CreatedAt)
+                    VALUES (@JobId, @CustomerId, @Amount, @Method, @Status, GETDATE());";
 
                         using (var paymentCmd = new SqlCommand(paymentQuery, connection, transaction))
                         {
@@ -94,102 +80,83 @@ namespace Eshift.Repoistory
         }
 
 
-        private async Task<int> GetAvailableTransportUnitAsync(SqlConnection connection, SqlTransaction transaction)
+        public async Task<List<JobSummary>> GetPendingJobsAsync()
         {
-            try
+            var jobs = new List<JobSummary>();
+            using (var connection = _databaseHelper.GetConnection())
             {
-                // First, try to get any available transport unit
-                string query = "SELECT TOP 1 TransportUnitId FROM TransportUnits";
-                using (var cmd = new SqlCommand(query, connection, transaction))
+                await connection.OpenAsync();
+                string query = @"SELECT JobId, StartLocation, Destination, RequestedDate, RequestedProducts ,RequestedQuantity, RequestedWeight
+                         FROM Jobs
+                         WHERE Status = 'Pending'
+                         ORDER BY CreatedAt DESC";
+                using (var cmd = new SqlCommand(query, connection))
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    var result = await cmd.ExecuteScalarAsync();
-                    if (result != null)
+                    while (await reader.ReadAsync())
                     {
-                        return Convert.ToInt32(result);
+                        jobs.Add(new JobSummary
+                        {
+                            JobId = reader.GetInt32(reader.GetOrdinal("JobId")),
+                            StartLocation = reader.IsDBNull(reader.GetOrdinal("StartLocation")) ? "" : reader.GetString(reader.GetOrdinal("StartLocation")),
+                            Destination = reader.IsDBNull(reader.GetOrdinal("Destination")) ? "" : reader.GetString(reader.GetOrdinal("Destination")),
+                            RequestedDate = reader.IsDBNull(reader.GetOrdinal("RequestedDate")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("RequestedDate")),
+                            RequestedProducts = reader.IsDBNull(reader.GetOrdinal("RequestedProducts")) ? "" : reader.GetString(reader.GetOrdinal("RequestedProducts")),
+                            RequestedQuantity = reader.IsDBNull(reader.GetOrdinal("RequestedQuantity")) ? 0 : reader.GetInt32(reader.GetOrdinal("RequestedQuantity")),
+                            RequestedWeight = reader.IsDBNull(reader.GetOrdinal("RequestedWeight")) ? 0 : reader.GetDecimal(reader.GetOrdinal("RequestedWeight"))
+                        });
                     }
                 }
+            }
+            return jobs;
+        }
 
-                // If no transport units exist, create a default one
-                // Create default lorry, driver, assistant, and container first
-                int lorryId = await CreateDefaultLorryAsync(connection, transaction);
-                int driverId = await CreateDefaultDriverAsync(connection, transaction);
-                int assistantId = await CreateDefaultAssistantAsync(connection, transaction);
-                int containerId = await CreateDefaultContainerAsync(connection, transaction);
 
-                // Create transport unit
-                string insertQuery = @"
-                    INSERT INTO TransportUnits (LorryId, DriverId, AssistantId, ContainerId)
-                    VALUES (@LorryId, @DriverId, @AssistantId, @ContainerId);
-                    SELECT SCOPE_IDENTITY();";
-
-                using (var cmd = new SqlCommand(insertQuery, connection, transaction))
+        public async Task<DataTable> GetLoadsForJobAsync(int jobId)
+        {
+            using var connection = _databaseHelper.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+                string query = @"
+            SELECT 
+                l.LoadId, 
+                p.Name AS Product, 
+                'Lorry: ' + lo.PlateNumber + 
+                ', Driver: ' + d.Name + 
+                ', Assistant: ' + a.Name + 
+                ', Container: ' + c.Type AS TransportUnit,
+                l.Quantity, 
+                l.Weight, 
+                l.Notes
+            FROM Loads l
+            INNER JOIN Products p ON l.ProductId = p.ProductId
+            INNER JOIN TransportUnits t ON l.TransportUnitId = t.TransportUnitId
+            INNER JOIN Lorries lo ON t.LorryId = lo.LorryId
+            INNER JOIN Drivers d ON t.DriverId = d.DriverId
+            INNER JOIN Assistants a ON t.AssistantId = a.AssistantId
+            INNER JOIN Containers c ON t.ContainerId = c.ContainerId
+            WHERE l.JobId = @JobId
+            ORDER BY l.LoadId DESC";
+                using (var cmd = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@LorryId", lorryId);
-                    cmd.Parameters.AddWithValue("@DriverId", driverId);
-                    cmd.Parameters.AddWithValue("@AssistantId", assistantId);
-                    cmd.Parameters.AddWithValue("@ContainerId", containerId);
-                    
-                    return Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                    cmd.Parameters.AddWithValue("@JobId", jobId);
+                    using (var adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable loadsTable = new DataTable();
+                        adapter.Fill(loadsTable);
+                        return loadsTable;
+                    }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // If all else fails, return 1 as fallback
-                return 1;
+                MessageBox.Show("Error loading loads: " + ex.Message);
+                return new DataTable();
             }
         }
 
-        private async Task<int> CreateDefaultLorryAsync(SqlConnection connection, SqlTransaction transaction)
-        {
-            string query = @"
-                INSERT INTO Lorries (PlateNumber, Model, Capacity)
-                VALUES ('DEFAULT-001', 'Default Model', 5000.00);
-                SELECT SCOPE_IDENTITY();";
-            
-            using (var cmd = new SqlCommand(query, connection, transaction))
-            {
-                return Convert.ToInt32(await cmd.ExecuteScalarAsync());
-            }
-        }
-
-        private async Task<int> CreateDefaultDriverAsync(SqlConnection connection, SqlTransaction transaction)
-        {
-            string query = @"
-                INSERT INTO Drivers (Name, LicenseNumber, Phone)
-                VALUES ('Default Driver', 'DEFAULT-LICENSE-001', '000-000-0000');
-                SELECT SCOPE_IDENTITY();";
-            
-            using (var cmd = new SqlCommand(query, connection, transaction))
-            {
-                return Convert.ToInt32(await cmd.ExecuteScalarAsync());
-            }
-        }
-
-        private async Task<int> CreateDefaultAssistantAsync(SqlConnection connection, SqlTransaction transaction)
-        {
-            string query = @"
-                INSERT INTO Assistants (Name, Phone)
-                VALUES ('Default Assistant', '000-000-0000');
-                SELECT SCOPE_IDENTITY();";
-            
-            using (var cmd = new SqlCommand(query, connection, transaction))
-            {
-                return Convert.ToInt32(await cmd.ExecuteScalarAsync());
-            }
-        }
-
-        private async Task<int> CreateDefaultContainerAsync(SqlConnection connection, SqlTransaction transaction)
-        {
-            string query = @"
-                INSERT INTO Containers (Type, Capacity)
-                VALUES ('Default Container', 5000.00);
-                SELECT SCOPE_IDENTITY();";
-            
-            using (var cmd = new SqlCommand(query, connection, transaction))
-            {
-                return Convert.ToInt32(await cmd.ExecuteScalarAsync());
-            }
-        }
+        
 
         public async Task<bool> UpdateJobStatusAsync(int jobId, string newStatus)
         {
@@ -204,9 +171,8 @@ namespace Eshift.Repoistory
                 int rows = await cmd.ExecuteNonQueryAsync();
                 return rows > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // MessageBox.Show("Error updating job status: " + ex.Message); // This line was removed as per the new_code
                 return false;
             }
         }
@@ -224,11 +190,71 @@ namespace Eshift.Repoistory
                 int rows = await cmd.ExecuteNonQueryAsync();
                 return rows > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // MessageBox.Show("Error updating payment status: " + ex.Message); // This line was removed as per the new_code
                 return false;
             }
+        }
+
+
+        public async Task<bool> AddLoadAsync(int jobId, int productId, int transportUnitId, int quantity, decimal? weight, string notes)
+        {
+            using var connection = _databaseHelper.GetConnection();
+            await connection.OpenAsync();
+
+            string query = @"
+        INSERT INTO Loads (JobId, ProductId, TransportUnitId, Quantity, Weight, Notes)
+        VALUES (@JobId, @ProductId, @TransportUnitId, @Quantity, @Weight, @Notes);";
+
+            using var cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@JobId", jobId);
+            cmd.Parameters.AddWithValue("@ProductId", productId);
+            cmd.Parameters.AddWithValue("@TransportUnitId", transportUnitId);
+            cmd.Parameters.AddWithValue("@Quantity", quantity);
+            cmd.Parameters.AddWithValue("@Weight", weight ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@Notes", notes ?? (object)DBNull.Value);
+
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
+
+        public async Task<bool> UpdateLoadAsync(int loadId, int productId, int transportUnitId, int quantity, decimal? weight, string notes)
+        {
+            using var connection = _databaseHelper.GetConnection();
+            await connection.OpenAsync();
+
+            string query = @"
+        UPDATE Loads
+        SET ProductId = @ProductId,
+            TransportUnitId = @TransportUnitId,
+            Quantity = @Quantity,
+            Weight = @Weight,
+            Notes = @Notes
+        WHERE LoadId = @LoadId;";
+
+            using var cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@LoadId", loadId);
+            cmd.Parameters.AddWithValue("@ProductId", productId);
+            cmd.Parameters.AddWithValue("@TransportUnitId", transportUnitId);
+            cmd.Parameters.AddWithValue("@Quantity", quantity);
+            cmd.Parameters.AddWithValue("@Weight", weight ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@Notes", notes ?? (object)DBNull.Value);
+
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
+
+        public async Task<bool> DeleteLoadAsync(int loadId)
+        {
+            using var connection = _databaseHelper.GetConnection();
+            await connection.OpenAsync();
+
+            string query = "DELETE FROM Loads WHERE LoadId = @LoadId;";
+
+            using var cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@LoadId", loadId);
+
+            return await cmd.ExecuteNonQueryAsync() > 0;
         }
     }
 }

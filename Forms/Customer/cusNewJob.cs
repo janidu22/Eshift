@@ -107,7 +107,7 @@ namespace Eshift.Forms.Customer
         {
             RbCash.Text = "Cash";
             RbCard.Text = "Card";
-            RbCash.Checked = true; 
+            RbCash.Checked = true;
         }
 
         private void TbWeight_TextChanged(object? sender, EventArgs e)
@@ -255,7 +255,7 @@ namespace Eshift.Forms.Customer
                 var destination = tbDestination.Text.Trim();
                 var requestedDate = DTRequestDate.Value;
                 var quantity = (int)NuDQuentity.Value;
-                var weight = TbWeight.Text;
+                var weight = Convert.ToInt32(TbWeight.Text);
                 var notes = TbNotes.Text;
                 var card = RbCard.Checked;
                 var amount = TbAmount.Text;
@@ -271,7 +271,7 @@ namespace Eshift.Forms.Customer
                 // Determine payment method
                 string paymentMethod = card ? "Card" : "Cash";
 
-                // Get selected product ID from combo box
+                // Get selected product name from combo box
                 if (CbProducts.SelectedItem == null)
                 {
                     MessageBox.Show("Please select a product.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -280,23 +280,10 @@ namespace Eshift.Forms.Customer
                 }
 
                 var selectedProduct = (ProductItem)CbProducts.SelectedItem;
-
-
-                var jobItems = new List<JobItem>
-                {
-                    new JobItem
-                    {
-                        ProductId = selectedProduct.ProductId,
-                        TransportUnitId = 0, // Will be set by repository
-                        Quantity = quantity,
-                        Weight = string.IsNullOrWhiteSpace(weight) ? null : decimal.Parse(weight),
-                        Notes = string.IsNullOrWhiteSpace(notes) ? null : notes.Trim()
-                    }
-                };
-
+                string requestedProducts = selectedProduct.Name; // Or use a category property if you have one
 
                 bool success = await jobRepository.CreateJobAsync(customerId, startLocation, destination,
-                    requestedDate, jobItems, paymentMethod, amountValue);
+                    requestedDate, requestedProducts, paymentMethod, amountValue, quantity, weight);
 
                 if (success)
                 {
@@ -323,6 +310,7 @@ namespace Eshift.Forms.Customer
             tbDestination.Clear();
             TbWeight.Clear();
             TbAmount.Clear();
+            NuDQuentity.Value = 0;  
             TbNotes.Clear();
             CbProducts.SelectedIndex = -1;
             NuDQuentity.Value = 1;
@@ -340,7 +328,4 @@ namespace Eshift.Forms.Customer
 
         }
     }
-
-
-
 }

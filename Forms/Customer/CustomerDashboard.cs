@@ -102,29 +102,9 @@ namespace Eshift.Forms.Customer
             cusTrackStatus.Show();
         }
 
-        private void UpdateJobs_Click(object sender, EventArgs e)
-        {
-            CusUpdateJobs cusUpdateJobs = new CusUpdateJobs();
-            cusUpdateJobs.TopLevel = false;
-            cusUpdateJobs.FormBorderStyle = FormBorderStyle.None;
-            cusUpdateJobs.Dock = DockStyle.Fill;
-            PanelMain.Controls.Clear();
-            PanelMain.Controls.Add(cusUpdateJobs);
-            cusUpdateJobs.Show();
+   
 
-        }
-
-        private void ViewInvoice_Click(object sender, EventArgs e)
-        {
-            CusViewInvoice cusViewInvoice = new CusViewInvoice();
-            cusViewInvoice.TopLevel = false;
-            cusViewInvoice.FormBorderStyle = FormBorderStyle.None;
-            cusViewInvoice.Dock = DockStyle.Fill;
-            PanelMain.Controls.Clear();
-            PanelMain.Controls.Add(cusViewInvoice);
-            cusViewInvoice.Show();
-
-        }
+      
 
         private void MyProfile_Click(object sender, EventArgs e)
         {

@@ -193,7 +193,7 @@
             ViewInvoice.Text = "View Invoice";
             ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
             ViewInvoice.UseVisualStyleBackColor = false;
-            ViewInvoice.Click += ViewInvoice_Click;
+      
             // 
             // UpdateJobs
             // 
@@ -208,7 +208,7 @@
             UpdateJobs.Text = "Update Jobs";
             UpdateJobs.TextAlign = ContentAlignment.MiddleLeft;
             UpdateJobs.UseVisualStyleBackColor = false;
-            UpdateJobs.Click += UpdateJobs_Click;
+          
             // 
             // NewJobRequest
             // 

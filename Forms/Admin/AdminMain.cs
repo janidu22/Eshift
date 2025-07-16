@@ -109,6 +109,17 @@ namespace Eshift.Forms.Admin
             PanelMain.Controls.Add(manageTransportUnit);
             manageTransportUnit.Show();
         }
+
+        private void ManageLoads_Click(object sender, EventArgs e)
+        {
+            ManageLoads manageLoads = new ManageLoads();
+            manageLoads.TopLevel = false;
+            manageLoads.FormBorderStyle = FormBorderStyle.None;
+            manageLoads.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(manageLoads);
+            manageLoads.Show();
+        }
     }
 }
 

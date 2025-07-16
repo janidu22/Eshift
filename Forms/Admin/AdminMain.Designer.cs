@@ -32,7 +32,7 @@
             lblEmail = new Label();
             lblPhone = new Label();
             AdminManagement = new Button();
-            ManageAdmins = new Button();
+            ManageLoads = new Button();
             lblAddress = new Label();
             lblName = new Label();
             panel2 = new Panel();
@@ -100,18 +100,19 @@
             AdminManagement.UseVisualStyleBackColor = false;
             AdminManagement.Click += AdminManagement_Click;
             // 
-            // ManageAdmins
+            // ManageLoads
             // 
-            ManageAdmins.BackColor = Color.FromArgb(64, 64, 64);
-            ManageAdmins.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            ManageAdmins.ForeColor = Color.White;
-            ManageAdmins.Location = new Point(1, 556);
-            ManageAdmins.Name = "ManageAdmins";
-            ManageAdmins.Size = new Size(255, 60);
-            ManageAdmins.TabIndex = 2;
-            ManageAdmins.Text = "View and Manage Invoices";
-            ManageAdmins.TextAlign = ContentAlignment.MiddleLeft;
-            ManageAdmins.UseVisualStyleBackColor = false;
+            ManageLoads.BackColor = Color.FromArgb(64, 64, 64);
+            ManageLoads.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ManageLoads.ForeColor = Color.White;
+            ManageLoads.Location = new Point(0, 490);
+            ManageLoads.Name = "ManageLoads";
+            ManageLoads.Size = new Size(255, 60);
+            ManageLoads.TabIndex = 2;
+            ManageLoads.Text = "Manage Loads";
+            ManageLoads.TextAlign = ContentAlignment.MiddleLeft;
+            ManageLoads.UseVisualStyleBackColor = false;
+            ManageLoads.Click += ManageLoads_Click;
             // 
             // lblAddress
             // 
@@ -135,6 +136,7 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(ManageLoads);
             panel2.Controls.Add(lblAdminEmail);
             panel2.Controls.Add(lblAdminUsername);
             panel2.Controls.Add(lblAdminName);
@@ -145,7 +147,6 @@
             panel2.Controls.Add(ManageProducts);
             panel2.Controls.Add(ViewInvoice);
             panel2.Controls.Add(AdminManagement);
-            panel2.Controls.Add(ManageAdmins);
             panel2.Controls.Add(manageCustomers);
             panel2.Controls.Add(ViewJobs);
             panel2.Location = new Point(3, 11);
@@ -203,7 +204,7 @@
             button11.BackColor = Color.FromArgb(64, 64, 64);
             button11.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             button11.ForeColor = Color.White;
-            button11.Location = new Point(1, 490);
+            button11.Location = new Point(1, 556);
             button11.Name = "button11";
             button11.Size = new Size(255, 60);
             button11.TabIndex = 10;
@@ -216,7 +217,7 @@
             button10.BackColor = Color.FromArgb(64, 64, 64);
             button10.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             button10.ForeColor = Color.White;
-            button10.Location = new Point(2, 688);
+            button10.Location = new Point(0, 688);
             button10.Name = "button10";
             button10.Size = new Size(255, 60);
             button10.TabIndex = 9;
@@ -230,7 +231,7 @@
             button9.BackColor = Color.FromArgb(64, 64, 64);
             button9.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             button9.ForeColor = Color.White;
-            button9.Location = new Point(0, 424);
+            button9.Location = new Point(1, 424);
             button9.Name = "button9";
             button9.Size = new Size(255, 60);
             button9.TabIndex = 8;
@@ -326,7 +327,7 @@
         private Label lblEmail;
         private Label lblPhone;
         private Button AdminManagement;
-        private Button ManageAdmins;
+        private Button ManageLoads;
         private Label lblAddress;
         private Label lblName;
         private Panel panel2;

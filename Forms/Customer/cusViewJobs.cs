@@ -42,6 +42,7 @@ namespace Eshift.Forms.Customer
             viewJobsDt.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             viewJobsDt.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             viewJobsDt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            viewJobsDt.Columns["AdminId"].Visible = false;
         }
 
         private void viewJobsDt_CellContentClick(object sender, DataGridViewCellEventArgs e)

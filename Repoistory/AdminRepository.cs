@@ -172,7 +172,7 @@ namespace Eshift.Repoistory
                     u.IsActive,
                     u.CreatedAt
                 FROM Admins a
-                INNER JOIN Users u ON a.UserId = u.UserId
+                INNER JOIN Users u ON a.UserId = u.UserId 
                 INNER JOIN UserRoles ur ON u.UserId = ur.UserId
                 INNER JOIN Roles r ON ur.RoleId = r.RoleId
                 WHERE r.RoleName = 'Admin';";

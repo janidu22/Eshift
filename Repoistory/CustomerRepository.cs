@@ -353,6 +353,50 @@ namespace Eshift.Repoistory
             return jobsTable;
         }
 
+        public async Task<DataTable> GetLoadsForJobAsync(int jobId)
+        {
+            using var connection = _dbHelper.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+                string query = @"
+            SELECT 
+                l.LoadId, 
+                p.Name AS Product, 
+                'Lorry: ' + lo.PlateNumber + 
+                ', Driver: ' + d.Name + 
+                ', Assistant: ' + a.Name + 
+                ', Container: ' + c.Type AS TransportUnit,
+                l.Quantity, 
+                l.Weight, 
+                l.Notes
+            FROM Loads l
+            INNER JOIN Products p ON l.ProductId = p.ProductId
+            INNER JOIN TransportUnits t ON l.TransportUnitId = t.TransportUnitId
+            INNER JOIN Lorries lo ON t.LorryId = lo.LorryId
+            INNER JOIN Drivers d ON t.DriverId = d.DriverId
+            INNER JOIN Assistants a ON t.AssistantId = a.AssistantId
+            INNER JOIN Containers c ON t.ContainerId = c.ContainerId
+            WHERE l.JobId = @JobId
+            ORDER BY l.LoadId DESC";
+                using (var cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@JobId", jobId);
+                    using (var adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable loadsTable = new DataTable();
+                        adapter.Fill(loadsTable);
+                        return loadsTable;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading loads: " + ex.Message);
+                return new DataTable();
+            }
+        }
+
         private async Task<bool> IsUsernameExistsAsync(string username, SqlConnection connection, SqlTransaction transaction)
         {
             string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";

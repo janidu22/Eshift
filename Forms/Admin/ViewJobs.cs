@@ -433,7 +433,7 @@ namespace Eshift.Forms.Admin
                 var destination = tbDestination.Text.Trim();
                 var requestedDate = DTRequestDate.Value;
                 var quantity = (int)NuDQuentity.Value;
-                var weight = TbWeight.Text;
+                var weight = Convert.ToInt32(TbWeight.Text);
                 var notes = TbNotes.Text;
                 var card = RbCard.Checked;
                 var amount = TbAmount.Text;
@@ -449,7 +449,7 @@ namespace Eshift.Forms.Admin
                 // Determine payment method
                 string paymentMethod = card ? "Card" : "Cash";
 
-                // Get selected product ID from combo box
+                // Get selected product name from combo box
                 if (CbProducts.SelectedItem == null)
                 {
                     MessageBox.Show("Please select a product.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -458,23 +458,10 @@ namespace Eshift.Forms.Admin
                 }
 
                 var selectedProduct = (ProductItem)CbProducts.SelectedItem;
-
-
-                var jobItems = new List<JobItem>
-                {
-                    new JobItem
-                    {
-                        ProductId = selectedProduct.ProductId,
-                        TransportUnitId = 0, // Will be set by repository
-                        Quantity = quantity,
-                        Weight = string.IsNullOrWhiteSpace(weight) ? null : decimal.Parse(weight),
-                        Notes = string.IsNullOrWhiteSpace(notes) ? null : notes.Trim()
-                    }
-                };
-
+                string requestedProducts = selectedProduct.Name; // Or use a category property if you have one
 
                 bool success = await _jobRepository.CreateJobAsync(customerId, startLocation, destination,
-                    requestedDate, jobItems, paymentMethod, amountValue);
+                    requestedDate, requestedProducts, paymentMethod, amountValue,quantity,weight);
 
                 if (success)
                 {
@@ -494,6 +481,7 @@ namespace Eshift.Forms.Admin
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void ClearForm()
         {
             tbStartLocation.Clear();
