@@ -56,22 +56,29 @@ namespace Eshift.Repoistory
             using var connection = _dbHelper.GetConnection();
             await connection.OpenAsync();
 
-            string query = "DELETE FROM Lorries WHERE LorryId = @LorryId";
+            // First, delete the related records in TransportUnits
+            string deleteTransportUnitsQuery = "DELETE FROM TransportUnits WHERE LorryId = @LorryId";
 
-            using var cmd = new SqlCommand(query, connection);
+            using var cmd = new SqlCommand(deleteTransportUnitsQuery, connection);
             cmd.Parameters.AddWithValue("@LorryId", lorryId);
 
             try
             {
+                // Delete related TransportUnits first
+                await cmd.ExecuteNonQueryAsync();
+
+                // Now delete the Lorry
+                string deleteLorryQuery = "DELETE FROM Lorries WHERE LorryId = @LorryId";
+                cmd.CommandText = deleteLorryQuery; // Reuse the command for the next delete operation
                 return await cmd.ExecuteNonQueryAsync() > 0;
             }
             catch (SqlException ex)
             {
-              MessageBox.Show($"An error occurred while deleting the lorry: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                throw; 
+                MessageBox.Show($"An error occurred while deleting the lorry: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw; // Rethrow the exception
             }
         }
+
 
         #endregion
 

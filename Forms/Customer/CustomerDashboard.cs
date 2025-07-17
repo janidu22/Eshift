@@ -1,11 +1,7 @@
 ﻿using Eshift.Repoistory;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,11 +12,14 @@ namespace Eshift.Forms.Customer
         private string _username;
         private Form? activeForm = null;
         private CustomerRepository _customerRepository = new CustomerRepository();
+        private MainForm _mainForm; 
 
-        public CustomerDashboard(string username)
+        
+        public CustomerDashboard(string username, MainForm mainForm)
         {
             InitializeComponent();
             _username = username;
+            _mainForm = mainForm; 
         }
 
         private void CustomerDashboard_Load(object sender, EventArgs e)
@@ -61,8 +60,6 @@ namespace Eshift.Forms.Customer
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
 
-
-
             childForm.BringToFront();
             childForm.Show();
         }
@@ -77,7 +74,6 @@ namespace Eshift.Forms.Customer
             PanelMain.Controls.Clear();
             PanelMain.Controls.Add(viewJobs);
             viewJobs.Show();
-
         }
 
         private void NewJobRequest_Click(object sender, EventArgs e)
@@ -102,10 +98,6 @@ namespace Eshift.Forms.Customer
             cusTrackStatus.Show();
         }
 
-   
-
-      
-
         private void MyProfile_Click(object sender, EventArgs e)
         {
             CusMyProfile cusMyProfile = new CusMyProfile();
@@ -129,9 +121,8 @@ namespace Eshift.Forms.Customer
 
         private void Logout_Click(object sender, EventArgs e)
         {
-            Login login = new Login();  
-            login.Show();   
-            this.Hide();
+            _mainForm.OpenFormInPanel(); // Go back to the main login or home form
+            this.Hide(); // Hide the current form
         }
     }
 }

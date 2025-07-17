@@ -211,6 +211,7 @@
             button11.Text = "View Reports";
             button11.TextAlign = ContentAlignment.MiddleLeft;
             button11.UseVisualStyleBackColor = false;
+            button11.Click += button11_Click;
             // 
             // button10
             // 
@@ -314,6 +315,7 @@
             Name = "AdminMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminMain";
+            Load += AdminMain_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             panel1.ResumeLayout(false);

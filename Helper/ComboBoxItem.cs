@@ -10,6 +10,7 @@ namespace Eshift.Helper
     {
         public string Text { get; set; }
         public int Value { get; set; }
+        public object Tag { get; set; } // Added to store JobSummary or other data
         public override string ToString() => Text;
     }
 }

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+    <DataSources>
+        <DataSource Name="JobsDataSource">
+            <!-- Data source will be set in code, so remove ConnectionProperties -->
+        </DataSource>
+    </DataSources>
+
+    <Body>
+        <ReportItems>
+            <Table Name="JobsTable">
+                <DataSetName>JobsDataSource</DataSetName>  <!-- This should match the name used in the code -->
+                <TableColumns>
+                    <TableColumn Width="2in" />
+                    <TableColumn Width="2in" />
+                    <TableColumn Width="2in" />
+                </TableColumns>
+                <Details>
+                    <TableRows>
+                        <TableRow>
+                            <TableCells>
+                                <TableCell>
+                                    <Textbox>
+                                        <Value>=Fields!JobId.Value</Value>  <!-- Change these based on your fields -->
+                                    </Textbox>
+                                </TableCell>
+                                <TableCell>
+                                    <Textbox>
+                                        <Value>=Fields!CustomerId.Value</Value>  <!-- Replace with your actual field names -->
+                                    </Textbox>
+                                </TableCell>
+                                <TableCell>
+                                    <Textbox>
+                                        <Value>=Fields!StartLocation.Value</Value>  <!-- Replace with your actual field names -->
+                                    </Textbox>
+                                </TableCell>
+                            </TableCells>
+                        </TableRow>
+                    </TableRows>
+                </Details>
+            </Table>
+        </ReportItems>
+    </Body>
+</Report>

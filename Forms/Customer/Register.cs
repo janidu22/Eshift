@@ -99,5 +99,10 @@ namespace Eshift.Forms.Customer
         }
 
         private void Register_Load(object sender, EventArgs e) { }
+
+        private void tbPassword_TextChanged(object sender, EventArgs e)
+        {
+             
+        }
     }
 }

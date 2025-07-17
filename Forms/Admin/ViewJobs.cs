@@ -461,7 +461,7 @@ namespace Eshift.Forms.Admin
                 string requestedProducts = selectedProduct.Name; // Or use a category property if you have one
 
                 bool success = await _jobRepository.CreateJobAsync(customerId, startLocation, destination,
-                    requestedDate, requestedProducts, paymentMethod, amountValue,quantity,weight);
+                    requestedDate, requestedProducts, paymentMethod, amountValue,quantity,weight,notes);
 
                 if (success)
                 {

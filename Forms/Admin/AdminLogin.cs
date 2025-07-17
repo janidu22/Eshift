@@ -28,24 +28,31 @@ namespace Eshift.Forms.Admin
                 string username = tbUsername.Text.Trim();
                 string password = tbPassword.Text;
 
-                // Validate inputs
+            
                 if (!ValidateLoginForm(username, password))
                 {
                     return;
                 }
 
                 var admin = _adminRepository.LoginAdmin(username, password);
-                
 
-                if(admin != null)
+
+                if (admin != null)
                 {
                     MessageBox.Show($"Welcome, {admin.Name}!", "Login Successful",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
-                    AdminMain adminMain = new AdminMain(username);
-                    adminMain.Show();
-                    this.Hide();
-                     
+
+                    if (this.Owner is MainForm mainForm)
+                    {
+                        AdminMain adminMain = new AdminMain(username, mainForm);
+                        adminMain.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Parent form is not set correctly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                 }
                 else
                 {

@@ -29,9 +29,16 @@ namespace Eshift.Forms.Customer
                 if (customer != null)
                 {
                     MessageBox.Show($"Welcome, {customer.Name}!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    CustomerDashboard dashboard = new CustomerDashboard(username);
-                    dashboard.Show();
-                    this.Hide();
+                    if (this.Owner is MainForm mainForm)
+                    {
+                        CustomerDashboard dashboard = new CustomerDashboard(username, mainForm); 
+                        dashboard.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Parent form is not set correctly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else
                 {
@@ -61,9 +68,15 @@ namespace Eshift.Forms.Customer
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Register register = new Register();
-            register.Show();
-            this.Hide();
+            if (this.Owner is MainForm main)
+            {
+                this.Hide();
+                main.LoadRegisterForm();
+            }
+            else
+            {
+                MessageBox.Show("Parent form is not set correctly.");
+            }
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -74,5 +87,18 @@ namespace Eshift.Forms.Customer
         }
 
         private void Login_Load(object sender, EventArgs e) { }
+
+        private void linkLabel2_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (this.Owner is MainForm main)
+            {
+                this.Hide();
+                main.OpenFormInPanel();
+            }
+            else
+            {
+                MessageBox.Show("Parent form is not set correctly.");
+            }
+        }
     }
 }

@@ -18,14 +18,18 @@ namespace Eshift.Forms.Admin
     {
         private readonly string _username;
         private readonly AdminRepository adminRepository = new AdminRepository();
+        private MainForm _mainForm;
 
-        public AdminMain(string username)
+        public AdminMain(string username, MainForm mainForm )
         {
             InitializeComponent();
             _username = username;
+            _mainForm = mainForm;
         }
 
-
+        public AdminMain()
+        {
+        }
 
         private void ViewJobs_Click(object sender, EventArgs e)
         {
@@ -63,15 +67,14 @@ namespace Eshift.Forms.Admin
 
         private void button10_Click(object sender, EventArgs e)
         {
-            Login login = new Login();
-            login.Show();
+            _mainForm.OpenFormInPanel();
             this.Hide();
         }
 
         private async void panel2_Paint(object sender, PaintEventArgs e)
         {
             var admin = await adminRepository.GetAdminByUsernameAsync(_username);
-            lblAdminName.Text = admin.Name;
+            lblAdminName.Text =  admin.Name;
             lblAdminUsername.Text = admin.Username;
             lblAdminEmail.Text = admin.Email;
         }
@@ -119,6 +122,22 @@ namespace Eshift.Forms.Admin
             PanelMain.Controls.Clear();
             PanelMain.Controls.Add(manageLoads);
             manageLoads.Show();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            ViewReports viewReports = new ViewReports();
+            viewReports.TopLevel = false;
+            viewReports.FormBorderStyle = FormBorderStyle.None;
+            viewReports.Dock = DockStyle.Fill;
+            PanelMain.Controls.Clear();
+            PanelMain.Controls.Add(viewReports);
+            viewReports.Show();
+        }
+
+        private void AdminMain_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

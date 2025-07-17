@@ -13,9 +13,9 @@ namespace Eshift.Models
         public string Destination { get; set; }
         public DateTime RequestedDate { get; set; }
         public string RequestedProducts { get; set; }
-
         public decimal RequestedWeight { get; set; }
         public int  RequestedQuantity { get; set; }
+        public string RequestedNotes { get; set; }
 
     }
 
@@ -23,6 +23,7 @@ namespace Eshift.Models
     {
         public string Text { get; set; }
         public int Value { get; set; }
+        public object Tag { get; set; } // Added to store JobSummary or other data
         public override string ToString() => Text;
     }
 }

@@ -22,7 +22,7 @@ namespace Eshift.Repoistory
         // Customer creates a job: only insert into Jobs and Payments, store requested products as JSON
         // Change this:
         public async Task<bool> CreateJobAsync(int customerId, string startLocation, string destination,
-            DateTime requestedDate, string requestedProducts, string paymentMethod, decimal amount, int quantity,int weight)
+            DateTime requestedDate, string requestedProducts, string paymentMethod, decimal amount, int quantity,int weight,string notes)
         {
             using (var connection = _databaseHelper.GetConnection())
             {
@@ -33,8 +33,8 @@ namespace Eshift.Repoistory
                     {
                         // No need to serialize, just use the string
                         string jobQuery = @"
-                    INSERT INTO Jobs (CustomerId, StartLocation, Destination, RequestedDate, Status, CreatedAt, UpdatedAt, RequestedProducts,RequestedQuantity,RequestedWeight)
-                    VALUES (@CustomerId, @StartLocation, @Destination, @RequestedDate, 'Pending', GETDATE(), GETDATE(), @RequestedProducts,@RequestedQuantity,@RequestedWeight);
+                    INSERT INTO Jobs (CustomerId, StartLocation, Destination, RequestedDate, Status, CreatedAt, UpdatedAt, RequestedProducts,RequestedQuantity,RequestedWeight,RequestedNotes)
+                    VALUES (@CustomerId, @StartLocation, @Destination, @RequestedDate, 'Pending', GETDATE(), GETDATE(), @RequestedProducts,@RequestedQuantity,@RequestedWeight,@RequestedNotes);
                     SELECT SCOPE_IDENTITY();";
 
                         int jobId;
@@ -47,6 +47,7 @@ namespace Eshift.Repoistory
                             cmd.Parameters.AddWithValue("@RequestedProducts", requestedProducts ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@RequestedQuantity",quantity);
                             cmd.Parameters.AddWithValue("@RequestedWeight", weight );
+                            cmd.Parameters.AddWithValue("@RequestedNotes", notes);
 
                             jobId = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                         }
@@ -86,7 +87,7 @@ namespace Eshift.Repoistory
             using (var connection = _databaseHelper.GetConnection())
             {
                 await connection.OpenAsync();
-                string query = @"SELECT JobId, StartLocation, Destination, RequestedDate, RequestedProducts ,RequestedQuantity, RequestedWeight
+                string query = @"SELECT JobId, StartLocation, Destination, RequestedDate, RequestedProducts ,RequestedQuantity, RequestedWeight, RequestedNotes
                          FROM Jobs
                          WHERE Status = 'Pending'
                          ORDER BY CreatedAt DESC";
@@ -103,7 +104,8 @@ namespace Eshift.Repoistory
                             RequestedDate = reader.IsDBNull(reader.GetOrdinal("RequestedDate")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("RequestedDate")),
                             RequestedProducts = reader.IsDBNull(reader.GetOrdinal("RequestedProducts")) ? "" : reader.GetString(reader.GetOrdinal("RequestedProducts")),
                             RequestedQuantity = reader.IsDBNull(reader.GetOrdinal("RequestedQuantity")) ? 0 : reader.GetInt32(reader.GetOrdinal("RequestedQuantity")),
-                            RequestedWeight = reader.IsDBNull(reader.GetOrdinal("RequestedWeight")) ? 0 : reader.GetDecimal(reader.GetOrdinal("RequestedWeight"))
+                            RequestedWeight = reader.IsDBNull(reader.GetOrdinal("RequestedWeight")) ? 0 : reader.GetDecimal(reader.GetOrdinal("RequestedWeight")),
+                            RequestedNotes = reader.IsDBNull(reader.GetOrdinal("RequestedNotes")) ? "" : reader.GetString(reader.GetOrdinal("RequestedNotes"))
                         });
                     }
                 }
@@ -255,6 +257,43 @@ namespace Eshift.Repoistory
             cmd.Parameters.AddWithValue("@LoadId", loadId);
 
             return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
+
+        public async Task<DataTable> GetAllProductsAsync()
+        {
+            using var connection = _databaseHelper.GetConnection();
+            await connection.OpenAsync();
+            string query = "SELECT ProductId, Name FROM Products ORDER BY Name";
+            using var cmd = new SqlCommand(query, connection);
+            using var adapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            return dt;
+        }
+
+        public async Task<DataTable> GetAllTransportUnitsAsync()
+        {
+            using var connection = _databaseHelper.GetConnection();
+            await connection.OpenAsync();
+            string query = @"
+        SELECT 
+            t.TransportUnitId,
+            'Lorry: ' + lo.PlateNumber + 
+            ', Driver: ' + d.Name + 
+            ', Assistant: ' + a.Name + 
+            ', Container: ' + c.Type AS TransportUnitSummary
+        FROM TransportUnits t
+        INNER JOIN Lorries lo ON t.LorryId = lo.LorryId
+        INNER JOIN Drivers d ON t.DriverId = d.DriverId
+        INNER JOIN Assistants a ON t.AssistantId = a.AssistantId
+        INNER JOIN Containers c ON t.ContainerId = c.ContainerId
+        ORDER BY t.TransportUnitId";
+            using var cmd = new SqlCommand(query, connection);
+            using var adapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            return dt;
         }
     }
 }
