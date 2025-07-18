@@ -253,6 +253,7 @@
             ManageProducts.Text = "Profile Management";
             ManageProducts.TextAlign = ContentAlignment.MiddleLeft;
             ManageProducts.UseVisualStyleBackColor = false;
+            ManageProducts.Click += ManageProducts_Click;
             // 
             // ViewInvoice
             // 

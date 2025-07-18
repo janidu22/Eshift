@@ -135,50 +135,103 @@ namespace Eshift.Repoistory
             return null;
         }
 
-        public async Task<bool> UpdateCustomerAsync(int userId, string newName, string newEmail, string newUsername,string password, string newAddress, string newPhone)
+        public async Task<bool> UpdateCustomerAsync(int userId, string newName, string newEmail, string newUsername, string password, string newAddress, string newPhone)
         {
             using var connection = _dbHelper.GetConnection();
-            await connection.OpenAsync();
-
-            using var transaction = connection.BeginTransaction();
             try
             {
-                string updateUserQuery = @"
-                    UPDATE Users
-                    SET Username = @Username, PasswordHash = @PasswordHash, Email = @Email
-                    WHERE UserId = @UserId";
+                await connection.OpenAsync();
 
-                using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                // First, get current customer details to check for duplicates
+                var currentCustomer = await GetCustomerByUserIdAsync(userId);
+                if (currentCustomer == null)
                 {
-                    userCmd.Parameters.AddWithValue("@Username", newUsername);
-                    userCmd.Parameters.AddWithValue("@PasswordHash", BCrypt.Net.BCrypt.HashPassword(password)); 
-                    userCmd.Parameters.AddWithValue("@Email", newEmail);
-                    userCmd.Parameters.AddWithValue("@UserId", userId);
-                    await userCmd.ExecuteNonQueryAsync();
+                    MessageBox.Show("Customer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
 
-                string updateCustomerQuery = @"
-                    UPDATE Customers
-                    SET Name = @Name, Address = @Address, Phone = @Phone, Email = @Email
-                    WHERE UserId = @UserId";
-
-                using (var customerCmd = new SqlCommand(updateCustomerQuery, connection, transaction))
+                // Check if new username exists (excluding current customer)
+                if (newUsername != currentCustomer.Username && await IsUsernameExistsForUpdateAsync(newUsername, userId))
                 {
-                    customerCmd.Parameters.AddWithValue("@Name", newName);
-                    customerCmd.Parameters.AddWithValue("@Address", newAddress ?? "");
-                    customerCmd.Parameters.AddWithValue("@Phone", newPhone ?? "");
-                    customerCmd.Parameters.AddWithValue("@Email", newEmail);
-                    customerCmd.Parameters.AddWithValue("@UserId", userId);
-                    await customerCmd.ExecuteNonQueryAsync();
+                    MessageBox.Show("Username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
 
-                await transaction.CommitAsync();
-                return true;
+                // Check if new email exists (excluding current customer)
+                if (newEmail != currentCustomer.Email && await IsEmailExistsForUpdateAsync(newEmail, userId))
+                {
+                    MessageBox.Show("Email already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                using var transaction = connection.BeginTransaction();
+                try
+                {
+                    // 1. Update Users table
+                    string updateUserQuery;
+                    if (!string.IsNullOrWhiteSpace(password))
+                    {
+                        // Update with new password
+                        updateUserQuery = @"
+                            UPDATE Users
+                            SET Username = @Username, PasswordHash = @PasswordHash, Email = @Email
+                            WHERE UserId = @UserId";
+
+                        using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                        {
+                            userCmd.Parameters.AddWithValue("@Username", newUsername);
+                            userCmd.Parameters.AddWithValue("@PasswordHash", BCrypt.Net.BCrypt.HashPassword(password));
+                            userCmd.Parameters.AddWithValue("@Email", newEmail);
+                            userCmd.Parameters.AddWithValue("@UserId", userId);
+                            userCmd.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        // Update without changing password
+                        updateUserQuery = @"
+                            UPDATE Users
+                            SET Username = @Username, Email = @Email
+                            WHERE UserId = @UserId";
+
+                        using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                        {
+                            userCmd.Parameters.AddWithValue("@Username", newUsername);
+                            userCmd.Parameters.AddWithValue("@Email", newEmail);
+                            userCmd.Parameters.AddWithValue("@UserId", userId);
+                            userCmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    // 2. Update Customers table
+                    string updateCustomerQuery = @"
+                        UPDATE Customers
+                        SET Name = @Name, Address = @Address, Phone = @Phone, Email = @Email
+                        WHERE UserId = @UserId";
+
+                    using (var customerCmd = new SqlCommand(updateCustomerQuery, connection, transaction))
+                    {
+                        customerCmd.Parameters.AddWithValue("@Name", newName);
+                        customerCmd.Parameters.AddWithValue("@Address", newAddress ?? "");
+                        customerCmd.Parameters.AddWithValue("@Phone", newPhone ?? "");
+                        customerCmd.Parameters.AddWithValue("@Email", newEmail);
+                        customerCmd.Parameters.AddWithValue("@UserId", userId);
+                        customerCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Update error: " + ex.Message);
+                    return false;
+                }
             }
             catch (Exception ex)
             {
-                await transaction.RollbackAsync();
-                MessageBox.Show("Update error: " + ex.Message);
+                MessageBox.Show("Connection error: " + ex.Message);
                 return false;
             }
         }
@@ -244,6 +297,7 @@ namespace Eshift.Repoistory
                     {
                         CustomerId = Convert.ToInt32(reader["CustomerId"]),
                         UserId = Convert.ToInt32(reader["UserId"]),
+                        Username = reader["Username"].ToString() ?? "",
                         Name = reader["Name"].ToString() ?? "",
                         Address = reader["Address"].ToString() ?? "",
                         Phone = reader["Phone"].ToString() ?? "",
@@ -256,6 +310,87 @@ namespace Eshift.Repoistory
                 MessageBox.Show("Fetch error: " + ex.Message);
             }
             return null;
+        }
+
+        public async Task<Customer?> GetCustomerByUserIdAsync(int userId)
+        {
+            using var connection = _dbHelper.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+
+                string query = @"
+                    SELECT u.UserId, u.Username, u.Email AS UserEmail, u.IsActive, u.CreatedAt,
+                           c.CustomerId, c.Name, c.Address, c.Phone, c.Email AS CustomerEmail
+                    FROM Users u
+                    JOIN Customers c ON u.UserId = c.UserId
+                    JOIN UserRoles ur ON u.UserId = ur.UserId
+                    JOIN Roles r ON ur.RoleId = r.RoleId
+                    WHERE u.UserId = @UserId AND r.RoleName = 'Customer'";
+
+                using var cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                using var reader = await cmd.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    return new Customer
+                    {
+                        CustomerId = Convert.ToInt32(reader["CustomerId"]),
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        Username = reader["Username"].ToString() ?? "",
+                        Name = reader["Name"].ToString() ?? "",
+                        Address = reader["Address"].ToString() ?? "",
+                        Phone = reader["Phone"].ToString() ?? "",
+                        Email = reader["CustomerEmail"].ToString() ?? ""
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fetch error: " + ex.Message);
+            }
+            return null;
+        }
+
+        private async Task<bool> IsUsernameExistsForUpdateAsync(string username, int excludeUserId)
+        {
+            using var connection = _dbHelper.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+                string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username AND UserId != @ExcludeUserId";
+                using var cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@ExcludeUserId", excludeUserId);
+                int count = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error checking username existence: " + ex.Message);
+                return false;
+            }
+        }
+
+        private async Task<bool> IsEmailExistsForUpdateAsync(string email, int excludeUserId)
+        {
+            using var connection = _dbHelper.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+                string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email AND UserId != @ExcludeUserId";
+                using var cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@ExcludeUserId", excludeUserId);
+                int count = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error checking email existence: " + ex.Message);
+                return false;
+            }
         }
 
         public async Task<DataTable> GetJobsByCustomerIdAsync(int customerId)

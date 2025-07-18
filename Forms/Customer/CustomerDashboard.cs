@@ -98,15 +98,30 @@ namespace Eshift.Forms.Customer
             cusTrackStatus.Show();
         }
 
-        private void MyProfile_Click(object sender, EventArgs e)
+        private async void MyProfile_Click(object sender, EventArgs e)
         {
-            CusMyProfile cusMyProfile = new CusMyProfile();
-            cusMyProfile.TopLevel = false;
-            cusMyProfile.FormBorderStyle = FormBorderStyle.None;
-            cusMyProfile.Dock = DockStyle.Fill;
-            PanelMain.Controls.Clear();
-            PanelMain.Controls.Add(cusMyProfile);
-            cusMyProfile.Show();
+            try
+            {
+                // Get the current customer details
+                var customer = await _customerRepository.GetCustomerByUsernameAsync(_username);
+                if (customer == null)
+                {
+                    MessageBox.Show("Unable to load customer details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                CusMyProfile cusMyProfile = new CusMyProfile(customer);
+                cusMyProfile.TopLevel = false;
+                cusMyProfile.FormBorderStyle = FormBorderStyle.None;
+                cusMyProfile.Dock = DockStyle.Fill;
+                PanelMain.Controls.Clear();
+                PanelMain.Controls.Add(cusMyProfile);
+                cusMyProfile.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading profile management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void PanelMain_Paint(object sender, PaintEventArgs e)

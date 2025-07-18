@@ -247,6 +247,11 @@ namespace Eshift.Repoistory
 
         public async Task<Admin?> GetAdminByUsernameAsync(string username)
         {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return null;
+            }
+
             using var connection = _databaseHelper.GetConnection();
             try
             {
@@ -279,7 +284,8 @@ namespace Eshift.Repoistory
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Fetch error: " + ex.Message);
+                // Don't show message box here, just log the error
+                System.Diagnostics.Debug.WriteLine($"Error fetching admin by username: {ex.Message}");
             }
             return null;
         }
@@ -295,23 +301,67 @@ namespace Eshift.Repoistory
                 {
                     try
                     {
-                        // 1. Update Users table
-                        string updateUserQuery = @"
-                    UPDATE Users
-                    SET Username = @Username,
-                        Email = @Email,
-                        PasswordHash = @PasswordHash
-                    WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId)";
-
-                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-
-                        using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                        // Check if username or email already exists (excluding current admin)
+                        var currentAdmin = GetAdminById(adminId);
+                        if (currentAdmin == null)
                         {
-                            userCmd.Parameters.AddWithValue("@Username", username);
-                            userCmd.Parameters.AddWithValue("@Email", email);
-                            userCmd.Parameters.AddWithValue("@PasswordHash", hashedPassword);
-                            userCmd.Parameters.AddWithValue("@AdminId", adminId);
-                            userCmd.ExecuteNonQuery();
+                            MessageBox.Show("Admin not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return false;
+                        }
+
+                        // Check if new username exists (excluding current admin)
+                        if (username != currentAdmin.Username && IsUsernameExists(username, connection, transaction))
+                        {
+                            MessageBox.Show("Username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return false;
+                        }
+
+                        // Check if new email exists (excluding current admin)
+                        if (email != currentAdmin.Email && IsEmailExists(email, connection, transaction))
+                        {
+                            MessageBox.Show("Email already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return false;
+                        }
+
+                        // 1. Update Users table
+                        string updateUserQuery;
+                        if (!string.IsNullOrWhiteSpace(password))
+                        {
+                            // Update with new password
+                            updateUserQuery = @"
+                        UPDATE Users
+                        SET Username = @Username,
+                            Email = @Email,
+                            PasswordHash = @PasswordHash
+                        WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId)";
+
+                            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+                            using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                            {
+                                userCmd.Parameters.AddWithValue("@Username", username);
+                                userCmd.Parameters.AddWithValue("@Email", email);
+                                userCmd.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                                userCmd.Parameters.AddWithValue("@AdminId", adminId);
+                                userCmd.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            // Update without changing password
+                            updateUserQuery = @"
+                        UPDATE Users
+                        SET Username = @Username,
+                            Email = @Email
+                        WHERE UserId = (SELECT UserId FROM Admins WHERE AdminId = @AdminId)";
+
+                            using (var userCmd = new SqlCommand(updateUserQuery, connection, transaction))
+                            {
+                                userCmd.Parameters.AddWithValue("@Username", username);
+                                userCmd.Parameters.AddWithValue("@Email", email);
+                                userCmd.Parameters.AddWithValue("@AdminId", adminId);
+                                userCmd.ExecuteNonQuery();
+                            }
                         }
 
                         // 2. Update Admins table
@@ -385,6 +435,52 @@ namespace Eshift.Repoistory
         }
         #endregion
         #region Helper Methods
+        public bool IsUsernameExists(string username)
+        {
+            using (var connection = _databaseHelper.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
+                    using (var cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        int count = (cmd.ExecuteScalar() as int?) ?? 0;
+                        return count > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error checking username existence: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        public bool IsEmailExists(string email)
+        {
+            using (var connection = _databaseHelper.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
+                    using (var cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        int count = (cmd.ExecuteScalar() as int?) ?? 0;
+                        return count > 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error checking email existence: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
         private bool IsUsernameExists(string username, SqlConnection connection, SqlTransaction transaction)
         {
             string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";

@@ -107,6 +107,7 @@
             Update.TabIndex = 17;
             Update.Text = "Update";
             Update.UseVisualStyleBackColor = false;
+            Update.Click += UpdateBtn_Click;
             // 
             // delete
             // 
@@ -118,6 +119,7 @@
             delete.TabIndex = 16;
             delete.Text = "Delete";
             delete.UseVisualStyleBackColor = false;
+            delete.Click += DeleteBtn_Click;
             // 
             // Add
             // 
@@ -129,6 +131,7 @@
             Add.TabIndex = 15;
             Add.Text = "Add";
             Add.UseVisualStyleBackColor = false;
+            Add.Click += Add_Click;
             // 
             // tbPhone
             // 

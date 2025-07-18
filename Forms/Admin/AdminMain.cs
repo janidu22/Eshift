@@ -20,7 +20,7 @@ namespace Eshift.Forms.Admin
         private readonly AdminRepository adminRepository = new AdminRepository();
         private MainForm _mainForm;
 
-        public AdminMain(string username, MainForm mainForm )
+        public AdminMain(string username, MainForm mainForm)
         {
             InitializeComponent();
             _username = username;
@@ -73,10 +73,37 @@ namespace Eshift.Forms.Admin
 
         private async void panel2_Paint(object sender, PaintEventArgs e)
         {
-            var admin = await adminRepository.GetAdminByUsernameAsync(_username);
-            lblAdminName.Text =  admin.Name;
-            lblAdminUsername.Text = admin.Username;
-            lblAdminEmail.Text = admin.Email;
+            try
+            {
+                if (string.IsNullOrEmpty(_username))
+                {
+                    lblAdminName.Text = "Admin";
+                    lblAdminUsername.Text = "admin";
+                    lblAdminEmail.Text = "admin@example.com";
+                    return;
+                }
+
+                var admin = await adminRepository.GetAdminByUsernameAsync(_username);
+                if (admin != null)
+                {
+                    lblAdminName.Text = admin.Name;
+                    lblAdminUsername.Text = admin.Username;
+                    lblAdminEmail.Text = admin.Email;
+                }
+                else
+                {
+                    lblAdminName.Text = "Admin";
+                    lblAdminUsername.Text = "admin";
+                    lblAdminEmail.Text = "admin@example.com";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Set default values if there's an error
+                lblAdminName.Text = "Admin";
+                lblAdminUsername.Text = "admin";
+                lblAdminEmail.Text = "admin@example.com";
+            }
         }
 
         private void manageCustomers_Click(object sender, EventArgs e)
@@ -138,6 +165,32 @@ namespace Eshift.Forms.Admin
         private void AdminMain_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private async void ManageProducts_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get the current admin details
+                var admin = await adminRepository.GetAdminByUsernameAsync(_username);
+                if (admin == null)
+                {
+                    MessageBox.Show("Unable to load admin details.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                ProfileManage profileManage = new ProfileManage(admin);  
+                profileManage.TopLevel = false; 
+                profileManage.FormBorderStyle = FormBorderStyle.None;
+                profileManage.Dock = DockStyle.Fill;
+                PanelMain.Controls.Clear();
+                PanelMain.Controls.Add(profileManage);
+                profileManage.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading profile management: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

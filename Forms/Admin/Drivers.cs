@@ -16,6 +16,7 @@ namespace Eshift.Forms.Admin
     {
 
         private readonly TrasnportUnitRepository trasnportUnit = new TrasnportUnitRepository();
+        private int? selectedDriverId = null;
         public Drivers()
         {
             InitializeComponent();
@@ -26,6 +27,10 @@ namespace Eshift.Forms.Admin
         private void Drivers_Load(object sender, EventArgs e)
         {
             LoadData();
+            Add.Visible = true;
+            Update.Visible = false;
+            Delete.Visible = false;
+            Clear.Visible = false;
         }
 
 
@@ -59,8 +64,8 @@ namespace Eshift.Forms.Admin
                     return;
                 }
 
-                var driver = await trasnportUnit.AddDriverAsync(Name, licenseNumber, phoneNumber);
-                if (driver == null)
+                var success = await trasnportUnit.AddDriverAsync(Name, licenseNumber, phoneNumber);
+                if (!success)
                 {
                     MessageBox.Show("Failed to add driver. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -78,6 +83,58 @@ namespace Eshift.Forms.Admin
             }
         }
 
+        private async void UpdateBtn_Click(object sender, EventArgs e)
+        {
+            if (selectedDriverId == null)
+            {
+                MessageBox.Show("Please select a driver to update.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var Name = tbName.Text;
+            var licenseNumber = tbLicenseNumber.Text;
+            var phoneNumber = tbPhone.Text;
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(licenseNumber) || string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            var success = await trasnportUnit.UpdateDriverAsync(selectedDriverId.Value, Name, licenseNumber, phoneNumber);
+            if (success)
+            {
+                MessageBox.Show("Driver updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData();
+                ClearFields();
+            }
+            else
+            {
+                MessageBox.Show("Failed to update driver.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            if (selectedDriverId == null)
+            {
+                MessageBox.Show("Please select a driver to delete.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var confirm = MessageBox.Show("Are you sure you want to delete this driver?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm == DialogResult.Yes)
+            {
+                var success = await trasnportUnit.DeleteDriverAsync(selectedDriverId.Value);
+                if (success)
+                {
+                    MessageBox.Show("Driver deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadData();
+                    ClearFields();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to delete driver.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private void ClearFields()
         {
             tbPhone.Clear();
@@ -89,17 +146,25 @@ namespace Eshift.Forms.Admin
         {
             if (DtTable.SelectedRows.Count > 0)
             {
-                tbName.Text = DtTable.SelectedRows[0].Cells["Name"].Value.ToString();
-                tbLicenseNumber.Text = DtTable.SelectedRows[0].Cells["License Number"].Value.ToString();
-                tbPhone.Text = DtTable.SelectedRows[0].Cells["Phone"].Value.ToString();
+                var row = DtTable.SelectedRows[0];
+                selectedDriverId = Convert.ToInt32(row.Cells["DriverId"].Value);
+                tbName.Text = row.Cells["Name"].Value.ToString();
+                tbLicenseNumber.Text = row.Cells["License Number"].Value.ToString();
+                tbPhone.Text = row.Cells["Phone"].Value.ToString();
                 Add.Visible = false;
+                Update.Visible = true;
+                Delete.Visible = true;
+                Clear.Visible = true;
             }
         }
 
         private void Clear_Click(object sender, EventArgs e)
         {
             Add.Visible = true;
-            Clear.Visible = false;  
+            Update.Visible = false;
+            Delete.Visible = false;
+            Clear.Visible = false;
+            selectedDriverId = null;
             ClearFields();
         }
     }
