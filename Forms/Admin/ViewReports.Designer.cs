@@ -31,14 +31,14 @@
             panel1 = new Panel();
             label1 = new Label();
             panelFilter = new Panel();
-            CbReports = new ComboBox();
-            label2 = new Label();
-            dateTimePicker1 = new DateTimePicker();
-            dateTimePicker2 = new DateTimePicker();
-            label3 = new Label();
             btnFilter = new Button();
-            lblFromDate = new Label();
             lblToDate = new Label();
+            lblFromDate = new Label();
+            label3 = new Label();
+            dateTimePicker2 = new DateTimePicker();
+            dateTimePicker1 = new DateTimePicker();
+            label2 = new Label();
+            CbReports = new ComboBox();
             panel2 = new Panel();
             dgvReportData = new DataGridView();
             panel3 = new Panel();
@@ -60,7 +60,7 @@
             panel1.ForeColor = Color.Navy;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1120, 36);
+            panel1.Size = new Size(1104, 36);
             panel1.TabIndex = 1;
             // 
             // label1
@@ -70,7 +70,7 @@
             label1.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
             label1.ImageAlign = ContentAlignment.TopCenter;
-            label1.Location = new Point(501, 9);
+            label1.Location = new Point(493, 9);
             label1.Name = "label1";
             label1.Size = new Size(117, 19);
             label1.TabIndex = 1;
@@ -90,55 +90,8 @@
             panelFilter.Dock = DockStyle.Top;
             panelFilter.Location = new Point(0, 36);
             panelFilter.Name = "panelFilter";
-            panelFilter.Size = new Size(1120, 120);
+            panelFilter.Size = new Size(1104, 120);
             panelFilter.TabIndex = 12;
-            // 
-            // CbReports
-            // 
-            CbReports.DropDownStyle = ComboBoxStyle.DropDownList;
-            CbReports.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            CbReports.FormattingEnabled = true;
-            CbReports.Items.AddRange(new object[] { "Jobs", "Loads", "Payments", "Customers", "Revenue", "Job Status History", "Products", "Transport Units", "Drivers", "Assistants", "Lorries", "Containers" });
-            CbReports.Location = new Point(20, 40);
-            CbReports.Name = "CbReports";
-            CbReports.Size = new Size(250, 29);
-            CbReports.TabIndex = 2;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(20, 15);
-            label2.Name = "label2";
-            label2.Size = new Size(146, 20);
-            label2.TabIndex = 3;
-            label2.Text = "Select report to view";
-            // 
-            // dateTimePicker1
-            // 
-            dateTimePicker1.CalendarFont = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dateTimePicker1.Location = new Point(320, 40);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
-            dateTimePicker1.TabIndex = 4;
-            // 
-            // dateTimePicker2
-            // 
-            dateTimePicker2.CalendarFont = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dateTimePicker2.Location = new Point(540, 40);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(200, 23);
-            dateTimePicker2.TabIndex = 5;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(320, 15);
-            label3.Name = "label3";
-            label3.Size = new Size(131, 20);
-            label3.TabIndex = 6;
-            label3.Text = "Select Date Range";
             // 
             // btnFilter
             // 
@@ -153,16 +106,6 @@
             btnFilter.Text = "Filter";
             btnFilter.UseVisualStyleBackColor = false;
             // 
-            // lblFromDate
-            // 
-            lblFromDate.AutoSize = true;
-            lblFromDate.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblFromDate.Location = new Point(320, 70);
-            lblFromDate.Name = "lblFromDate";
-            lblFromDate.Size = new Size(38, 15);
-            lblFromDate.TabIndex = 9;
-            lblFromDate.Text = "From:";
-            // 
             // lblToDate
             // 
             lblToDate.AutoSize = true;
@@ -173,13 +116,70 @@
             lblToDate.TabIndex = 10;
             lblToDate.Text = "To:";
             // 
+            // lblFromDate
+            // 
+            lblFromDate.AutoSize = true;
+            lblFromDate.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblFromDate.Location = new Point(320, 70);
+            lblFromDate.Name = "lblFromDate";
+            lblFromDate.Size = new Size(38, 15);
+            lblFromDate.TabIndex = 9;
+            lblFromDate.Text = "From:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Location = new Point(320, 15);
+            label3.Name = "label3";
+            label3.Size = new Size(131, 20);
+            label3.TabIndex = 6;
+            label3.Text = "Select Date Range";
+            // 
+            // dateTimePicker2
+            // 
+            dateTimePicker2.CalendarFont = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dateTimePicker2.Location = new Point(540, 40);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(200, 23);
+            dateTimePicker2.TabIndex = 5;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.CalendarFont = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dateTimePicker1.Location = new Point(320, 40);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 4;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(20, 15);
+            label2.Name = "label2";
+            label2.Size = new Size(146, 20);
+            label2.TabIndex = 3;
+            label2.Text = "Select report to view";
+            // 
+            // CbReports
+            // 
+            CbReports.DropDownStyle = ComboBoxStyle.DropDownList;
+            CbReports.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            CbReports.FormattingEnabled = true;
+            CbReports.Items.AddRange(new object[] { "Jobs", "Loads", "Payments", "Customers", "Revenue", "Products", "Transport Units", "Drivers", "Assistants", "Lorries", "Containers" });
+            CbReports.Location = new Point(20, 40);
+            CbReports.Name = "CbReports";
+            CbReports.Size = new Size(250, 29);
+            CbReports.TabIndex = 2;
+            // 
             // panel2
             // 
             panel2.Controls.Add(dgvReportData);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 156);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1120, 401);
+            panel2.Size = new Size(1104, 542);
             panel2.TabIndex = 7;
             // 
             // dgvReportData
@@ -197,7 +197,7 @@
             dgvReportData.ReadOnly = true;
             dgvReportData.RowHeadersVisible = false;
             dgvReportData.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvReportData.Size = new Size(1120, 401);
+            dgvReportData.Size = new Size(1104, 542);
             dgvReportData.TabIndex = 0;
             // 
             // panel3
@@ -206,9 +206,9 @@
             panel3.Controls.Add(btnPrint);
             panel3.Controls.Add(btnExport);
             panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(0, 557);
+            panel3.Location = new Point(0, 638);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1120, 60);
+            panel3.Size = new Size(1104, 60);
             panel3.TabIndex = 11;
             // 
             // btnRefresh
@@ -254,13 +254,15 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            MinimumSize = new Size(1120, 737);
+            ClientSize = new Size(1104, 698);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panelFilter);
             Controls.Add(panel1);
+            MinimumSize = new Size(1120, 737);
             Name = "ViewReports";
             Text = "ViewReports";
+            Load += ViewReports_Load_1;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panelFilter.ResumeLayout(false);

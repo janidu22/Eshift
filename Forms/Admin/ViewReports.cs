@@ -22,6 +22,8 @@ namespace Eshift.Forms.Admin
         public ViewReports()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Size = new Size(1280, 800); // Larger width and height
             InitializeForm();
             this.Load += ViewReports_Load;
         }
@@ -41,10 +43,10 @@ namespace Eshift.Forms.Admin
             CbReports.Visible = true;
             dateTimePicker1.Visible = true;
             dateTimePicker2.Visible = true;
-            
+
             // Set form title
             this.Text = "View Reports - Eshift";
-            
+
             // Load initial data if a report type is selected
             if (CbReports.SelectedItem != null)
             {
@@ -71,7 +73,7 @@ namespace Eshift.Forms.Admin
 
             // Configure DataGridView
             ConfigureDataGridView();
-            
+
             // Ensure all panels and controls are visible
             panel1.Visible = true;
             panelFilter.Visible = true;
@@ -98,7 +100,7 @@ namespace Eshift.Forms.Admin
             dgvReportData.RowHeadersVisible = false;
             dgvReportData.BackgroundColor = Color.White;
             dgvReportData.Font = new Font("JetBrains Mono", 9F);
-            
+
             // Set header style
             dgvReportData.ColumnHeadersDefaultCellStyle.BackColor = Color.MidnightBlue;
             dgvReportData.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -134,8 +136,14 @@ namespace Eshift.Forms.Admin
                 }
 
                 string selectedReport = CbReports.SelectedItem.ToString();
-                DateTime? fromDate = dateTimePicker1.Value;
-                DateTime? toDate = dateTimePicker2.Value;
+                DateTime? fromDate = dateTimePicker1.Value.Date;
+                DateTime? toDate = dateTimePicker2.Value.Date;
+
+                // For Jobs, Loads, Revenue: make end date exclusive by adding one day
+                if (selectedReport == "Jobs" || selectedReport == "Loads" || selectedReport == "Revenue")
+                {
+                    toDate = toDate.Value.AddDays(1);
+                }
 
                 // Debug: Show the dates being used
                 Console.WriteLine($"Filtering {selectedReport} from {fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd}");
@@ -151,13 +159,13 @@ namespace Eshift.Forms.Admin
                 dgvReportData.DataSource = currentReportData;
 
                 // Update form title with report info
-                string dateRange = $" ({fromDate:yyyy-MM-dd} to {toDate:yyyy-MM-dd})";
+                string dateRange = $" ({fromDate:yyyy-MM-dd} to {toDate.Value.AddDays(-1):yyyy-MM-dd})";
                 this.Text = $"View Reports - {selectedReport}{dateRange}";
 
                 // Show row count in status bar or title instead of message box
                 int rowCount = currentReportData?.Rows.Count ?? 0;
                 this.Text = $"View Reports - {selectedReport}{dateRange} ({rowCount} records)";
-                
+
                 // Debug: Show the result count
                 Console.WriteLine($"Found {rowCount} records for {selectedReport}");
             }
@@ -176,7 +184,6 @@ namespace Eshift.Forms.Admin
                 "Payments" => await jobRepository.GetPaymentsReportAsync(fromDate, toDate),
                 "Customers" => await jobRepository.GetCustomersReportAsync(fromDate, toDate),
                 "Revenue" => await jobRepository.GetRevenueReportAsync(fromDate, toDate),
-                "Job Status History" => await jobRepository.GetJobStatusHistoryReportAsync(fromDate, toDate),
                 "Products" => await jobRepository.GetProductsReportAsync(fromDate, toDate),
                 "Transport Units" => await jobRepository.GetTransportUnitsReportAsync(fromDate, toDate),
                 "Drivers" => await jobRepository.GetDriversReportAsync(fromDate, toDate),
@@ -221,17 +228,17 @@ namespace Eshift.Forms.Admin
         {
             StringBuilder csv = new StringBuilder();
 
-            // Add headers
+     
             var headers = dataTable.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
             csv.AppendLine(string.Join(",", headers));
 
-            // Add data rows
+          
             foreach (DataRow row in dataTable.Rows)
             {
-                var fields = row.ItemArray.Select(field => 
+                var fields = row.ItemArray.Select(field =>
                 {
                     string value = field?.ToString() ?? "";
-                    // Escape commas and quotes
+                 
                     if (value.Contains(",") || value.Contains("\"") || value.Contains("\n"))
                     {
                         value = value.Replace("\"", "\"\"");
@@ -258,9 +265,9 @@ namespace Eshift.Forms.Admin
                 // Create a print preview
                 PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
                 PrintDocument printDocument = new System.Drawing.Printing.PrintDocument();
-                
+
                 printDocument.PrintPage += (s, e) => PrintPage(s, e, currentReportData, CbReports.SelectedItem?.ToString());
-                
+
                 printPreviewDialog.Document = printDocument;
                 printPreviewDialog.ShowDialog();
             }
@@ -272,48 +279,74 @@ namespace Eshift.Forms.Admin
 
         private void PrintPage(object sender, PrintPageEventArgs e, DataTable dataTable, string reportTitle)
         {
-            Graphics graphics = e.Graphics;
-            Font titleFont = new Font("Arial", 16, FontStyle.Bold);
-            Font headerFont = new Font("Arial", 10, FontStyle.Bold);
-            Font dataFont = new Font("Arial", 9);
-            Brush brush = Brushes.Black;
+            int leftMargin = e.MarginBounds.Left;
+            int topMargin = e.MarginBounds.Top;
+            int y = topMargin;
+            int cellPadding = 6;
+            int rowHeight = 45; 
+            int headerHeight = 50; 
+            int colCount = dataTable.Columns.Count;
+            int[] colWidths = new int[colCount];
+            int totalWidth = e.MarginBounds.Width;
+            int defaultColWidth = totalWidth / colCount;
 
-            float yPos = 10;
-            float leftMargin = e.MarginBounds.Left;
-            float topMargin = e.MarginBounds.Top;
+           
+            for (int i = 0; i < colCount; i++)
+                colWidths[i] = defaultColWidth;
 
-            // Print title
-            string title = $"Report: {reportTitle} - Generated on {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-            graphics.DrawString(title, titleFont, brush, leftMargin, yPos);
-            yPos += 30;
-
-            // Print headers
-            float xPos = leftMargin;
-            foreach (DataColumn column in dataTable.Columns)
+           
+            using (Font titleFont = new Font("Arial", 16, FontStyle.Bold))
             {
-                graphics.DrawString(column.ColumnName, headerFont, brush, xPos, yPos);
-                xPos += 100; // Adjust column width as needed
+                e.Graphics.DrawString($"Report: {reportTitle} - Generated on {DateTime.Now:yyyy-MM-dd HH:mm:ss}", titleFont, Brushes.Black, leftMargin, y);
+                y += 40;
             }
-            yPos += 20;
 
-            // Print data rows
-            foreach (DataRow row in dataTable.Rows)
+           
+            using (Brush headerBack = new SolidBrush(Color.LightGray))
+            using (Pen borderPen = new Pen(Color.Black, 1))
+            using (Font headerFont = new Font("Arial", 10, FontStyle.Bold))
             {
-                if (yPos > e.MarginBounds.Bottom - 50)
+                int x = leftMargin;
+                for (int i = 0; i < colCount; i++)
                 {
-                    e.HasMorePages = true;
-                    return;
+                    e.Graphics.FillRectangle(headerBack, x, y, colWidths[i], headerHeight);
+                    e.Graphics.DrawRectangle(borderPen, x, y, colWidths[i], headerHeight);
+                    e.Graphics.DrawString(dataTable.Columns[i].ColumnName, headerFont, Brushes.Black, new RectangleF(x + cellPadding, y + 8, colWidths[i] - 2 * cellPadding, headerHeight - 8));
+                    x += colWidths[i];
                 }
-
-                xPos = leftMargin;
-                foreach (DataColumn column in dataTable.Columns)
-                {
-                    string value = row[column]?.ToString() ?? "";
-                    graphics.DrawString(value, dataFont, brush, xPos, yPos);
-                    xPos += 100; // Adjust column width as needed
-                }
-                yPos += 15;
+                y += headerHeight;
             }
+
+          
+            using (Font cellFont = new Font("Arial", 9))
+            using (Pen borderPen = new Pen(Color.LightGray, 1))
+            {
+                for (int row = 0; row < dataTable.Rows.Count; row++)
+                {
+                    int x = leftMargin;
+                    for (int col = 0; col < colCount; col++)
+                    {
+                        string text = dataTable.Rows[row][col]?.ToString() ?? "";
+                        Rectangle cellRect = new Rectangle(x, y, colWidths[col], rowHeight);
+                        e.Graphics.DrawRectangle(borderPen, cellRect);
+                      
+                        e.Graphics.DrawString(text, cellFont, Brushes.Black, new RectangleF(x + cellPadding, y + 5, colWidths[col] - 2 * cellPadding, rowHeight - 8));
+                        x += colWidths[col];
+                    }
+                    y += rowHeight;
+                
+                    if (y + rowHeight > e.MarginBounds.Bottom)
+                    {
+                        e.HasMorePages = true;
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void ViewReports_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

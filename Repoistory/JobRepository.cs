@@ -55,8 +55,10 @@ namespace Eshift.Repoistory
 
                         string paymentStatus = paymentMethod == "Card" ? "Paid" : "Pending";
                         string paymentQuery = @"
-                    INSERT INTO Payments (JobId, CustomerId, Amount, Method, Status, CreatedAt)
-                    VALUES (@JobId, @CustomerId, @Amount, @Method, @Status, GETDATE());";
+                    INSERT INTO Payments (JobId, CustomerId, Amount, Method, Status, CreatedAt, PaidAt)
+                    VALUES (@JobId, @CustomerId, @Amount, @Method, @Status, GETDATE(),
+                        CASE WHEN @Status = 'Paid' THEN GETDATE() ELSE NULL END
+                    );";
 
                         using (var paymentCmd = new SqlCommand(paymentQuery, connection, transaction))
                         {
@@ -441,12 +443,13 @@ namespace Eshift.Repoistory
             
             string query = @"
                 SELECT 
-                    c.CustomerId, c.Name, c.Email, c.Phone, c.Address, COUNT(j.JobId) AS TotalJobs
+                    c.CustomerId, c.Name, c.Email, c.Phone, c.Address, u.CreatedAt, COUNT(j.JobId) AS TotalJobs
                 FROM Customers c
+                INNER JOIN Users u ON c.UserId = u.UserId
                 LEFT JOIN Jobs j ON c.CustomerId = j.CustomerId
-                    AND (@FromDate IS NULL OR j.CreatedAt >= @FromDate)
-                    AND (@ToDate IS NULL OR j.CreatedAt <= @ToDate)
-                GROUP BY c.CustomerId, c.Name, c.Email, c.Phone, c.Address
+                WHERE (@FromDate IS NULL OR u.CreatedAt >= @FromDate)
+                  AND (@ToDate IS NULL OR u.CreatedAt < @ToDate)
+                GROUP BY c.CustomerId, c.Name, c.Email, c.Phone, c.Address, u.CreatedAt
                 ORDER BY c.Name";
 
             using var cmd = new SqlCommand(query, connection);
@@ -496,8 +499,10 @@ namespace Eshift.Repoistory
                     h.HistoryId, h.JobId, h.Status, a.Name AS ChangedBy, h.ChangedAt, h.Notes
                 FROM JobStatusHistory h
                 LEFT JOIN Admins a ON h.ChangedByAdminId = a.AdminId
-                WHERE (@FromDate IS NULL OR h.ChangedAt >= @FromDate)
-                  AND (@ToDate IS NULL OR h.ChangedAt <= @ToDate)
+                INNER JOIN Jobs j ON h.JobId = j.JobId
+                WHERE j.Status = 'Completed'
+                  AND (@FromDate IS NULL OR h.ChangedAt >= @FromDate)
+                  AND (@ToDate IS NULL OR h.ChangedAt < @ToDate)
                 ORDER BY h.ChangedAt DESC";
 
             using var cmd = new SqlCommand(query, connection);

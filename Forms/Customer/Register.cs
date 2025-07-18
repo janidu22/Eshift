@@ -42,9 +42,16 @@ namespace Eshift.Forms.Customer
                 {
                     MessageBox.Show("Registration successful! You can now login.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearForm();
-                    Login login = new Login();
-                    login.Show();
-                    this.Hide();
+                    
+                    if(this.Owner is MainForm mainForm)
+                    {
+                        mainForm.LoadCustomerForm();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Parent form is not set correctly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else
                 {
