@@ -28,323 +28,459 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ViewJobs = new Button();
-            lblEmail = new Label();
-            lblPhone = new Label();
-            AdminManagement = new Button();
-            ManageLoads = new Button();
-            lblAddress = new Label();
-            lblName = new Label();
-            panel2 = new Panel();
-            lblAdminEmail = new Label();
-            lblAdminUsername = new Label();
+            // Header Panel
+            panelHeader = new Panel();
+            lblWelcome = new Label();
+            lblCurrentTime = new Label();
+            btnMinimize = new Button();
+            btnMaximize = new Button();
+            btnClose = new Button();
+            lblAppTitle = new Label();
+            
+            // Sidebar Panel
+            panelSidebar = new Panel();
+            panelProfile = new Panel();
+            picBoxProfile = new PictureBox();
             lblAdminName = new Label();
-            label1 = new Label();
-            button11 = new Button();
-            button10 = new Button();
-            button9 = new Button();
-            ManageProducts = new Button();
-            ViewInvoice = new Button();
+            lblAdminUsername = new Label();
+            lblAdminEmail = new Label();
+            
+            // Navigation Buttons
+            ViewJobs = new Button();
+            AdminManagement = new Button();
             manageCustomers = new Button();
-            panel1 = new Panel();
+            ViewInvoice = new Button();
+            button9 = new Button();
+            ManageLoads = new Button();
+            button11 = new Button();
+            ManageProducts = new Button();
+            button10 = new Button();
+            
+            // Main Content Panel
             PanelMain = new Panel();
-            panel2.SuspendLayout();
-            panel1.SuspendLayout();
+            
+            // Separator lines
+            separatorLine1 = new Panel();
+            separatorLine2 = new Panel();
+
+            panelHeader.SuspendLayout();
+            panelSidebar.SuspendLayout();
+            panelProfile.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picBoxProfile).BeginInit();
             SuspendLayout();
+
             // 
-            // ViewJobs
+            // panelHeader
             // 
-            ViewJobs.BackColor = Color.FromArgb(64, 64, 64);
-            ViewJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            ViewJobs.ForeColor = Color.White;
-            ViewJobs.Location = new Point(1, 163);
-            ViewJobs.Name = "ViewJobs";
-            ViewJobs.Size = new Size(256, 60);
-            ViewJobs.TabIndex = 0;
-            ViewJobs.Text = "Manage & View Jobs";
-            ViewJobs.TextAlign = ContentAlignment.MiddleLeft;
-            ViewJobs.UseVisualStyleBackColor = false;
-            ViewJobs.Click += ViewJobs_Click;
+            panelHeader.BackColor = Color.FromArgb(25, 42, 86); // Midnight Blue
+            panelHeader.Controls.Add(lblWelcome);
+            panelHeader.Controls.Add(lblCurrentTime);
+            panelHeader.Controls.Add(btnMinimize);
+            panelHeader.Controls.Add(btnMaximize);
+            panelHeader.Controls.Add(btnClose);
+            panelHeader.Controls.Add(lblAppTitle);
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Height = 70;
+            panelHeader.Name = "panelHeader";
+
             // 
-            // lblEmail
+            // lblAppTitle
             // 
-            lblEmail.AutoSize = true;
-            lblEmail.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEmail.ForeColor = Color.Black;
-            lblEmail.Location = new Point(19, 89);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(0, 25);
-            lblEmail.TabIndex = 4;
+            lblAppTitle.AutoSize = true;
+            lblAppTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblAppTitle.ForeColor = Color.White;
+            lblAppTitle.Location = new Point(20, 20);
+            lblAppTitle.Name = "lblAppTitle";
+            lblAppTitle.Text = "eShift Admin Dashboard";
+
             // 
-            // lblPhone
+            // lblWelcome
             // 
-            lblPhone.AutoSize = true;
-            lblPhone.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPhone.ForeColor = Color.Black;
-            lblPhone.Location = new Point(19, 114);
-            lblPhone.Name = "lblPhone";
-            lblPhone.Size = new Size(0, 25);
-            lblPhone.TabIndex = 3;
+            lblWelcome.AutoSize = true;
+            lblWelcome.Font = new Font("Segoe UI", 12F);
+            lblWelcome.ForeColor = Color.FromArgb(46, 204, 113); // Green
+            lblWelcome.Location = new Point(600, 15);
+            lblWelcome.Name = "lblWelcome";
+            lblWelcome.Text = "Welcome back, Admin!";
+
             // 
-            // AdminManagement
+            // lblCurrentTime
             // 
-            AdminManagement.BackColor = Color.FromArgb(64, 64, 64);
-            AdminManagement.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            AdminManagement.ForeColor = Color.White;
-            AdminManagement.Location = new Point(1, 229);
-            AdminManagement.Name = "AdminManagement";
-            AdminManagement.Size = new Size(255, 60);
-            AdminManagement.TabIndex = 5;
-            AdminManagement.Text = "Manage Admins";
-            AdminManagement.TextAlign = ContentAlignment.MiddleLeft;
-            AdminManagement.UseVisualStyleBackColor = false;
-            AdminManagement.Click += AdminManagement_Click;
+            lblCurrentTime.AutoSize = true;
+            lblCurrentTime.Font = new Font("Segoe UI", 10F);
+            lblCurrentTime.ForeColor = Color.White;
+            lblCurrentTime.Location = new Point(600, 38);
+            lblCurrentTime.Name = "lblCurrentTime";
+            lblCurrentTime.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
+
+            // Window Control Buttons
             // 
-            // ManageLoads
+            // btnClose
             // 
-            ManageLoads.BackColor = Color.FromArgb(64, 64, 64);
-            ManageLoads.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            ManageLoads.ForeColor = Color.White;
-            ManageLoads.Location = new Point(0, 490);
-            ManageLoads.Name = "ManageLoads";
-            ManageLoads.Size = new Size(255, 60);
-            ManageLoads.TabIndex = 2;
-            ManageLoads.Text = "Manage Loads";
-            ManageLoads.TextAlign = ContentAlignment.MiddleLeft;
-            ManageLoads.UseVisualStyleBackColor = false;
-            ManageLoads.Click += ManageLoads_Click;
+            btnClose.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClose.BackColor = Color.FromArgb(231, 76, 60);
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnClose.ForeColor = Color.White;
+            btnClose.Location = new Point(1320, 15);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(40, 30);
+            btnClose.Text = "✕";
+            btnClose.UseVisualStyleBackColor = false;
+
             // 
-            // lblAddress
+            // btnMaximize
             // 
-            lblAddress.AutoSize = true;
-            lblAddress.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblAddress.ForeColor = Color.Black;
-            lblAddress.Location = new Point(19, 139);
-            lblAddress.Name = "lblAddress";
-            lblAddress.Size = new Size(0, 25);
-            lblAddress.TabIndex = 2;
+            btnMaximize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnMaximize.BackColor = Color.FromArgb(52, 152, 219);
+            btnMaximize.FlatStyle = FlatStyle.Flat;
+            btnMaximize.FlatAppearance.BorderSize = 0;
+            btnMaximize.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnMaximize.ForeColor = Color.White;
+            btnMaximize.Location = new Point(1275, 15);
+            btnMaximize.Name = "btnMaximize";
+            btnMaximize.Size = new Size(40, 30);
+            btnMaximize.Text = "□";
+            btnMaximize.UseVisualStyleBackColor = false;
+
             // 
-            // lblName
+            // btnMinimize
             // 
-            lblName.AutoSize = true;
-            lblName.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblName.ForeColor = Color.Black;
-            lblName.Location = new Point(19, 64);
-            lblName.Name = "lblName";
-            lblName.Size = new Size(0, 25);
-            lblName.TabIndex = 1;
+            btnMinimize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnMinimize.BackColor = Color.FromArgb(241, 196, 15);
+            btnMinimize.FlatStyle = FlatStyle.Flat;
+            btnMinimize.FlatAppearance.BorderSize = 0;
+            btnMinimize.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnMinimize.ForeColor = Color.White;
+            btnMinimize.Location = new Point(1230, 15);
+            btnMinimize.Name = "btnMinimize";
+            btnMinimize.Size = new Size(40, 30);
+            btnMinimize.Text = "−";
+            btnMinimize.UseVisualStyleBackColor = false;
+
             // 
-            // panel2
+            // panelSidebar
             // 
-            panel2.Controls.Add(ManageLoads);
-            panel2.Controls.Add(lblAdminEmail);
-            panel2.Controls.Add(lblAdminUsername);
-            panel2.Controls.Add(lblAdminName);
-            panel2.Controls.Add(label1);
-            panel2.Controls.Add(button11);
-            panel2.Controls.Add(button10);
-            panel2.Controls.Add(button9);
-            panel2.Controls.Add(ManageProducts);
-            panel2.Controls.Add(ViewInvoice);
-            panel2.Controls.Add(AdminManagement);
-            panel2.Controls.Add(manageCustomers);
-            panel2.Controls.Add(ViewJobs);
-            panel2.Location = new Point(3, 11);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(261, 760);
-            panel2.TabIndex = 0;
-            panel2.Paint += panel2_Paint;
+            panelSidebar.BackColor = Color.FromArgb(44, 62, 80); // Dark Blue-Gray
+            panelSidebar.Controls.Add(panelProfile);
+            panelSidebar.Controls.Add(separatorLine1);
+            panelSidebar.Controls.Add(ViewJobs);
+            panelSidebar.Controls.Add(AdminManagement);
+            panelSidebar.Controls.Add(manageCustomers);
+            panelSidebar.Controls.Add(ViewInvoice);
+            panelSidebar.Controls.Add(button9);
+            panelSidebar.Controls.Add(ManageLoads);
+            panelSidebar.Controls.Add(button11);
+            panelSidebar.Controls.Add(separatorLine2);
+            panelSidebar.Controls.Add(ManageProducts);
+            panelSidebar.Controls.Add(button10);
+            panelSidebar.Dock = DockStyle.Left;
+            panelSidebar.Width = 280;
+            panelSidebar.Name = "panelSidebar";
+
             // 
-            // lblAdminEmail
+            // panelProfile
             // 
-            lblAdminEmail.AutoSize = true;
-            lblAdminEmail.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
-            lblAdminEmail.ForeColor = Color.Black;
-            lblAdminEmail.Location = new Point(22, 128);
-            lblAdminEmail.Name = "lblAdminEmail";
-            lblAdminEmail.Size = new Size(210, 25);
-            lblAdminEmail.TabIndex = 14;
-            lblAdminEmail.Text = "Welcome Back Admin";
+            panelProfile.BackColor = Color.FromArgb(52, 73, 94);
+            panelProfile.Controls.Add(picBoxProfile);
+            panelProfile.Controls.Add(lblAdminName);
+            panelProfile.Controls.Add(lblAdminUsername);
+            panelProfile.Controls.Add(lblAdminEmail);
+            panelProfile.Dock = DockStyle.Top;
+            panelProfile.Height = 120;
+            panelProfile.Name = "panelProfile";
+            panelProfile.Padding = new Padding(20, 10, 20, 10);
+
             // 
-            // lblAdminUsername
+            // picBoxProfile
             // 
-            lblAdminUsername.AutoSize = true;
-            lblAdminUsername.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
-            lblAdminUsername.ForeColor = Color.Black;
-            lblAdminUsername.Location = new Point(22, 103);
-            lblAdminUsername.Name = "lblAdminUsername";
-            lblAdminUsername.Size = new Size(210, 25);
-            lblAdminUsername.TabIndex = 13;
-            lblAdminUsername.Text = "Welcome Back Admin";
+            picBoxProfile.BackColor = Color.FromArgb(46, 204, 113);
+            picBoxProfile.Location = new Point(20, 15);
+            picBoxProfile.Name = "picBoxProfile";
+            picBoxProfile.Size = new Size(60, 60);
+            picBoxProfile.SizeMode = PictureBoxSizeMode.CenterImage;
+
             // 
             // lblAdminName
             // 
             lblAdminName.AutoSize = true;
-            lblAdminName.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
-            lblAdminName.ForeColor = Color.Navy;
-            lblAdminName.Location = new Point(22, 53);
+            lblAdminName.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblAdminName.ForeColor = Color.White;
+            lblAdminName.Location = new Point(90, 15);
             lblAdminName.Name = "lblAdminName";
-            lblAdminName.Size = new Size(210, 25);
-            lblAdminName.TabIndex = 12;
-            lblAdminName.Text = "Welcome Back Admin";
+            lblAdminName.Text = "Admin Name";
+
             // 
-            // label1
+            // lblAdminUsername
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold);
-            label1.ForeColor = Color.Black;
-            label1.Location = new Point(22, 28);
-            label1.Name = "label1";
-            label1.Size = new Size(210, 25);
-            label1.TabIndex = 11;
-            label1.Text = "Welcome Back Admin";
+            lblAdminUsername.AutoSize = true;
+            lblAdminUsername.Font = new Font("Segoe UI", 10F);
+            lblAdminUsername.ForeColor = Color.FromArgb(189, 195, 199);
+            lblAdminUsername.Location = new Point(90, 40);
+            lblAdminUsername.Name = "lblAdminUsername";
+            lblAdminUsername.Text = "@username";
+
             // 
-            // button11
+            // lblAdminEmail
             // 
-            button11.BackColor = Color.FromArgb(64, 64, 64);
-            button11.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button11.ForeColor = Color.White;
-            button11.Location = new Point(1, 556);
-            button11.Name = "button11";
-            button11.Size = new Size(255, 60);
-            button11.TabIndex = 10;
-            button11.Text = "View Reports";
-            button11.TextAlign = ContentAlignment.MiddleLeft;
-            button11.UseVisualStyleBackColor = false;
-            button11.Click += button11_Click;
+            lblAdminEmail.AutoSize = true;
+            lblAdminEmail.Font = new Font("Segoe UI", 9F);
+            lblAdminEmail.ForeColor = Color.FromArgb(189, 195, 199);
+            lblAdminEmail.Location = new Point(90, 58);
+            lblAdminEmail.Name = "lblAdminEmail";
+            lblAdminEmail.Text = "admin@eshift.com";
+
             // 
-            // button10
+            // separatorLine1
             // 
-            button10.BackColor = Color.FromArgb(64, 64, 64);
-            button10.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button10.ForeColor = Color.White;
-            button10.Location = new Point(0, 688);
-            button10.Name = "button10";
-            button10.Size = new Size(255, 60);
-            button10.TabIndex = 9;
-            button10.Text = "Logout";
-            button10.TextAlign = ContentAlignment.MiddleLeft;
-            button10.UseVisualStyleBackColor = false;
-            button10.Click += button10_Click;
+            separatorLine1.BackColor = Color.FromArgb(127, 140, 141);
+            separatorLine1.Dock = DockStyle.Top;
+            separatorLine1.Height = 1;
+            separatorLine1.Name = "separatorLine1";
+
+            // Modern Navigation Buttons
             // 
-            // button9
+            // ViewJobs
             // 
-            button9.BackColor = Color.FromArgb(64, 64, 64);
-            button9.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            button9.ForeColor = Color.White;
-            button9.Location = new Point(1, 424);
-            button9.Name = "button9";
-            button9.Size = new Size(255, 60);
-            button9.TabIndex = 8;
-            button9.Text = "Manage Transport Unit";
-            button9.TextAlign = ContentAlignment.MiddleLeft;
-            button9.UseVisualStyleBackColor = false;
-            button9.Click += button9_Click;
+            ViewJobs.BackColor = Color.Transparent;
+            ViewJobs.Dock = DockStyle.Top;
+            ViewJobs.FlatStyle = FlatStyle.Flat;
+            ViewJobs.FlatAppearance.BorderSize = 0;
+            ViewJobs.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            ViewJobs.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            ViewJobs.ForeColor = Color.White;
+            ViewJobs.Height = 55;
+            ViewJobs.ImageAlign = ContentAlignment.MiddleLeft;
+            ViewJobs.Name = "ViewJobs";
+            ViewJobs.Padding = new Padding(25, 0, 0, 0);
+            ViewJobs.Text = "📋  Manage & View Jobs";
+            ViewJobs.TextAlign = ContentAlignment.MiddleLeft;
+            ViewJobs.UseVisualStyleBackColor = false;
+            ViewJobs.Click += ViewJobs_Click;
+
             // 
-            // ManageProducts
+            // AdminManagement
             // 
-            ManageProducts.BackColor = Color.FromArgb(64, 64, 64);
-            ManageProducts.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            ManageProducts.ForeColor = Color.White;
-            ManageProducts.Location = new Point(0, 622);
-            ManageProducts.Name = "ManageProducts";
-            ManageProducts.Size = new Size(255, 60);
-            ManageProducts.TabIndex = 7;
-            ManageProducts.Text = "Profile Management";
-            ManageProducts.TextAlign = ContentAlignment.MiddleLeft;
-            ManageProducts.UseVisualStyleBackColor = false;
-            ManageProducts.Click += ManageProducts_Click;
-            // 
-            // ViewInvoice
-            // 
-            ViewInvoice.BackColor = Color.FromArgb(64, 64, 64);
-            ViewInvoice.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            ViewInvoice.ForeColor = Color.White;
-            ViewInvoice.Location = new Point(0, 358);
-            ViewInvoice.Name = "ViewInvoice";
-            ViewInvoice.Size = new Size(256, 60);
-            ViewInvoice.TabIndex = 6;
-            ViewInvoice.Text = "Manage Products";
-            ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
-            ViewInvoice.UseVisualStyleBackColor = false;
-            ViewInvoice.Click += ViewInvoice_Click;
+            AdminManagement.BackColor = Color.Transparent;
+            AdminManagement.Dock = DockStyle.Top;
+            AdminManagement.FlatStyle = FlatStyle.Flat;
+            AdminManagement.FlatAppearance.BorderSize = 0;
+            AdminManagement.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            AdminManagement.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            AdminManagement.ForeColor = Color.White;
+            AdminManagement.Height = 55;
+            AdminManagement.Name = "AdminManagement";
+            AdminManagement.Padding = new Padding(25, 0, 0, 0);
+            AdminManagement.Text = "👥  Manage Admins";
+            AdminManagement.TextAlign = ContentAlignment.MiddleLeft;
+            AdminManagement.UseVisualStyleBackColor = false;
+            AdminManagement.Click += AdminManagement_Click;
+
             // 
             // manageCustomers
             // 
-            manageCustomers.BackColor = Color.FromArgb(64, 64, 64);
-            manageCustomers.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            manageCustomers.BackColor = Color.Transparent;
+            manageCustomers.Dock = DockStyle.Top;
+            manageCustomers.FlatStyle = FlatStyle.Flat;
+            manageCustomers.FlatAppearance.BorderSize = 0;
+            manageCustomers.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            manageCustomers.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
             manageCustomers.ForeColor = Color.White;
-            manageCustomers.Location = new Point(1, 292);
+            manageCustomers.Height = 55;
             manageCustomers.Name = "manageCustomers";
-            manageCustomers.Size = new Size(256, 60);
-            manageCustomers.TabIndex = 1;
-            manageCustomers.Text = "Manage Customers";
+            manageCustomers.Padding = new Padding(25, 0, 0, 0);
+            manageCustomers.Text = "👤  Manage Customers";
             manageCustomers.TextAlign = ContentAlignment.MiddleLeft;
             manageCustomers.UseVisualStyleBackColor = false;
             manageCustomers.Click += manageCustomers_Click;
+
             // 
-            // panel1
+            // ViewInvoice
             // 
-            panel1.BackColor = Color.Silver;
-            panel1.Controls.Add(lblEmail);
-            panel1.Controls.Add(lblPhone);
-            panel1.Controls.Add(lblAddress);
-            panel1.Controls.Add(lblName);
-            panel1.Controls.Add(panel2);
-            panel1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            panel1.ForeColor = Color.White;
-            panel1.Location = new Point(0, -9);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(266, 785);
-            panel1.TabIndex = 1;
+            ViewInvoice.BackColor = Color.Transparent;
+            ViewInvoice.Dock = DockStyle.Top;
+            ViewInvoice.FlatStyle = FlatStyle.Flat;
+            ViewInvoice.FlatAppearance.BorderSize = 0;
+            ViewInvoice.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            ViewInvoice.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            ViewInvoice.ForeColor = Color.White;
+            ViewInvoice.Height = 55;
+            ViewInvoice.Name = "ViewInvoice";
+            ViewInvoice.Padding = new Padding(25, 0, 0, 0);
+            ViewInvoice.Text = "📦  Manage Products";
+            ViewInvoice.TextAlign = ContentAlignment.MiddleLeft;
+            ViewInvoice.UseVisualStyleBackColor = false;
+            ViewInvoice.Click += ViewInvoice_Click;
+
+            // 
+            // button9
+            // 
+            button9.BackColor = Color.Transparent;
+            button9.Dock = DockStyle.Top;
+            button9.FlatStyle = FlatStyle.Flat;
+            button9.FlatAppearance.BorderSize = 0;
+            button9.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            button9.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            button9.ForeColor = Color.White;
+            button9.Height = 55;
+            button9.Name = "button9";
+            button9.Padding = new Padding(25, 0, 0, 0);
+            button9.Text = "🚛  Manage Transport Unit";
+            button9.TextAlign = ContentAlignment.MiddleLeft;
+            button9.UseVisualStyleBackColor = false;
+            button9.Click += button9_Click;
+
+            // 
+            // ManageLoads
+            // 
+            ManageLoads.BackColor = Color.Transparent;
+            ManageLoads.Dock = DockStyle.Top;
+            ManageLoads.FlatStyle = FlatStyle.Flat;
+            ManageLoads.FlatAppearance.BorderSize = 0;
+            ManageLoads.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            ManageLoads.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            ManageLoads.ForeColor = Color.White;
+            ManageLoads.Height = 55;
+            ManageLoads.Name = "ManageLoads";
+            ManageLoads.Padding = new Padding(25, 0, 0, 0);
+            ManageLoads.Text = "📊  Manage Loads";
+            ManageLoads.TextAlign = ContentAlignment.MiddleLeft;
+            ManageLoads.UseVisualStyleBackColor = false;
+            ManageLoads.Click += ManageLoads_Click;
+
+            // 
+            // button11
+            // 
+            button11.BackColor = Color.Transparent;
+            button11.Dock = DockStyle.Top;
+            button11.FlatStyle = FlatStyle.Flat;
+            button11.FlatAppearance.BorderSize = 0;
+            button11.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            button11.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            button11.ForeColor = Color.White;
+            button11.Height = 55;
+            button11.Name = "button11";
+            button11.Padding = new Padding(25, 0, 0, 0);
+            button11.Text = "📈  View Reports";
+            button11.TextAlign = ContentAlignment.MiddleLeft;
+            button11.UseVisualStyleBackColor = false;
+            button11.Click += button11_Click;
+
+            // 
+            // separatorLine2
+            // 
+            separatorLine2.BackColor = Color.FromArgb(127, 140, 141);
+            separatorLine2.Dock = DockStyle.Top;
+            separatorLine2.Height = 1;
+            separatorLine2.Name = "separatorLine2";
+
+            // 
+            // ManageProducts
+            // 
+            ManageProducts.BackColor = Color.Transparent;
+            ManageProducts.Dock = DockStyle.Top;
+            ManageProducts.FlatStyle = FlatStyle.Flat;
+            ManageProducts.FlatAppearance.BorderSize = 0;
+            ManageProducts.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            ManageProducts.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            ManageProducts.ForeColor = Color.White;
+            ManageProducts.Height = 55;
+            ManageProducts.Name = "ManageProducts";
+            ManageProducts.Padding = new Padding(25, 0, 0, 0);
+            ManageProducts.Text = "⚙️  Profile Management";
+            ManageProducts.TextAlign = ContentAlignment.MiddleLeft;
+            ManageProducts.UseVisualStyleBackColor = false;
+            ManageProducts.Click += ManageProducts_Click;
+
+            // 
+            // button10
+            // 
+            button10.BackColor = Color.FromArgb(231, 76, 60);
+            button10.Dock = DockStyle.Bottom;
+            button10.FlatStyle = FlatStyle.Flat;
+            button10.FlatAppearance.BorderSize = 0;
+            button10.FlatAppearance.MouseOverBackColor = Color.FromArgb(192, 57, 43);
+            button10.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            button10.ForeColor = Color.White;
+            button10.Height = 60;
+            button10.Name = "button10";
+            button10.Padding = new Padding(25, 0, 0, 0);
+            button10.Text = "🚪  Logout";
+            button10.TextAlign = ContentAlignment.MiddleLeft;
+            button10.UseVisualStyleBackColor = false;
+            button10.Click += button10_Click;
+
             // 
             // PanelMain
             // 
-            PanelMain.Location = new Point(266, 2);
+            PanelMain.BackColor = Color.FromArgb(236, 240, 241);
+            PanelMain.Dock = DockStyle.Fill;
             PanelMain.Name = "PanelMain";
-            PanelMain.Size = new Size(1111, 760);
-            PanelMain.TabIndex = 2;
+            PanelMain.Padding = new Padding(20);
             PanelMain.Paint += PanelMain_Paint;
+
             // 
             // AdminMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1381, 767);
+            BackColor = Color.FromArgb(236, 240, 241);
+            ClientSize = new Size(1400, 800);
             Controls.Add(PanelMain);
-            Controls.Add(panel1);
+            Controls.Add(panelSidebar);
+            Controls.Add(panelHeader);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "AdminMain";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "AdminMain";
+            Text = "eShift Admin Dashboard";
+            WindowState = FormWindowState.Maximized;
             Load += AdminMain_Load;
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+
+            panelHeader.ResumeLayout(false);
+            panelHeader.PerformLayout();
+            panelSidebar.ResumeLayout(false);
+            panelProfile.ResumeLayout(false);
+            panelProfile.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picBoxProfile).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button ViewJobs;
-        private Label lblEmail;
-        private Label lblPhone;
-        private Button AdminManagement;
-        private Button ManageLoads;
-        private Label lblAddress;
-        private Label lblName;
-        private Panel panel2;
-        private Button button10;
-        private Button button9;
-        private Button ManageProducts;
-        private Button ViewInvoice;
-        private Button manageCustomers;
-        private Panel panel1;
-        private Button button11;
-        private Panel PanelMain;
-        private Label label1;
+        // Header Components
+        private Panel panelHeader;
+        private Label lblAppTitle;
+        private Label lblWelcome;
+        private Label lblCurrentTime;
+        private Button btnMinimize;
+        private Button btnMaximize;
+        private Button btnClose;
+
+        // Sidebar Components
+        private Panel panelSidebar;
+        private Panel panelProfile;
+        private PictureBox picBoxProfile;
         private Label lblAdminName;
-        private Label lblAdminEmail;
         private Label lblAdminUsername;
+        private Label lblAdminEmail;
+
+        // Navigation Buttons
+        private Button ViewJobs;
+        private Button AdminManagement;
+        private Button manageCustomers;
+        private Button ViewInvoice;
+        private Button button9;
+        private Button ManageLoads;
+        private Button button11;
+        private Button ManageProducts;
+        private Button button10;
+
+        // Main Content
+        private Panel PanelMain;
+
+        // Separators
+        private Panel separatorLine1;
+        private Panel separatorLine2;
     }
 }

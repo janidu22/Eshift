@@ -40,6 +40,15 @@ namespace Eshift.Forms.Customer
             DTRequestDate.MinDate = DateTime.Now;
             TbAmount.ReadOnly = true; // Make amount read-only
             TbWeight.TextChanged += TbWeight_TextChanged;
+            
+            // Ensure quantity has valid initial value
+            if (NuDQuentity.Value < NuDQuentity.Minimum)
+            {
+                NuDQuentity.Value = NuDQuentity.Minimum; // Set to minimum valid value (1)
+            }
+            
+            // Set default payment method
+            RbCash.Checked = true;
         }
 
         private void LoadCustomerId()
@@ -118,10 +127,12 @@ namespace Eshift.Forms.Customer
                 decimal amount = weight * ratePerKg;
                 TbAmount.Text = amount.ToString("N2");
             }
-            else
+            else if (string.IsNullOrWhiteSpace(TbWeight.Text))
             {
-                TbAmount.Text = "0.00";
+                // Clear amount when weight is empty
+                TbAmount.Text = "";
             }
+            // Don't set to 0.00 for invalid input to avoid validation errors
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -310,10 +321,9 @@ namespace Eshift.Forms.Customer
             tbDestination.Clear();
             TbWeight.Clear();
             TbAmount.Clear();
-            NuDQuentity.Value = 0;  
             TbNotes.Clear();
             CbProducts.SelectedIndex = -1;
-            NuDQuentity.Value = 1;
+            NuDQuentity.Value = 1; // Set directly to minimum valid value
             DTRequestDate.Value = DateTime.Now.AddDays(1);
             RbCash.Checked = true;
         }

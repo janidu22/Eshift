@@ -28,254 +28,388 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            lbEmail = new Label();
-            lbUsername = new Label();
-            lbPhone = new Label();
-            label3 = new Label();
+            // Header Panel
+            panelHeader = new Panel();
+            lblWelcome = new Label();
+            lblCurrentTime = new Label();
+            btnMinimize = new Button();
+            btnMaximize = new Button();
+            btnClose = new Button();
+            lblAppTitle = new Label();
+            
+            // Sidebar Panel
+            panelSidebar = new Panel();
+            panelProfile = new Panel();
+            picBoxProfile = new PictureBox();
             lbName = new Label();
-            lblEmail = new Label();
-            lblPhone = new Label();
-            lblAddress = new Label();
-            lblName = new Label();
-            panel2 = new Panel();
+            lbUsername = new Label();
+            lbEmail = new Label();
+            lbPhone = new Label();
+            
+            // Navigation Buttons
+            ViewJobs = new Button();
             NewJobRequest = new Button();
+            TrackStatus = new Button();
             MyProfile = new Button();
             Logout = new Button();
-            ViewJobs = new Button();
+            
+            // Main Content Panel
             PanelMain = new Panel();
-            panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            
+            // Separator lines
+            separatorLine1 = new Panel();
+            separatorLine2 = new Panel();
+
+            panelHeader.SuspendLayout();
+            panelSidebar.SuspendLayout();
+            panelProfile.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picBoxProfile).BeginInit();
             SuspendLayout();
+
             // 
-            // panel1
+            // panelHeader
             // 
-            panel1.BackColor = Color.Silver;
-            panel1.Controls.Add(lbEmail);
-            panel1.Controls.Add(lbUsername);
-            panel1.Controls.Add(lbPhone);
-            panel1.Controls.Add(label3);
-            panel1.Controls.Add(lbName);
-            panel1.Controls.Add(lblEmail);
-            panel1.Controls.Add(lblPhone);
-            panel1.Controls.Add(lblAddress);
-            panel1.Controls.Add(lblName);
-            panel1.Controls.Add(panel2);
-            panel1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            panel1.ForeColor = Color.White;
-            panel1.Location = new Point(-7, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(265, 774);
-            panel1.TabIndex = 0;
+            panelHeader.BackColor = Color.FromArgb(25, 42, 86); // Midnight Blue
+            panelHeader.Controls.Add(lblWelcome);
+            panelHeader.Controls.Add(lblCurrentTime);
+            panelHeader.Controls.Add(btnMinimize);
+            panelHeader.Controls.Add(btnMaximize);
+            panelHeader.Controls.Add(btnClose);
+            panelHeader.Controls.Add(lblAppTitle);
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Height = 70;
+            panelHeader.Name = "panelHeader";
+
             // 
-            // lbEmail
+            // lblAppTitle
             // 
-            lbEmail.AutoSize = true;
-            lbEmail.Font = new Font("JetBrains Mono SemiBold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbEmail.ForeColor = Color.Black;
-            lbEmail.Location = new Point(25, 89);
-            lbEmail.Name = "lbEmail";
-            lbEmail.Size = new Size(63, 19);
-            lbEmail.TabIndex = 11;
-            lbEmail.Text = "label6";
+            lblAppTitle.AutoSize = true;
+            lblAppTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblAppTitle.ForeColor = Color.White;
+            lblAppTitle.Location = new Point(20, 20);
+            lblAppTitle.Name = "lblAppTitle";
+            lblAppTitle.Text = "eShift Customer Portal";
+
             // 
-            // lbUsername
+            // lblWelcome
             // 
-            lbUsername.AutoSize = true;
-            lbUsername.Font = new Font("JetBrains Mono SemiBold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbUsername.ForeColor = Color.Black;
-            lbUsername.Location = new Point(25, 64);
-            lbUsername.Name = "lbUsername";
-            lbUsername.Size = new Size(63, 19);
-            lbUsername.TabIndex = 9;
-            lbUsername.Text = "label4";
+            lblWelcome.AutoSize = true;
+            lblWelcome.Font = new Font("Segoe UI", 12F);
+            lblWelcome.ForeColor = Color.FromArgb(46, 204, 113); // Green
+            lblWelcome.Location = new Point(600, 15);
+            lblWelcome.Name = "lblWelcome";
+            lblWelcome.Text = "Welcome back!";
+
             // 
-            // lbPhone
+            // lblCurrentTime
             // 
-            lbPhone.AutoSize = true;
-            lbPhone.Font = new Font("JetBrains Mono SemiBold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbPhone.ForeColor = Color.Black;
-            lbPhone.Location = new Point(25, 114);
-            lbPhone.Name = "lbPhone";
-            lbPhone.Size = new Size(63, 19);
-            lbPhone.TabIndex = 8;
-            lbPhone.Text = "label2";
+            lblCurrentTime.AutoSize = true;
+            lblCurrentTime.Font = new Font("Segoe UI", 10F);
+            lblCurrentTime.ForeColor = Color.White;
+            lblCurrentTime.Location = new Point(600, 38);
+            lblCurrentTime.Name = "lblCurrentTime";
+            lblCurrentTime.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
+
+            // Window Control Buttons
             // 
-            // label3
+            // btnClose
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("JetBrains Mono SemiBold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.Black;
-            label3.Location = new Point(53, 25);
-            label3.Name = "label3";
-            label3.Size = new Size(72, 19);
-            label3.TabIndex = 7;
-            label3.Text = "Welcome";
+            btnClose.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClose.BackColor = Color.FromArgb(231, 76, 60);
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnClose.ForeColor = Color.White;
+            btnClose.Location = new Point(1320, 15);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(40, 30);
+            btnClose.Text = "✕";
+            btnClose.UseVisualStyleBackColor = false;
+
+            // 
+            // btnMaximize
+            // 
+            btnMaximize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnMaximize.BackColor = Color.FromArgb(52, 152, 219);
+            btnMaximize.FlatStyle = FlatStyle.Flat;
+            btnMaximize.FlatAppearance.BorderSize = 0;
+            btnMaximize.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnMaximize.ForeColor = Color.White;
+            btnMaximize.Location = new Point(1275, 15);
+            btnMaximize.Name = "btnMaximize";
+            btnMaximize.Size = new Size(40, 30);
+            btnMaximize.Text = "□";
+            btnMaximize.UseVisualStyleBackColor = false;
+
+            // 
+            // btnMinimize
+            // 
+            btnMinimize.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnMinimize.BackColor = Color.FromArgb(241, 196, 15);
+            btnMinimize.FlatStyle = FlatStyle.Flat;
+            btnMinimize.FlatAppearance.BorderSize = 0;
+            btnMinimize.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnMinimize.ForeColor = Color.White;
+            btnMinimize.Location = new Point(1230, 15);
+            btnMinimize.Name = "btnMinimize";
+            btnMinimize.Size = new Size(40, 30);
+            btnMinimize.Text = "−";
+            btnMinimize.UseVisualStyleBackColor = false;
+
+            // 
+            // panelSidebar
+            // 
+            panelSidebar.BackColor = Color.FromArgb(44, 62, 80); // Dark Blue-Gray
+            panelSidebar.Controls.Add(panelProfile);
+            panelSidebar.Controls.Add(separatorLine1);
+            panelSidebar.Controls.Add(ViewJobs);
+            panelSidebar.Controls.Add(NewJobRequest);
+            panelSidebar.Controls.Add(TrackStatus);
+            panelSidebar.Controls.Add(separatorLine2);
+            panelSidebar.Controls.Add(MyProfile);
+            panelSidebar.Controls.Add(Logout);
+            panelSidebar.Dock = DockStyle.Left;
+            panelSidebar.Width = 280;
+            panelSidebar.Name = "panelSidebar";
+
+            // 
+            // panelProfile
+            // 
+            panelProfile.BackColor = Color.FromArgb(52, 73, 94);
+            panelProfile.Controls.Add(picBoxProfile);
+            panelProfile.Controls.Add(lbName);
+            panelProfile.Controls.Add(lbUsername);
+            panelProfile.Controls.Add(lbEmail);
+            panelProfile.Controls.Add(lbPhone);
+            panelProfile.Dock = DockStyle.Top;
+            panelProfile.Height = 140;
+            panelProfile.Name = "panelProfile";
+            panelProfile.Padding = new Padding(20, 10, 20, 10);
+
+            // 
+            // picBoxProfile
+            // 
+            picBoxProfile.BackColor = Color.FromArgb(46, 204, 113);
+            picBoxProfile.Location = new Point(20, 15);
+            picBoxProfile.Name = "picBoxProfile";
+            picBoxProfile.Size = new Size(60, 60);
+            picBoxProfile.SizeMode = PictureBoxSizeMode.CenterImage;
+
             // 
             // lbName
             // 
             lbName.AutoSize = true;
-            lbName.Font = new Font("JetBrains Mono SemiBold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbName.ForeColor = Color.DimGray;
-            lbName.Location = new Point(131, 25);
+            lbName.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lbName.ForeColor = Color.White;
+            lbName.Location = new Point(90, 15);
             lbName.Name = "lbName";
-            lbName.Size = new Size(63, 19);
-            lbName.TabIndex = 5;
-            lbName.Text = "label1";
+            lbName.Text = "Customer Name";
+
             // 
-            // lblEmail
+            // lbUsername
             // 
-            lblEmail.AutoSize = true;
-            lblEmail.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEmail.ForeColor = Color.Black;
-            lblEmail.Location = new Point(19, 89);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(0, 25);
-            lblEmail.TabIndex = 4;
+            lbUsername.AutoSize = true;
+            lbUsername.Font = new Font("Segoe UI", 10F);
+            lbUsername.ForeColor = Color.FromArgb(189, 195, 199);
+            lbUsername.Location = new Point(90, 40);
+            lbUsername.Name = "lbUsername";
+            lbUsername.Text = "@username";
+
             // 
-            // lblPhone
+            // lbEmail
             // 
-            lblPhone.AutoSize = true;
-            lblPhone.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPhone.ForeColor = Color.Black;
-            lblPhone.Location = new Point(19, 114);
-            lblPhone.Name = "lblPhone";
-            lblPhone.Size = new Size(0, 25);
-            lblPhone.TabIndex = 3;
+            lbEmail.AutoSize = true;
+            lbEmail.Font = new Font("Segoe UI", 9F);
+            lbEmail.ForeColor = Color.FromArgb(189, 195, 199);
+            lbEmail.Location = new Point(90, 58);
+            lbEmail.Name = "lbEmail";
+            lbEmail.Text = "customer@eshift.com";
+
             // 
-            // lblAddress
+            // lbPhone
             // 
-            lblAddress.AutoSize = true;
-            lblAddress.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblAddress.ForeColor = Color.Black;
-            lblAddress.Location = new Point(19, 139);
-            lblAddress.Name = "lblAddress";
-            lblAddress.Size = new Size(0, 25);
-            lblAddress.TabIndex = 2;
+            lbPhone.AutoSize = true;
+            lbPhone.Font = new Font("Segoe UI", 9F);
+            lbPhone.ForeColor = Color.FromArgb(189, 195, 199);
+            lbPhone.Location = new Point(90, 76);
+            lbPhone.Name = "lbPhone";
+            lbPhone.Text = "+1 (555) 123-4567";
+
             // 
-            // lblName
+            // separatorLine1
             // 
-            lblName.AutoSize = true;
-            lblName.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblName.ForeColor = Color.Black;
-            lblName.Location = new Point(19, 64);
-            lblName.Name = "lblName";
-            lblName.Size = new Size(0, 25);
-            lblName.TabIndex = 1;
-            // 
-            // panel2
-            // 
-            panel2.Controls.Add(NewJobRequest);
-            panel2.Controls.Add(MyProfile);
-            panel2.Controls.Add(Logout);
-            panel2.Controls.Add(ViewJobs);
-            panel2.Location = new Point(3, 167);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(261, 604);
-            panel2.TabIndex = 0;
-            // 
-            // NewJobRequest
-            // 
-            NewJobRequest.BackColor = Color.FromArgb(64, 64, 64);
-            NewJobRequest.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            NewJobRequest.ForeColor = Color.White;
-            NewJobRequest.Location = new Point(5, 198);
-            NewJobRequest.Name = "NewJobRequest";
-            NewJobRequest.Padding = new Padding(10, 0, 0, 0);
-            NewJobRequest.Size = new Size(255, 80);
-            NewJobRequest.TabIndex = 4;
-            NewJobRequest.Text = "New Job Request";
-            NewJobRequest.TextAlign = ContentAlignment.MiddleLeft;
-            NewJobRequest.UseVisualStyleBackColor = false;
-            NewJobRequest.Click += NewJobRequest_Click;
-            // 
-            // MyProfile
-            // 
-            MyProfile.BackColor = Color.FromArgb(64, 64, 64);
-            MyProfile.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            MyProfile.ForeColor = Color.White;
-            MyProfile.Location = new Point(5, 284);
-            MyProfile.Name = "MyProfile";
-            MyProfile.Padding = new Padding(10, 0, 0, 0);
-            MyProfile.Size = new Size(256, 80);
-            MyProfile.TabIndex = 3;
-            MyProfile.Text = "My Profile";
-            MyProfile.TextAlign = ContentAlignment.MiddleLeft;
-            MyProfile.UseVisualStyleBackColor = false;
-            MyProfile.Click += MyProfile_Click;
-            // 
-            // Logout
-            // 
-            Logout.BackColor = Color.FromArgb(64, 64, 64);
-            Logout.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            Logout.ForeColor = Color.White;
-            Logout.Location = new Point(5, 370);
-            Logout.Name = "Logout";
-            Logout.Padding = new Padding(10, 0, 0, 0);
-            Logout.Size = new Size(255, 80);
-            Logout.TabIndex = 2;
-            Logout.Text = "Logout";
-            Logout.TextAlign = ContentAlignment.MiddleLeft;
-            Logout.UseVisualStyleBackColor = false;
-            Logout.Click += Logout_Click;
+            separatorLine1.BackColor = Color.FromArgb(127, 140, 141);
+            separatorLine1.Dock = DockStyle.Top;
+            separatorLine1.Height = 1;
+            separatorLine1.Name = "separatorLine1";
+
+            // Modern Navigation Buttons
             // 
             // ViewJobs
             // 
-            ViewJobs.BackColor = Color.FromArgb(64, 64, 64);
-            ViewJobs.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            ViewJobs.BackColor = Color.Transparent;
+            ViewJobs.Dock = DockStyle.Top;
+            ViewJobs.FlatStyle = FlatStyle.Flat;
+            ViewJobs.FlatAppearance.BorderSize = 0;
+            ViewJobs.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            ViewJobs.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
             ViewJobs.ForeColor = Color.White;
-            ViewJobs.Location = new Point(5, 112);
+            ViewJobs.Height = 55;
+            ViewJobs.ImageAlign = ContentAlignment.MiddleLeft;
             ViewJobs.Name = "ViewJobs";
-            ViewJobs.Padding = new Padding(10, 0, 0, 0);
-            ViewJobs.Size = new Size(255, 80);
-            ViewJobs.TabIndex = 0;
-            ViewJobs.Text = "View Jobs";
+            ViewJobs.Padding = new Padding(25, 0, 0, 0);
+            ViewJobs.Text = "📋  View My Jobs";
             ViewJobs.TextAlign = ContentAlignment.MiddleLeft;
             ViewJobs.UseVisualStyleBackColor = false;
             ViewJobs.Click += ViewJobs_Click;
+
+            // 
+            // NewJobRequest
+            // 
+            NewJobRequest.BackColor = Color.Transparent;
+            NewJobRequest.Dock = DockStyle.Top;
+            NewJobRequest.FlatStyle = FlatStyle.Flat;
+            NewJobRequest.FlatAppearance.BorderSize = 0;
+            NewJobRequest.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            NewJobRequest.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            NewJobRequest.ForeColor = Color.White;
+            NewJobRequest.Height = 55;
+            NewJobRequest.Name = "NewJobRequest";
+            NewJobRequest.Padding = new Padding(25, 0, 0, 0);
+            NewJobRequest.Text = "➕  New Job Request";
+            NewJobRequest.TextAlign = ContentAlignment.MiddleLeft;
+            NewJobRequest.UseVisualStyleBackColor = false;
+            NewJobRequest.Click += NewJobRequest_Click;
+
+            // 
+            // TrackStatus
+            // 
+            TrackStatus.BackColor = Color.Transparent;
+            TrackStatus.Dock = DockStyle.Top;
+            TrackStatus.FlatStyle = FlatStyle.Flat;
+            TrackStatus.FlatAppearance.BorderSize = 0;
+            TrackStatus.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            TrackStatus.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            TrackStatus.ForeColor = Color.White;
+            TrackStatus.Height = 55;
+            TrackStatus.Name = "TrackStatus";
+            TrackStatus.Padding = new Padding(25, 0, 0, 0);
+            TrackStatus.Text = "📍  Track Job Status";
+            TrackStatus.TextAlign = ContentAlignment.MiddleLeft;
+            TrackStatus.UseVisualStyleBackColor = false;
+            TrackStatus.Click += TrackStatus_Click;
+
+            // 
+            // separatorLine2
+            // 
+            separatorLine2.BackColor = Color.FromArgb(127, 140, 141);
+            separatorLine2.Dock = DockStyle.Top;
+            separatorLine2.Height = 1;
+            separatorLine2.Name = "separatorLine2";
+
+            // 
+            // MyProfile
+            // 
+            MyProfile.BackColor = Color.Transparent;
+            MyProfile.Dock = DockStyle.Top;
+            MyProfile.FlatStyle = FlatStyle.Flat;
+            MyProfile.FlatAppearance.BorderSize = 0;
+            MyProfile.FlatAppearance.MouseOverBackColor = Color.FromArgb(46, 204, 113);
+            MyProfile.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            MyProfile.ForeColor = Color.White;
+            MyProfile.Height = 55;
+            MyProfile.Name = "MyProfile";
+            MyProfile.Padding = new Padding(25, 0, 0, 0);
+            MyProfile.Text = "👤  My Profile";
+            MyProfile.TextAlign = ContentAlignment.MiddleLeft;
+            MyProfile.UseVisualStyleBackColor = false;
+            MyProfile.Click += MyProfile_Click;
+
+            // 
+            // Logout
+            // 
+            Logout.BackColor = Color.FromArgb(231, 76, 60);
+            Logout.Dock = DockStyle.Bottom;
+            Logout.FlatStyle = FlatStyle.Flat;
+            Logout.FlatAppearance.BorderSize = 0;
+            Logout.FlatAppearance.MouseOverBackColor = Color.FromArgb(192, 57, 43);
+            Logout.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            Logout.ForeColor = Color.White;
+            Logout.Height = 60;
+            Logout.Name = "Logout";
+            Logout.Padding = new Padding(25, 0, 0, 0);
+            Logout.Text = "🚪  Logout";
+            Logout.TextAlign = ContentAlignment.MiddleLeft;
+            Logout.UseVisualStyleBackColor = false;
+            Logout.Click += Logout_Click;
+
             // 
             // PanelMain
             // 
-            PanelMain.Location = new Point(264, 0);
+            PanelMain.BackColor = Color.FromArgb(236, 240, 241);
+            PanelMain.Dock = DockStyle.Fill;
             PanelMain.Name = "PanelMain";
-            PanelMain.Size = new Size(1115, 768);
-            PanelMain.TabIndex = 1;
+            PanelMain.Padding = new Padding(20);
             PanelMain.Paint += PanelMain_Paint;
+
             // 
             // CustomerDashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1381, 767);
+            BackColor = Color.FromArgb(236, 240, 241);
+            ClientSize = new Size(1400, 800);
             Controls.Add(PanelMain);
-            Controls.Add(panel1);
+            Controls.Add(panelSidebar);
+            Controls.Add(panelHeader);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "CustomerDashboard";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "CustomerDashboard";
+            Text = "eShift Customer Portal";
+            WindowState = FormWindowState.Maximized;
             Load += CustomerDashboard_Load;
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
+
+            panelHeader.ResumeLayout(false);
+            panelHeader.PerformLayout();
+            panelSidebar.ResumeLayout(false);
+            panelProfile.ResumeLayout(false);
+            panelProfile.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picBoxProfile).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel panel1;
-        private Panel panel2;
+        // Header Components
+        private Panel panelHeader;
+        private Label lblAppTitle;
+        private Label lblWelcome;
+        private Label lblCurrentTime;
+        private Button btnMinimize;
+        private Button btnMaximize;
+        private Button btnClose;
+
+        // Sidebar Components
+        private Panel panelSidebar;
+        private Panel panelProfile;
+        private PictureBox picBoxProfile;
+        private Label lbName;
+        private Label lbUsername;
+        private Label lbEmail;
+        private Label lbPhone;
+
+        // Navigation Buttons
         private Button ViewJobs;
         private Button NewJobRequest;
+        private Button TrackStatus;
         private Button MyProfile;
         private Button Logout;
-        private Label lblEmail;
-        private Label lblPhone;
-        private Label lblAddress;
-        private Label lblName;
-        private Label lbEmail;
-        private Label lbUsername;
-        private Label lbPhone;
-        private Label label3;
-        private Label lbName;
+
+        // Main Content
         private Panel PanelMain;
+
+        // Separators
+        private Panel separatorLine1;
+        private Panel separatorLine2;
     }
 }

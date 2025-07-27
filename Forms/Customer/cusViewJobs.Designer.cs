@@ -40,62 +40,72 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.MidnightBlue;
+            panel1.BackColor = Color.FromArgb(25, 42, 86);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
-            panel1.ForeColor = Color.Navy;
+            panel1.ForeColor = Color.White;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1099, 36);
+            panel1.Size = new Size(1099, 60);
             panel1.TabIndex = 1;
             // 
             // label1
             // 
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
-            label1.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             label1.ForeColor = Color.White;
             label1.ImageAlign = ContentAlignment.TopCenter;
-            label1.Location = new Point(486, 9);
+            label1.Location = new Point(480, 16);
             label1.Name = "label1";
-            label1.Size = new Size(90, 19);
+            label1.Size = new Size(207, 32);
             label1.TabIndex = 1;
-            label1.Text = "View Jobs";
+            label1.Text = "My Job Requests";
             // 
             // viewJobsDt
             // 
-            viewJobsDt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            viewJobsDt.AllowUserToAddRows = false;
+            viewJobsDt.AllowUserToDeleteRows = false;
+            viewJobsDt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             viewJobsDt.BackgroundColor = Color.White;
+            viewJobsDt.BorderStyle = BorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(44, 62, 80);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(52, 73, 94);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             viewJobsDt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            viewJobsDt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            viewJobsDt.ColumnHeadersHeight = 40;
+            viewJobsDt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(44, 62, 80);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(46, 204, 113);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             viewJobsDt.DefaultCellStyle = dataGridViewCellStyle2;
             viewJobsDt.Dock = DockStyle.Fill;
-            viewJobsDt.GridColor = SystemColors.ActiveCaptionText;
-            viewJobsDt.Location = new Point(0, 36);
+            viewJobsDt.EnableHeadersVisualStyles = false;
+            viewJobsDt.GridColor = Color.FromArgb(189, 195, 199);
+            viewJobsDt.Location = new Point(0, 60);
+            viewJobsDt.MultiSelect = false;
             viewJobsDt.Name = "viewJobsDt";
+            viewJobsDt.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("JetBrains Mono", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(236, 240, 241);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(44, 62, 80);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(46, 204, 113);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             viewJobsDt.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            viewJobsDt.Size = new Size(1099, 693);
+            viewJobsDt.RowHeadersVisible = false;
+            viewJobsDt.RowTemplate.Height = 35;
+            viewJobsDt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            viewJobsDt.Size = new Size(1099, 669);
             viewJobsDt.TabIndex = 2;
             viewJobsDt.CellContentClick += viewJobsDt_CellContentClick;
             // 
@@ -103,12 +113,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
+            BackColor = Color.FromArgb(236, 240, 241);
             ClientSize = new Size(1099, 729);
             Controls.Add(viewJobsDt);
             Controls.Add(panel1);
             Name = "cusViewJobs";
-            Text = "cusViewJobs";
+            Text = "My Jobs - eShift Customer Portal";
             Load += cusViewJobs_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

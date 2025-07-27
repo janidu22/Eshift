@@ -18,9 +18,10 @@ namespace Eshift.Forms.Customer
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Login login = new Login();
-            login.Show();
-            this.Hide();
+            if (this.Owner is MainForm mf)
+            {
+                mf.LoadCustomerForm();
+            }
         }
 
         private async void btnRegister_Click(object sender, EventArgs e)

@@ -106,9 +106,23 @@ namespace Eshift.Forms.Admin
             return true;
         }
 
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Close this form and return to the main form
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void AdminLogin_Load(object sender, EventArgs e)
         {
-
+            // Set focus to username field when form loads
+            tbUsername.Focus();
         }
     }
 }

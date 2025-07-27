@@ -31,7 +31,7 @@ namespace Eshift.Forms.Customer
                     MessageBox.Show($"Welcome, {customer.Name}!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     if (this.Owner is MainForm mainForm)
                     {
-                        CustomerDashboard dashboard = new CustomerDashboard(username, mainForm); 
+                        CustomerDashboard dashboard = new CustomerDashboard(username, mainForm);
                         dashboard.Show();
                         this.Hide();
                     }
@@ -86,18 +86,33 @@ namespace Eshift.Forms.Customer
             this.Hide();
         }
 
-        private void Login_Load(object sender, EventArgs e) { }
-
-        private void linkLabel2_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnBack_Click(object sender, EventArgs e)
         {
-            if (this.Owner is MainForm main)
+            try
             {
-                this.Hide();
-                main.OpenFormInPanel();
+                if (this.Owner is MainForm main)
+                {
+                    main.OpenFormInPanel(); ;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Parent form is not set correctly.");
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+            // Set focus to username field when form loads
+            tbUsername.Focus();
+        }
+
+        private void linkLabel1_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if(this.Owner is MainForm mainform)
+            {
+                mainform.LoadRegisterForm();    
+
             }
         }
     }

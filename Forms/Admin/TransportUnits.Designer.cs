@@ -28,241 +28,178 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
+            headerPanel = new Panel();
             label1 = new Label();
-            panel2 = new Panel();
-            DtTable = new DataGridView();
-            Clear = new Button();
-            Update = new Button();
-            Delete = new Button();
-            Add = new Button();
-            cbLorry = new ComboBox();
-            cbContainer = new ComboBox();
-            cbAssistant = new ComboBox();
-            cbDriver = new ComboBox();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            panel1.SuspendLayout();
-            panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)DtTable).BeginInit();
+            navbarPanel = new Panel();
+            btnTransportUnit = new Button();
+            btnContainer = new Button();
+            btnAssistants = new Button();
+            btnDrivers = new Button();
+            btnLorries = new Button();
+            mainContentContainer = new Panel();
+            
+            headerPanel.SuspendLayout();
+            navbarPanel.SuspendLayout();
             SuspendLayout();
+            
             // 
-            // panel1
+            // headerPanel
             // 
-            panel1.BackColor = SystemColors.ActiveCaption;
-            panel1.Controls.Add(label1);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(934, 68);
-            panel1.TabIndex = 10;
+            headerPanel.BackColor = Color.FromArgb(25, 42, 86);
+            headerPanel.Controls.Add(label1);
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.Location = new Point(0, 0);
+            headerPanel.Name = "headerPanel";
+            headerPanel.Size = new Size(1200, 60);
+            headerPanel.TabIndex = 0;
+            
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(333, 19);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(20, 16);
             label1.Name = "label1";
-            label1.Size = new Size(254, 25);
+            label1.Size = new Size(331, 32);
             label1.TabIndex = 0;
-            label1.Text = " Manage Transport Unit";
-            label1.TextAlign = ContentAlignment.TopCenter;
+            label1.Text = "🚢 Manage Transport Units";
+            
             // 
-            // panel2
+            // navbarPanel
             // 
-            panel2.Controls.Add(DtTable);
-            panel2.Location = new Point(32, 117);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(867, 307);
-            panel2.TabIndex = 11;
+            navbarPanel.BackColor = Color.FromArgb(44, 62, 118);
+            navbarPanel.Controls.Add(btnTransportUnit);
+            navbarPanel.Controls.Add(btnContainer);
+            navbarPanel.Controls.Add(btnAssistants);
+            navbarPanel.Controls.Add(btnDrivers);
+            navbarPanel.Controls.Add(btnLorries);
+            navbarPanel.Dock = DockStyle.Top;
+            navbarPanel.Location = new Point(0, 60);
+            navbarPanel.Name = "navbarPanel";
+            navbarPanel.Size = new Size(1200, 50);
+            navbarPanel.TabIndex = 1;
+            
             // 
-            // DtTable
+            // btnLorries
             // 
-            DtTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DtTable.Dock = DockStyle.Fill;
-            DtTable.Location = new Point(0, 0);
-            DtTable.Name = "DtTable";
-            DtTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DtTable.Size = new Size(867, 307);
-            DtTable.TabIndex = 0;
-            DtTable.CellClick += DtTable_CellClick;
-            DtTable.CellContentClick += DtTable_CellContentClick;
-            DtTable.SelectionChanged += DtTable_SelectionChanged;
+            btnLorries.BackColor = Color.FromArgb(44, 62, 118);
+            btnLorries.FlatAppearance.BorderSize = 0;
+            btnLorries.FlatStyle = FlatStyle.Flat;
+            btnLorries.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnLorries.ForeColor = Color.White;
+            btnLorries.Location = new Point(20, 5);
+            btnLorries.Name = "btnLorries";
+            btnLorries.Size = new Size(120, 40);
+            btnLorries.TabIndex = 0;
+            btnLorries.Text = "🚛 Lorries";
+            btnLorries.UseVisualStyleBackColor = false;
+            btnLorries.Click += BtnLorries_Click;
+            
             // 
-            // Clear
+            // btnDrivers
             // 
-            Clear.BackColor = Color.PaleGreen;
-            Clear.Font = new Font("JetBrains Mono", 14.25F);
-            Clear.Location = new Point(528, 642);
-            Clear.Name = "Clear";
-            Clear.Size = new Size(149, 38);
-            Clear.TabIndex = 18;
-            Clear.Text = "Add New";
-            Clear.UseVisualStyleBackColor = false;
-            Clear.Click += Clear_Click;
+            btnDrivers.BackColor = Color.FromArgb(44, 62, 118);
+            btnDrivers.FlatAppearance.BorderSize = 0;
+            btnDrivers.FlatStyle = FlatStyle.Flat;
+            btnDrivers.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnDrivers.ForeColor = Color.White;
+            btnDrivers.Location = new Point(150, 5);
+            btnDrivers.Name = "btnDrivers";
+            btnDrivers.Size = new Size(120, 40);
+            btnDrivers.TabIndex = 1;
+            btnDrivers.Text = "👨‍💼 Drivers";
+            btnDrivers.UseVisualStyleBackColor = false;
+            btnDrivers.Click += BtnDrivers_Click;
+            
             // 
-            // Update
+            // btnAssistants
             // 
-            Update.BackColor = Color.LightCoral;
-            Update.Font = new Font("JetBrains Mono", 14.25F);
-            Update.Location = new Point(693, 642);
-            Update.Name = "Update";
-            Update.Size = new Size(96, 38);
-            Update.TabIndex = 17;
-            Update.Text = "Update";
-            Update.UseVisualStyleBackColor = false;
-            Update.Click += Update_Click;
+            btnAssistants.BackColor = Color.FromArgb(44, 62, 118);
+            btnAssistants.FlatAppearance.BorderSize = 0;
+            btnAssistants.FlatStyle = FlatStyle.Flat;
+            btnAssistants.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnAssistants.ForeColor = Color.White;
+            btnAssistants.Location = new Point(280, 5);
+            btnAssistants.Name = "btnAssistants";
+            btnAssistants.Size = new Size(120, 40);
+            btnAssistants.TabIndex = 2;
+            btnAssistants.Text = "👥 Assistants";
+            btnAssistants.UseVisualStyleBackColor = false;
+            btnAssistants.Click += BtnAssistants_Click;
+            
             // 
-            // Delete
+            // btnContainer
             // 
-            Delete.BackColor = Color.DarkRed;
-            Delete.Font = new Font("JetBrains Mono", 14.25F);
-            Delete.Location = new Point(810, 642);
-            Delete.Name = "Delete";
-            Delete.Size = new Size(89, 38);
-            Delete.TabIndex = 16;
-            Delete.Text = "Delete";
-            Delete.UseVisualStyleBackColor = false;
-            Delete.Click += Delete_Click;
+            btnContainer.BackColor = Color.FromArgb(44, 62, 118);
+            btnContainer.FlatAppearance.BorderSize = 0;
+            btnContainer.FlatStyle = FlatStyle.Flat;
+            btnContainer.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnContainer.ForeColor = Color.White;
+            btnContainer.Location = new Point(410, 5);
+            btnContainer.Name = "btnContainer";
+            btnContainer.Size = new Size(120, 40);
+            btnContainer.TabIndex = 3;
+            btnContainer.Text = "📦 Container";
+            btnContainer.UseVisualStyleBackColor = false;
+            btnContainer.Click += BtnContainer_Click;
+            
             // 
-            // Add
+            // btnTransportUnit
             // 
-            Add.BackColor = Color.SeaGreen;
-            Add.Font = new Font("JetBrains Mono", 14.25F);
-            Add.Location = new Point(33, 642);
-            Add.Name = "Add";
-            Add.Size = new Size(233, 38);
-            Add.TabIndex = 15;
-            Add.Text = "Add";
-            Add.UseVisualStyleBackColor = false;
-            Add.Click += Add_Click;
+            btnTransportUnit.BackColor = Color.FromArgb(25, 42, 86);
+            btnTransportUnit.FlatAppearance.BorderSize = 0;
+            btnTransportUnit.FlatStyle = FlatStyle.Flat;
+            btnTransportUnit.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnTransportUnit.ForeColor = Color.White;
+            btnTransportUnit.Location = new Point(540, 5);
+            btnTransportUnit.Name = "btnTransportUnit";
+            btnTransportUnit.Size = new Size(140, 40);
+            btnTransportUnit.TabIndex = 4;
+            btnTransportUnit.Text = "🚢 Transport Unit";
+            btnTransportUnit.UseVisualStyleBackColor = false;
+            btnTransportUnit.Click += BtnTransportUnit_Click;
+            
             // 
-            // cbLorry
+            // mainContentContainer
             // 
-            cbLorry.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbLorry.FormattingEnabled = true;
-            cbLorry.Location = new Point(144, 478);
-            cbLorry.Name = "cbLorry";
-            cbLorry.Size = new Size(350, 23);
-            cbLorry.TabIndex = 1;
-            // 
-            // cbContainer
-            // 
-            cbContainer.FormattingEnabled = true;
-            cbContainer.Location = new Point(144, 565);
-            cbContainer.Name = "cbContainer";
-            cbContainer.Size = new Size(350, 23);
-            cbContainer.TabIndex = 19;
-            // 
-            // cbAssistant
-            // 
-            cbAssistant.FormattingEnabled = true;
-            cbAssistant.Location = new Point(144, 536);
-            cbAssistant.Name = "cbAssistant";
-            cbAssistant.Size = new Size(350, 23);
-            cbAssistant.TabIndex = 20;
-            // 
-            // cbDriver
-            // 
-            cbDriver.FormattingEnabled = true;
-            cbDriver.Location = new Point(144, 507);
-            cbDriver.Name = "cbDriver";
-            cbDriver.Size = new Size(350, 23);
-            cbDriver.TabIndex = 21;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(33, 480);
-            label2.Name = "label2";
-            label2.Size = new Size(70, 21);
-            label2.TabIndex = 22;
-            label2.Text = "Lorry ";
-            label2.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(31, 567);
-            label3.Name = "label3";
-            label3.Size = new Size(110, 21);
-            label3.TabIndex = 23;
-            label3.Text = "Container ";
-            label3.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(30, 538);
-            label4.Name = "label4";
-            label4.Size = new Size(110, 21);
-            label4.TabIndex = 24;
-            label4.Text = "Assistant ";
-            label4.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(33, 509);
-            label5.Name = "label5";
-            label5.Size = new Size(80, 21);
-            label5.TabIndex = 25;
-            label5.Text = "Driver ";
-            label5.TextAlign = ContentAlignment.TopCenter;
+            mainContentContainer.BackColor = Color.FromArgb(240, 244, 248);
+            mainContentContainer.Dock = DockStyle.Fill;
+            mainContentContainer.Location = new Point(0, 110);
+            mainContentContainer.Name = "mainContentContainer";
+            mainContentContainer.Size = new Size(1200, 590);
+            mainContentContainer.TabIndex = 2;
+            
             // 
             // Transport_units
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(934, 701);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(cbDriver);
-            Controls.Add(cbAssistant);
-            Controls.Add(cbContainer);
-            Controls.Add(cbLorry);
-            Controls.Add(panel1);
-            Controls.Add(panel2);
-            Controls.Add(Clear);
-            Controls.Add(Update);
-            Controls.Add(Delete);
-            Controls.Add(Add);
+            BackColor = Color.FromArgb(25, 42, 86);
+            ClientSize = new Size(1200, 700);
+            Controls.Add(mainContentContainer);
+            Controls.Add(navbarPanel);
+            Controls.Add(headerPanel);
             Name = "Transport_units";
-            Text = "Transport_units";
-        
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)DtTable).EndInit();
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Transport Units Management";
+            Load += Transport_units_Load;
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
+            navbarPanel.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Panel panel1;
+        private Panel headerPanel;
         private Label label1;
-        private Panel panel2;
-        private DataGridView DtTable;
-        private Button Clear;
-        private Button Update;
-        private Button Delete;
-        private Button Add;
-        private ComboBox cbLorry;
-        private ComboBox cbContainer;
-        private ComboBox cbAssistant;
-        private ComboBox cbDriver;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
+        private Panel navbarPanel;
+        private Button btnLorries;
+        private Button btnDrivers;
+        private Button btnAssistants;
+        private Button btnContainer;
+        private Button btnTransportUnit;
+        private Panel mainContentContainer;
     }
 }

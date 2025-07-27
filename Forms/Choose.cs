@@ -17,7 +17,7 @@ namespace Eshift.Forms
             InitializeComponent();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void CustomerButton_Click(object sender, EventArgs e)
         {
             if (this.Owner is MainForm main)
             {
@@ -25,11 +25,11 @@ namespace Eshift.Forms
             }
             else
             {
-                MessageBox.Show("Parent form is not set correctly.");
+                MessageBox.Show("Parent form is not set correctly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void AdminButton_Click(object sender, EventArgs e)
         {
             if (this.Owner is MainForm main)
             {
@@ -37,8 +37,21 @@ namespace Eshift.Forms
             }
             else
             {
-                MessageBox.Show("Parent form is not set correctly.");
+                MessageBox.Show("Parent form is not set correctly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+
+
+        private void Choose_Load(object sender, EventArgs e)
+        {
+            // Set focus to the form for better user experience
+            this.Focus();
+        }
+
+        private void headerLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -15,11 +15,12 @@ namespace Eshift.Forms.Admin
         {
             InitializeComponent();
 
-
             NudCapacity.Minimum = 0;
             NudCapacity.Maximum = 10000;
             NudCapacity.Increment = 10;
         }
+
+
 
         private void Containers_Load(object sender, EventArgs e)
         {

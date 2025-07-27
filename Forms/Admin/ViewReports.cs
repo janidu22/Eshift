@@ -30,22 +30,8 @@ namespace Eshift.Forms.Admin
 
         private void ViewReports_Load(object sender, EventArgs e)
         {
-            // Ensure all controls are visible
-            panel1.Visible = true;
-            panelFilter.Visible = true;
-            panel2.Visible = true;
-            panel3.Visible = true;
-            dgvReportData.Visible = true;
-            btnFilter.Visible = true;
-            btnExport.Visible = true;
-            btnPrint.Visible = true;
-            btnRefresh.Visible = true;
-            CbReports.Visible = true;
-            dateTimePicker1.Visible = true;
-            dateTimePicker2.Visible = true;
-
             // Set form title
-            this.Text = "View Reports - Eshift";
+            this.Text = "Reports Dashboard - Eshift";
 
             // Load initial data if a report type is selected
             if (CbReports.SelectedItem != null)
@@ -73,38 +59,23 @@ namespace Eshift.Forms.Admin
 
             // Configure DataGridView
             ConfigureDataGridView();
-
-            // Ensure all panels and controls are visible
-            panel1.Visible = true;
-            panelFilter.Visible = true;
-            panel2.Visible = true;
-            panel3.Visible = true;
-            dgvReportData.Visible = true;
-            btnFilter.Visible = true;
-            btnExport.Visible = true;
-            btnPrint.Visible = true;
-            btnRefresh.Visible = true;
-            CbReports.Visible = true;
-            dateTimePicker1.Visible = true;
-            dateTimePicker2.Visible = true;
         }
 
         private void ConfigureDataGridView()
         {
             dgvReportData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvReportData.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvReportData.AllowUserToAddRows = false;
             dgvReportData.AllowUserToDeleteRows = false;
             dgvReportData.ReadOnly = true;
             dgvReportData.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvReportData.RowHeadersVisible = false;
             dgvReportData.BackgroundColor = Color.White;
-            dgvReportData.Font = new Font("JetBrains Mono", 9F);
+            dgvReportData.Font = new Font("Segoe UI", 9F);
 
             // Set header style
-            dgvReportData.ColumnHeadersDefaultCellStyle.BackColor = Color.MidnightBlue;
+            dgvReportData.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(25, 42, 86);
             dgvReportData.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvReportData.ColumnHeadersDefaultCellStyle.Font = new Font("JetBrains Mono", 9F, FontStyle.Bold);
+            dgvReportData.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         }
 
         private async void CbReports_SelectedIndexChanged(object sender, EventArgs e)

@@ -28,227 +28,387 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            
             panel1 = new Panel();
             label1 = new Label();
-            panel2 = new Panel();
+            mainContainer = new Panel();
+            lorriesViewPanel = new Panel();
             DtTable = new DataGridView();
-            tbPlateNumber = new TextBox();
-            tbModel = new TextBox();
-            NudCapacity = new NumericUpDown();
-            Add = new Button();
-            Delete = new Button();
-            Update = new Button();
-            Clear = new Button();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
+            lorryManagementPanel = new Panel();
+            panel2 = new Panel();
             label5 = new Label();
+            lorryFormPanel = new Panel();
+            tbPlateNumber = new TextBox();
+            label2 = new Label();
+            tbModel = new TextBox();
+            label4 = new Label();
+            NudCapacity = new NumericUpDown();
+            label3 = new Label();
+            actionButtonsPanel = new Panel();
+            Clear = new Button();
+            Add = new Button();
+            Update = new Button();
+            Delete = new Button();
+            
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            mainContainer.SuspendLayout();
+            lorriesViewPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DtTable).BeginInit();
+            lorryManagementPanel.SuspendLayout();
+            panel2.SuspendLayout();
+            lorryFormPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)NudCapacity).BeginInit();
+            actionButtonsPanel.SuspendLayout();
             SuspendLayout();
+            
             // 
             // panel1
             // 
-            panel1.BackColor = SystemColors.ActiveCaption;
+            panel1.BackColor = Color.FromArgb(25, 42, 86);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
+            panel1.ForeColor = Color.White;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(934, 68);
+            panel1.Size = new Size(1200, 60);
             panel1.TabIndex = 0;
+            
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(356, 19);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(20, 16);
             label1.Name = "label1";
-            label1.Size = new Size(166, 25);
+            label1.Size = new Size(195, 32);
             label1.TabIndex = 0;
-            label1.Text = "Manage Lorries";
-            label1.TextAlign = ContentAlignment.TopCenter;
+            label1.Text = "🚛 Manage Lorries";
+            
+
+            
             // 
-            // panel2
+            // mainContainer
             // 
-            panel2.Controls.Add(DtTable);
-            panel2.Location = new Point(32, 97);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(867, 307);
-            panel2.TabIndex = 1;
+            mainContainer.BackColor = Color.FromArgb(240, 244, 248);
+            mainContainer.Controls.Add(lorriesViewPanel);
+            mainContainer.Controls.Add(lorryManagementPanel);
+            mainContainer.Dock = DockStyle.Fill;
+            mainContainer.Location = new Point(0, 60);
+            mainContainer.Name = "mainContainer";
+            mainContainer.Padding = new Padding(10);
+            mainContainer.Size = new Size(1200, 640);
+            mainContainer.TabIndex = 1;
+            
+            // 
+            // lorriesViewPanel
+            // 
+            lorriesViewPanel.BackColor = Color.White;
+            lorriesViewPanel.Controls.Add(DtTable);
+            lorriesViewPanel.Dock = DockStyle.Left;
+            lorriesViewPanel.Location = new Point(10, 10);
+            lorriesViewPanel.Name = "lorriesViewPanel";
+            lorriesViewPanel.Padding = new Padding(15);
+            lorriesViewPanel.Size = new Size(756, 620);
+            lorriesViewPanel.TabIndex = 0;
+            
             // 
             // DtTable
             // 
-            DtTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DtTable.AllowUserToAddRows = false;
+            DtTable.AllowUserToDeleteRows = false;
+            DtTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DtTable.BackgroundColor = Color.White;
+            DtTable.BorderStyle = BorderStyle.None;
+            DtTable.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(25, 42, 86);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(25, 42, 86);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            DtTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            DtTable.ColumnHeadersHeight = 40;
+            DtTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(46, 125, 50);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            DtTable.DefaultCellStyle = dataGridViewCellStyle2;
             DtTable.Dock = DockStyle.Fill;
-            DtTable.Location = new Point(0, 0);
+            DtTable.EnableHeadersVisualStyles = false;
+            DtTable.GridColor = Color.FromArgb(230, 230, 230);
+            DtTable.Location = new Point(15, 15);
+            DtTable.MultiSelect = false;
             DtTable.Name = "DtTable";
+            DtTable.ReadOnly = true;
+            DtTable.RowHeadersVisible = false;
+            
+            DtTable.RowTemplate.Height = 35;
+            DtTable.RowsDefaultCellStyle = dataGridViewCellStyle3;
             DtTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DtTable.Size = new Size(867, 307);
+            DtTable.Size = new Size(726, 590);
             DtTable.TabIndex = 0;
             DtTable.SelectionChanged += DtTable_SelectionChanged;
+            
             // 
-            // tbPlateNumber
+            // lorryManagementPanel
             // 
-            tbPlateNumber.Location = new Point(168, 476);
-            tbPlateNumber.Name = "tbPlateNumber";
-            tbPlateNumber.Size = new Size(233, 23);
-            tbPlateNumber.TabIndex = 2;
+            lorryManagementPanel.BackColor = Color.White;
+            lorryManagementPanel.Controls.Add(actionButtonsPanel);
+            lorryManagementPanel.Controls.Add(lorryFormPanel);
+            lorryManagementPanel.Controls.Add(panel2);
+            lorryManagementPanel.Dock = DockStyle.Right;
+            lorryManagementPanel.Location = new Point(776, 10);
+            lorryManagementPanel.Name = "lorryManagementPanel";
+            lorryManagementPanel.Size = new Size(414, 620);
+            lorryManagementPanel.TabIndex = 1;
+            
             // 
-            // tbModel
+            // panel2
             // 
-            tbModel.Location = new Point(168, 517);
-            tbModel.Name = "tbModel";
-            tbModel.Size = new Size(233, 23);
-            tbModel.TabIndex = 4;
-            // 
-            // NudCapacity
-            // 
-            NudCapacity.Location = new Point(168, 558);
-            NudCapacity.Margin = new Padding(4);
-            NudCapacity.Name = "NudCapacity";
-            NudCapacity.Size = new Size(233, 23);
-            NudCapacity.TabIndex = 5;
-            // 
-            // Add
-            // 
-            Add.BackColor = Color.SeaGreen;
-            Add.Font = new Font("JetBrains Mono", 14.25F);
-            Add.Location = new Point(168, 626);
-            Add.Name = "Add";
-            Add.Size = new Size(233, 38);
-            Add.TabIndex = 6;
-            Add.Text = "Add";
-            Add.UseVisualStyleBackColor = false;
-            Add.Click += Add_Click;
-            // 
-            // Delete
-            // 
-            Delete.BackColor = Color.DarkRed;
-            Delete.Font = new Font("JetBrains Mono", 14.25F);
-            Delete.Location = new Point(810, 622);
-            Delete.Name = "Delete";
-            Delete.Size = new Size(89, 38);
-            Delete.TabIndex = 7;
-            Delete.Text = "Delete";
-            Delete.UseVisualStyleBackColor = false;
-            Delete.Click += Delete_Click;
-            // 
-            // Update
-            // 
-            Update.BackColor = Color.LightCoral;
-            Update.Font = new Font("JetBrains Mono", 14.25F);
-            Update.Location = new Point(693, 622);
-            Update.Name = "Update";
-            Update.Size = new Size(96, 38);
-            Update.TabIndex = 8;
-            Update.Text = "Update";
-            Update.UseVisualStyleBackColor = false;
-            Update.Click += Update_Click;
-            // 
-            // Clear
-            // 
-            Clear.BackColor = Color.PaleGreen;
-            Clear.Font = new Font("JetBrains Mono", 14.25F);
-            Clear.Location = new Point(528, 622);
-            Clear.Name = "Clear";
-            Clear.Size = new Size(149, 38);
-            Clear.TabIndex = 9;
-            Clear.Text = "Add New";
-            Clear.UseVisualStyleBackColor = false;
-            Clear.Click += Clear_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(32, 478);
-            label2.Name = "label2";
-            label2.Size = new Size(130, 21);
-            label2.TabIndex = 10;
-            label2.Text = "Plate Number";
-            label2.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(32, 558);
-            label3.Name = "label3";
-            label3.Size = new Size(90, 21);
-            label3.TabIndex = 11;
-            label3.Text = "Capacity";
-            label3.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("JetBrains Mono", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(31, 519);
-            label4.Name = "label4";
-            label4.Size = new Size(60, 21);
-            label4.TabIndex = 12;
-            label4.Text = "Model";
-            label4.TextAlign = ContentAlignment.TopCenter;
+            panel2.BackColor = Color.FromArgb(46, 125, 50);
+            panel2.Controls.Add(label5);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(414, 50);
+            panel2.TabIndex = 0;
+            
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("JetBrains Mono", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(138, 427);
+            label5.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(20, 12);
             label5.Name = "label5";
-            label5.Size = new Size(177, 25);
-            label5.TabIndex = 13;
-            label5.Text = "Add new Lorries";
-            label5.TextAlign = ContentAlignment.TopCenter;
+            label5.Size = new Size(201, 25);
+            label5.TabIndex = 0;
+            label5.Text = "🚛 Lorry Management";
+            
+            // 
+            // lorryFormPanel
+            // 
+            lorryFormPanel.BackColor = Color.White;
+            lorryFormPanel.Controls.Add(NudCapacity);
+            lorryFormPanel.Controls.Add(label3);
+            lorryFormPanel.Controls.Add(tbModel);
+            lorryFormPanel.Controls.Add(label4);
+            lorryFormPanel.Controls.Add(tbPlateNumber);
+            lorryFormPanel.Controls.Add(label2);
+            lorryFormPanel.Dock = DockStyle.Fill;
+            lorryFormPanel.Location = new Point(0, 50);
+            lorryFormPanel.Name = "lorryFormPanel";
+            lorryFormPanel.Padding = new Padding(20);
+            lorryFormPanel.Size = new Size(414, 490);
+            lorryFormPanel.TabIndex = 1;
+            
+            // 
+            // tbPlateNumber
+            // 
+            tbPlateNumber.BorderStyle = BorderStyle.FixedSingle;
+            tbPlateNumber.Font = new Font("Segoe UI", 11F);
+            tbPlateNumber.Location = new Point(20, 70);
+            tbPlateNumber.Name = "tbPlateNumber";
+            tbPlateNumber.Size = new Size(374, 27);
+            tbPlateNumber.TabIndex = 1;
+            
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label2.ForeColor = Color.FromArgb(64, 64, 64);
+            label2.Location = new Point(20, 47);
+            label2.Name = "label2";
+            label2.Size = new Size(94, 19);
+            label2.TabIndex = 0;
+            label2.Text = "Plate Number";
+            
+            // 
+            // tbModel
+            // 
+            tbModel.BorderStyle = BorderStyle.FixedSingle;
+            tbModel.Font = new Font("Segoe UI", 11F);
+            tbModel.Location = new Point(20, 140);
+            tbModel.Name = "tbModel";
+            tbModel.Size = new Size(374, 27);
+            tbModel.TabIndex = 3;
+            
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label4.ForeColor = Color.FromArgb(64, 64, 64);
+            label4.Location = new Point(20, 117);
+            label4.Name = "label4";
+            label4.Size = new Size(49, 19);
+            label4.TabIndex = 2;
+            label4.Text = "Model";
+            
+            // 
+            // NudCapacity
+            // 
+            NudCapacity.BorderStyle = BorderStyle.FixedSingle;
+            NudCapacity.Font = new Font("Segoe UI", 11F);
+            NudCapacity.Location = new Point(20, 210);
+            NudCapacity.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            NudCapacity.Name = "NudCapacity";
+            NudCapacity.Size = new Size(374, 27);
+            NudCapacity.TabIndex = 5;
+            
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label3.ForeColor = Color.FromArgb(64, 64, 64);
+            label3.Location = new Point(20, 187);
+            label3.Name = "label3";
+            label3.Size = new Size(106, 19);
+            label3.TabIndex = 4;
+            label3.Text = "Capacity (Tons)";
+            
+            // 
+            // actionButtonsPanel
+            // 
+            actionButtonsPanel.BackColor = Color.FromArgb(250, 250, 250);
+            actionButtonsPanel.Controls.Add(Delete);
+            actionButtonsPanel.Controls.Add(Update);
+            actionButtonsPanel.Controls.Add(Add);
+            actionButtonsPanel.Controls.Add(Clear);
+            actionButtonsPanel.Dock = DockStyle.Bottom;
+            actionButtonsPanel.Location = new Point(0, 540);
+            actionButtonsPanel.Name = "actionButtonsPanel";
+            actionButtonsPanel.Padding = new Padding(20);
+            actionButtonsPanel.Size = new Size(414, 80);
+            actionButtonsPanel.TabIndex = 2;
+            
+            // 
+            // Clear
+            // 
+            Clear.BackColor = Color.FromArgb(96, 125, 139);
+            Clear.FlatAppearance.BorderSize = 0;
+            Clear.FlatStyle = FlatStyle.Flat;
+            Clear.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Clear.ForeColor = Color.White;
+            Clear.Location = new Point(20, 20);
+            Clear.Name = "Clear";
+            Clear.Size = new Size(90, 40);
+            Clear.TabIndex = 0;
+            Clear.Text = "🆕 New";
+            Clear.UseVisualStyleBackColor = false;
+            Clear.Click += Clear_Click;
+            
+            // 
+            // Add
+            // 
+            Add.BackColor = Color.FromArgb(46, 125, 50);
+            Add.FlatAppearance.BorderSize = 0;
+            Add.FlatStyle = FlatStyle.Flat;
+            Add.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Add.ForeColor = Color.White;
+            Add.Location = new Point(120, 20);
+            Add.Name = "Add";
+            Add.Size = new Size(90, 40);
+            Add.TabIndex = 1;
+            Add.Text = "➕ Add";
+            Add.UseVisualStyleBackColor = false;
+            Add.Click += Add_Click;
+            
+            // 
+            // Update
+            // 
+            Update.BackColor = Color.FromArgb(255, 152, 0);
+            Update.FlatAppearance.BorderSize = 0;
+            Update.FlatStyle = FlatStyle.Flat;
+            Update.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Update.ForeColor = Color.White;
+            Update.Location = new Point(220, 20);
+            Update.Name = "Update";
+            Update.Size = new Size(90, 40);
+            Update.TabIndex = 2;
+            Update.Text = "✏️ Update";
+            Update.UseVisualStyleBackColor = false;
+            Update.Click += Update_Click;
+            
+            // 
+            // Delete
+            // 
+            Delete.BackColor = Color.FromArgb(211, 47, 47);
+            Delete.FlatAppearance.BorderSize = 0;
+            Delete.FlatStyle = FlatStyle.Flat;
+            Delete.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Delete.ForeColor = Color.White;
+            Delete.Location = new Point(320, 20);
+            Delete.Name = "Delete";
+            Delete.Size = new Size(74, 40);
+            Delete.TabIndex = 3;
+            Delete.Text = "🗑️ Delete";
+            Delete.UseVisualStyleBackColor = false;
+            Delete.Click += Delete_Click;
+            
             // 
             // Lorries
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(934, 701);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(Clear);
-            Controls.Add(Update);
-            Controls.Add(Delete);
-            Controls.Add(Add);
-            Controls.Add(NudCapacity);
-            Controls.Add(tbModel);
-            Controls.Add(tbPlateNumber);
-            Controls.Add(panel2);
+            BackColor = Color.FromArgb(240, 244, 248);
+            ClientSize = new Size(1200, 700);
+            Controls.Add(mainContainer);
             Controls.Add(panel1);
             Name = "Lorries";
-            Text = "Lorries";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Lorries Management";
             Load += Lorries_Load;
+            
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel2.ResumeLayout(false);
+            mainContainer.ResumeLayout(false);
+            lorriesViewPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DtTable).EndInit();
+            lorryManagementPanel.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            lorryFormPanel.ResumeLayout(false);
+            lorryFormPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)NudCapacity).EndInit();
+            actionButtonsPanel.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Panel panel1;
         private Label label1;
-        private Panel panel2;
-        private TextBox tbPlateNumber;
-        private TextBox tbModel;
-        private NumericUpDown NudCapacity;
+        private Panel mainContainer;
+        private Panel lorriesViewPanel;
         private DataGridView DtTable;
-        private Button Add;
-        private Button Delete;
-        private Button Update;
-        private Button Clear;
-        private Label label2;
-        private Label label3;
-        private Label label4;
+        private Panel lorryManagementPanel;
+        private Panel panel2;
         private Label label5;
+        private Panel lorryFormPanel;
+        private TextBox tbPlateNumber;
+        private Label label2;
+        private TextBox tbModel;
+        private Label label4;
+        private NumericUpDown NudCapacity;
+        private Label label3;
+        private Panel actionButtonsPanel;
+        private Button Clear;
+        private Button Add;
+        private Button Update;
+        private Button Delete;
     }
 }

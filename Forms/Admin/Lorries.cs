@@ -26,6 +26,8 @@ namespace Eshift.Forms.Admin
             NudCapacity.Increment = 10;
         }
 
+
+
         private void Lorries_Load(object sender, EventArgs e)
         {
             LoadData();
@@ -55,15 +57,16 @@ namespace Eshift.Forms.Admin
 
             try
             {
-                if (string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber))
+                if (string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(Model))
                 {
                     MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                if (Capacity == null)
+                if (Capacity <= 0)
                 {
-                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please enter a valid capacity", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
                 var result = trasnportUnit.AddLorryAsync(PlateNumber, Model, Capacity);
@@ -122,15 +125,16 @@ namespace Eshift.Forms.Admin
 
             try
             {
-                if (string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(PlateNumber))
+                if (string.IsNullOrWhiteSpace(PlateNumber) || string.IsNullOrWhiteSpace(Model))
                 {
                     MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                if (Capacity == null)
+                if (Capacity <= 0)
                 {
-                    MessageBox.Show("Please fill all fields", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please enter a valid capacity", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
                 var result = await trasnportUnit.UpdateLorryAsync(lorryId, PlateNumber, Model, Capacity);

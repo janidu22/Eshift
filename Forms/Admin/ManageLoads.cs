@@ -146,7 +146,21 @@ namespace Eshift.Forms.Admin
             int productId = (int)cbProducts.SelectedValue;
             int transportUnitId = (int)cbTransportUnits.SelectedValue;
             int quantity = (int)nudQuantity.Value;
-            decimal? weight = string.IsNullOrWhiteSpace(tbWeight.Text) ? (decimal?)null : decimal.Parse(tbWeight.Text);
+            
+            decimal? weight = null;
+            if (!string.IsNullOrWhiteSpace(tbWeight.Text))
+            {
+                if (decimal.TryParse(tbWeight.Text, out decimal parsedWeight))
+                {
+                    weight = parsedWeight;
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid weight value.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            
             string notes = string.IsNullOrWhiteSpace(tbNotes.Text) ? null : tbNotes.Text.Trim();
             bool success = await jobRepository.AddLoadAsync(jobId, productId, transportUnitId, quantity, weight, notes);
             MessageBox.Show(success ? "Load added successfully!" : "Failed to add load.");
@@ -160,25 +174,53 @@ namespace Eshift.Forms.Admin
         {
             if (isLoading) return;
 
-            // Prevent changing values when clicking headers or the first row
+            
             if (dgvLoads.SelectedRows.Count > 0 && dgvLoads.SelectedRows[0] != null && dgvLoads.SelectedRows[0].Index != -1)
             {
                 var selectedRow = dgvLoads.SelectedRows[0];
                 string product = selectedRow.Cells["Product"].Value?.ToString() ?? string.Empty;
                 string transportUnit = selectedRow.Cells["TransportUnit"].Value?.ToString() ?? string.Empty;
-                int quantity = Convert.ToInt32(selectedRow.Cells["Quantity"].Value);
-                decimal weight = Convert.ToDecimal(selectedRow.Cells["Weight"].Value);
+                
+                // Safe conversion handling DBNull values
+                int quantity = 0;
+                if (selectedRow.Cells["Quantity"].Value != null && selectedRow.Cells["Quantity"].Value != DBNull.Value)
+                {
+                    int.TryParse(selectedRow.Cells["Quantity"].Value.ToString(), out quantity);
+                }
+
+                decimal weight = 0;
+                if (selectedRow.Cells["Weight"].Value != null && selectedRow.Cells["Weight"].Value != DBNull.Value)
+                {
+                    decimal.TryParse(selectedRow.Cells["Weight"].Value.ToString(), out weight);
+                }
+
                 tbNotes.Text = selectedRow.Cells["Notes"].Value?.ToString() ?? string.Empty;
 
-                cbProducts.SelectedItem = cbProducts.Items.Cast<DataRowView>()
-                    .FirstOrDefault(item => item["Name"].ToString() == product);
+                // Safe ComboBox selection
+                try
+                {
+                    cbProducts.SelectedItem = cbProducts.Items.Cast<DataRowView>()
+                        .FirstOrDefault(item => item["Name"].ToString() == product);
 
-                cbTransportUnits.SelectedItem = cbTransportUnits.Items.Cast<DataRowView>()
-                    .FirstOrDefault(item => item["TransportUnitSummary"].ToString() == transportUnit);
+                    cbTransportUnits.SelectedItem = cbTransportUnits.Items.Cast<DataRowView>()
+                        .FirstOrDefault(item => item["TransportUnitSummary"].ToString() == transportUnit);
+                }
+                catch (Exception ex)
+                {
+                    // Handle ComboBox selection errors gracefully
+                    Console.WriteLine($"ComboBox selection error: {ex.Message}");
+                }
 
                 nudQuantity.Value = quantity;
-                tbWeight.Text = weight.ToString("0.##");
-                loadID = Convert.ToInt32(selectedRow.Cells["LoadId"].Value.ToString());
+                tbWeight.Text = weight > 0 ? weight.ToString("0.##") : "";
+                
+                // Safe LoadId conversion
+                int loadId = 0;
+                if (selectedRow.Cells["LoadId"].Value != null && selectedRow.Cells["LoadId"].Value != DBNull.Value)
+                {
+                    int.TryParse(selectedRow.Cells["LoadId"].Value.ToString(), out loadId);
+                }
+                loadID = loadId;
             }
         }
 
@@ -199,7 +241,21 @@ namespace Eshift.Forms.Admin
             int productId = (int)cbProducts.SelectedValue;
             int transportUnitId = (int)cbTransportUnits.SelectedValue;
             int quantity = (int)nudQuantity.Value;
-            decimal? weight = string.IsNullOrWhiteSpace(tbWeight.Text) ? (decimal?)null : decimal.Parse(tbWeight.Text);
+            
+            decimal? weight = null;
+            if (!string.IsNullOrWhiteSpace(tbWeight.Text))
+            {
+                if (decimal.TryParse(tbWeight.Text, out decimal parsedWeight))
+                {
+                    weight = parsedWeight;
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid weight value.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            
             string notes = string.IsNullOrWhiteSpace(tbNotes.Text) ? null : tbNotes.Text.Trim();
             if (loadID <= 0)
             {
