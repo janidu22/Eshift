@@ -169,7 +169,7 @@ namespace Eshift.Repoistory
                 {
                     // 1. Update Users table
                     string updateUserQuery;
-                    if (!string.IsNullOrWhiteSpace(password))
+                    if (!string.IsNullOrWhiteSpace(password) && password != "Password")
                     {
                         // Update with new password
                         updateUserQuery = @"
@@ -183,7 +183,7 @@ namespace Eshift.Repoistory
                             userCmd.Parameters.AddWithValue("@PasswordHash", BCrypt.Net.BCrypt.HashPassword(password));
                             userCmd.Parameters.AddWithValue("@Email", newEmail);
                             userCmd.Parameters.AddWithValue("@UserId", userId);
-                            userCmd.ExecuteNonQuery();
+                            await userCmd.ExecuteNonQueryAsync();
                         }
                     }
                     else
@@ -199,7 +199,7 @@ namespace Eshift.Repoistory
                             userCmd.Parameters.AddWithValue("@Username", newUsername);
                             userCmd.Parameters.AddWithValue("@Email", newEmail);
                             userCmd.Parameters.AddWithValue("@UserId", userId);
-                            userCmd.ExecuteNonQuery();
+                            await userCmd.ExecuteNonQueryAsync();
                         }
                     }
 
@@ -216,15 +216,15 @@ namespace Eshift.Repoistory
                         customerCmd.Parameters.AddWithValue("@Phone", newPhone ?? "");
                         customerCmd.Parameters.AddWithValue("@Email", newEmail);
                         customerCmd.Parameters.AddWithValue("@UserId", userId);
-                        customerCmd.ExecuteNonQuery();
+                        await customerCmd.ExecuteNonQueryAsync();
                     }
 
-                    transaction.Commit();
+                    await transaction.CommitAsync();
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
+                    await transaction.RollbackAsync();
                     MessageBox.Show("Update error: " + ex.Message);
                     return false;
                 }
@@ -567,7 +567,69 @@ namespace Eshift.Repoistory
 
             try
             {
-                // Step 1: Delete Customer(s) linked to this UserId
+                // First, get the customer ID to delete related records
+                int customerId = 0;
+                string getCustomerIdQuery = "SELECT CustomerId FROM Customers WHERE UserId = @UserId";
+                using (var getCustomerCmd = new SqlCommand(getCustomerIdQuery, connection, transaction))
+                {
+                    getCustomerCmd.Parameters.AddWithValue("@UserId", userId);
+                    var result = await getCustomerCmd.ExecuteScalarAsync();
+                    if (result != null)
+                    {
+                        customerId = Convert.ToInt32(result);
+                    }
+                }
+
+                if (customerId > 0)
+                {
+                    // Step 1: Delete related Jobs (if any)
+                    var deleteJobsQuery = "DELETE FROM Jobs WHERE CustomerId = @CustomerId";
+                    using (var deleteJobsCmd = new SqlCommand(deleteJobsQuery, connection, transaction))
+                    {
+                        deleteJobsCmd.Parameters.AddWithValue("@CustomerId", customerId);
+                        await deleteJobsCmd.ExecuteNonQueryAsync();
+                    }
+
+                    // Step 2: Delete related Loads (if any)
+                    var deleteLoadsQuery = @"
+                        DELETE FROM Loads 
+                        WHERE JobId IN (SELECT JobId FROM Jobs WHERE CustomerId = @CustomerId)";
+                    using (var deleteLoadsCmd = new SqlCommand(deleteLoadsQuery, connection, transaction))
+                    {
+                        deleteLoadsCmd.Parameters.AddWithValue("@CustomerId", customerId);
+                        await deleteLoadsCmd.ExecuteNonQueryAsync();
+                    }
+
+                    // Step 3: Delete related Payments (if any)
+                    var deletePaymentsQuery = @"
+                        DELETE FROM Payments 
+                        WHERE JobId IN (SELECT JobId FROM Jobs WHERE CustomerId = @CustomerId)";
+                    using (var deletePaymentsCmd = new SqlCommand(deletePaymentsQuery, connection, transaction))
+                    {
+                        deletePaymentsCmd.Parameters.AddWithValue("@CustomerId", customerId);
+                        await deletePaymentsCmd.ExecuteNonQueryAsync();
+                    }
+
+                    // Step 4: Delete related JobStatusHistory (if any)
+                    var deleteJobStatusQuery = @"
+                        DELETE FROM JobStatusHistory 
+                        WHERE JobId IN (SELECT JobId FROM Jobs WHERE CustomerId = @CustomerId)";
+                    using (var deleteJobStatusCmd = new SqlCommand(deleteJobStatusQuery, connection, transaction))
+                    {
+                        deleteJobStatusCmd.Parameters.AddWithValue("@CustomerId", customerId);
+                        await deleteJobStatusCmd.ExecuteNonQueryAsync();
+                    }
+                }
+
+                // Step 5: Delete UserRoles
+                var deleteUserRolesQuery = "DELETE FROM UserRoles WHERE UserId = @UserId";
+                using (var deleteUserRolesCmd = new SqlCommand(deleteUserRolesQuery, connection, transaction))
+                {
+                    deleteUserRolesCmd.Parameters.AddWithValue("@UserId", userId);
+                    await deleteUserRolesCmd.ExecuteNonQueryAsync();
+                }
+
+                // Step 6: Delete Customer record
                 var deleteCustomerQuery = "DELETE FROM Customers WHERE UserId = @UserId";
                 using (var deleteCustomerCmd = new SqlCommand(deleteCustomerQuery, connection, transaction))
                 {
@@ -575,7 +637,7 @@ namespace Eshift.Repoistory
                     await deleteCustomerCmd.ExecuteNonQueryAsync();
                 }
 
-                // Step 2: Delete the User
+                // Step 7: Delete the User
                 var deleteUserQuery = "DELETE FROM Users WHERE UserId = @UserId";
                 using (var deleteUserCmd = new SqlCommand(deleteUserQuery, connection, transaction))
                 {
@@ -583,14 +645,15 @@ namespace Eshift.Repoistory
                     await deleteUserCmd.ExecuteNonQueryAsync();
                 }
 
-                // Step 3: Commit all changes
+                // Step 8: Commit all changes
                 await transaction.CommitAsync();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Rollback in case of error
                 await transaction.RollbackAsync();
+                MessageBox.Show($"Error deleting customer: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

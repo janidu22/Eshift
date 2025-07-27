@@ -110,8 +110,12 @@ namespace Eshift.Forms.Admin
         {
             try
             {
-                // Close this form and return to the main form
-                this.Close();
+                if(this.Owner is MainForm mf)
+                {
+                    mf.OpenFormInPanel();
+                    this.Hide();
+                }
+                
             }
             catch (Exception ex)
             {

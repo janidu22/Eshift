@@ -108,7 +108,8 @@ namespace Eshift.Forms.Admin
             {
                 MessageBox.Show("Invalid username."); tbUsername.Focus(); return false;
             }
-            if (string.IsNullOrWhiteSpace(password) || password.Length < 6)
+            // Only validate password if it's not empty (for updates)
+            if (!string.IsNullOrWhiteSpace(password) && password != "Password" && password.Length < 6)
             {
                 MessageBox.Show("Password too short."); tbPassword.Focus(); return false;
             }
@@ -130,8 +131,6 @@ namespace Eshift.Forms.Admin
             {
                 var selectedRow = viewCustmerDt.SelectedRows[0];
                 userId = Convert.ToInt32(selectedRow.Cells["UserId"].Value);
-
-
             }
             return userId;
         }
@@ -144,6 +143,7 @@ namespace Eshift.Forms.Admin
             tbPassword.Clear(); 
             tbAddress.Clear();
             tbPhone.Clear();
+            userId = 0; // Reset userId when clearing form
         }
 
         private bool IsValidEmail(string email) =>
@@ -156,12 +156,28 @@ namespace Eshift.Forms.Admin
         {
             try
             {
+                // Get the userId from the selected row
+                userId = getUserId();
+                
+                if (userId == 0)
+                {
+                    MessageBox.Show("Please select a customer to update.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var name = tbName.Text.Trim();
                 var email = tbEmail.Text.Trim();
                 var username = tbUsername.Text.Trim();
                 var password = tbPassword.Text;
                 var address = tbAddress.Text.Trim();
                 var phone = tbPhone.Text.Trim();
+
+                // Check if password field contains the placeholder text
+                if (password == "Password" || string.IsNullOrWhiteSpace(password))
+                {
+                    // Don't update password if it's the placeholder or empty
+                    password = "";
+                }
 
                 if (!ValidateRegistrationForm(name, email, username, password, address, phone)) return;
 
@@ -177,7 +193,7 @@ namespace Eshift.Forms.Admin
                     }
                     else
                     {
-                        MessageBox.Show("Faild to update the customer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Failed to update the customer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -185,10 +201,9 @@ namespace Eshift.Forms.Admin
                     MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -197,6 +212,10 @@ namespace Eshift.Forms.Admin
             if (viewCustmerDt.SelectedRows.Count > 0)
             {
                 var selectedRow = viewCustmerDt.SelectedRows[0];
+                
+                // Set the userId from the selected row
+                userId = Convert.ToInt32(selectedRow.Cells["UserId"].Value);
+                
                 var username = selectedRow.Cells["Username"].Value.ToString();
 
                 var customer = await _customerRepository.GetCustomerByUsernameAsync(username);
@@ -208,7 +227,7 @@ namespace Eshift.Forms.Admin
                     tbEmail.Text = customer.Email;
                     tbAddress.Text = customer.Address;
                     tbPhone.Text = customer.Phone;
-                    tbPassword.Text = "Password";
+                    tbPassword.Text = "Password"; // Placeholder text
                 }
             }
         }
@@ -220,23 +239,58 @@ namespace Eshift.Forms.Admin
 
         private async void DeleteCustomer(object sender, EventArgs e)
         {
-
-
             try
             {
-                if (userId != null)
+                userId = getUserId();
+                
+                if (userId == 0)
                 {
-                    MessageBox.Show("Are you sure you want to delete this customer?", "Confirm Delete", MessageBoxButtons.YesNo);
-                    await _customerRepository.DeleteUserAndCustomerAsync(userId);
-                    MessageBox.Show("Customer Deleted Successfully");
-                    LoadCustomers();
+                    MessageBox.Show("Please select a customer to delete.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
+                }
+
+                // Get customer details for confirmation
+                var selectedRow = viewCustmerDt.SelectedRows[0];
+                var customerName = selectedRow.Cells["Name"].Value?.ToString() ?? "Unknown Customer";
+                var customerUsername = selectedRow.Cells["Username"].Value?.ToString() ?? "Unknown";
+
+                var result = MessageBox.Show(
+                    $"Are you sure you want to delete customer '{customerName}' ({customerUsername})?\n\nThis will also delete all associated jobs and data.",
+                    "Confirm Delete", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    // Show progress or disable UI during deletion
+                    this.Enabled = false;
+                    
+                    try
+                    {
+                        bool success = await _customerRepository.DeleteUserAndCustomerAsync(userId);
+                        
+                        if (success)
+                        {
+                            MessageBox.Show($"Customer '{customerName}' deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadCustomers();
+                            ClearForm();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to delete customer. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    finally
+                    {
+                        // Re-enable UI
+                        this.Enabled = true;
+                    }
                 }
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"An error occurred while deleting customer: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Enabled = true; // Ensure UI is re-enabled
             }
         }
     }
