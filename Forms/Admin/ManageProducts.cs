@@ -22,6 +22,10 @@ namespace Eshift.Forms.Admin
         public ManageProducts()
         {
             InitializeComponent();
+            
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
         }
 
         private void ManageProducts_Load(object sender, EventArgs e)

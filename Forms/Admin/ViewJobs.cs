@@ -28,6 +28,10 @@ namespace Eshift.Forms.Admin
             this.FormBorderStyle = FormBorderStyle.None;
             this.Dock = DockStyle.Fill;
 
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
+
             viewJobsDt.Dock = DockStyle.Fill;
 
             viewJobsDt.DataBindingComplete += viewJobsDt_DataBindingComplete;
@@ -37,8 +41,81 @@ namespace Eshift.Forms.Admin
             CbStatus.SelectedIndexChanged += FilterData;
             CbPaymentStatus.SelectedIndexChanged += FilterData;
             this.Load += ViewJobs_Load;
+        }
 
+        private void SetupResponsiveLayout()
+        {
+            // Set minimum size for the form
+            this.MinimumSize = new Size(800, 600);
+            
+            // Handle resize events
+            this.Resize += ViewJobs_Resize;
+            
+            // Auto-scale controls
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new SizeF(96F, 96F);
+        }
 
+        private void ViewJobs_Resize(object sender, EventArgs e)
+        {
+            // Adjust layout when form is resized
+            AdjustControlsForScreenSize();
+        }
+
+        private void AdjustControlsForScreenSize()
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            // Adjust DataGridView column widths based on form size
+            if (viewJobsDt != null && viewJobsDt.Columns.Count > 0)
+            {
+                // Calculate available width
+                int availableWidth = viewJobsDt.Width - SystemInformation.VerticalScrollBarWidth - 10;
+                
+                // Adjust column widths proportionally
+                foreach (DataGridViewColumn column in viewJobsDt.Columns)
+                {
+                    switch (column.Name)
+                    {
+                        case "JobId":
+                            column.Width = Math.Max(60, (int)(availableWidth * 0.08));
+                            break;
+                        case "CustomerName":
+                            column.Width = Math.Max(120, (int)(availableWidth * 0.15));
+                            break;
+                        case "StartLocation":
+                        case "Destination":
+                            column.Width = Math.Max(100, (int)(availableWidth * 0.18));
+                            break;
+                        case "RequestedDate":
+                            column.Width = Math.Max(100, (int)(availableWidth * 0.12));
+                            break;
+                        case "JobStatus":
+                        case "PaymentStatus":
+                            column.Width = Math.Max(80, (int)(availableWidth * 0.10));
+                            break;
+                        default:
+                            column.Width = Math.Max(80, (int)(availableWidth * 0.08));
+                            break;
+                    }
+                }
+            }
+
+            // Adjust button panel layout based on form width
+            if (actionButtonsPanel != null)
+            {
+                int formWidth = this.Width;
+                if (formWidth < 1200)
+                {
+                    // Stack buttons vertically on smaller screens
+                    actionButtonsPanel.FlowDirection = FlowDirection.TopDown;
+                }
+                else
+                {
+                    // Arrange buttons horizontally on larger screens
+                    actionButtonsPanel.FlowDirection = FlowDirection.LeftToRight;
+                }
+            }
         }
 
 

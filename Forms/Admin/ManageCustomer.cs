@@ -24,6 +24,10 @@ namespace Eshift.Forms.Admin
         public ManageCustomer()
         {
             InitializeComponent();
+            
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
         }
 
         private async void ManageCustomer_Load(object sender, EventArgs e)

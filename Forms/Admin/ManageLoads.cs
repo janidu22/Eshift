@@ -19,7 +19,100 @@ namespace Eshift.Forms.Admin
         public ManageLoads()
         {
             InitializeComponent();
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
             cbJobs.SelectedIndexChanged += cbJobs_SelectedIndexChanged;
+        }
+
+        private void SetupResponsiveLayout()
+        {
+            // Set minimum size for usability
+            this.MinimumSize = new Size(800, 600);
+            
+            // Setup responsive behavior
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new SizeF(96F, 96F);
+            
+            // Handle resize events
+            this.Resize += ManageLoads_Resize;
+        }
+
+        private void ManageLoads_Resize(object sender, EventArgs e)
+        {
+            // Adjust controls when form is resized
+            AdjustControlsForScreenSize();
+        }
+
+        private void AdjustControlsForScreenSize()
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            // Adjust DataGridView columns
+            if (dgvLoads != null && dgvLoads.Columns.Count > 0)
+            {
+                int availableWidth = dgvLoads.Width - SystemInformation.VerticalScrollBarWidth - 10;
+                
+                foreach (DataGridViewColumn column in dgvLoads.Columns)
+                {
+                    switch (column.HeaderText)
+                    {
+                        case "Product":
+                            column.Width = Math.Max(120, (int)(availableWidth * 0.20));
+                            break;
+                        case "TransportUnit":
+                            column.Width = Math.Max(200, (int)(availableWidth * 0.35));
+                            break;
+                        case "Quantity":
+                            column.Width = Math.Max(80, (int)(availableWidth * 0.15));
+                            break;
+                        case "Weight":
+                            column.Width = Math.Max(80, (int)(availableWidth * 0.15));
+                            break;
+                        case "Notes":
+                            column.Width = Math.Max(100, (int)(availableWidth * 0.15));
+                            break;
+                        default:
+                            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                            break;
+                    }
+                }
+            }
+
+            // Adjust ComboBox size based on form width
+            if (cbJobs != null)
+            {
+                int formWidth = this.Width;
+                if (formWidth < 1000)
+                {
+                    cbJobs.Font = new Font("Consolas", 12); // Smaller font for smaller screens
+                }
+                else
+                {
+                    cbJobs.Font = new Font("Consolas", 15); // Original font for larger screens
+                }
+            }
+
+            // Adjust panel layout for smaller screens
+            if (DataPanel != null && loadManagementPanel != null)
+            {
+                if (this.Width < 1200)
+                {
+                    // Stack panels vertically on smaller screens
+                    DataPanel.Dock = DockStyle.Top;
+                    DataPanel.Height = this.Height / 2;
+                    loadManagementPanel.Dock = DockStyle.Bottom;
+                    loadManagementPanel.Height = this.Height / 2;
+                }
+                else
+                {
+                    // Side by side layout for larger screens
+                    DataPanel.Dock = DockStyle.Left;
+                    DataPanel.Width = (int)(this.Width * 0.6);
+                    loadManagementPanel.Dock = DockStyle.Right;
+                    loadManagementPanel.Width = (int)(this.Width * 0.4);
+                }
+            }
         }
 
         private void ManageLoads_Load(object sender, EventArgs e)

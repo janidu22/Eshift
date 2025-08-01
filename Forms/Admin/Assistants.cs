@@ -19,6 +19,10 @@ namespace Eshift.Forms.Admin
         public Assistants()
         {
             InitializeComponent();
+            
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
         }
 
 

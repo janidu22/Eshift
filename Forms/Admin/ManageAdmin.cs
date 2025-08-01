@@ -25,6 +25,10 @@ namespace Eshift.Forms.Admin
             InitializeComponent();
             _adminRepository = new AdminRepository();
             viewAdminsDt.SelectionChanged += viewAdminsDt_SelectionChanged;
+            
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
         }
 
         private void ManageAdmin_Load(object sender, EventArgs e)

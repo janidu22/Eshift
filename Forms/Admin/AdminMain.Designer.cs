@@ -99,7 +99,8 @@
             lblWelcome.AutoSize = true;
             lblWelcome.Font = new Font("Segoe UI", 12F);
             lblWelcome.ForeColor = Color.FromArgb(46, 204, 113); // Green
-            lblWelcome.Location = new Point(600, 15);
+            lblWelcome.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblWelcome.Location = new Point(400, 15); // Will be adjusted dynamically
             lblWelcome.Name = "lblWelcome";
             lblWelcome.Text = "Welcome back, Admin!";
 
@@ -109,7 +110,8 @@
             lblCurrentTime.AutoSize = true;
             lblCurrentTime.Font = new Font("Segoe UI", 10F);
             lblCurrentTime.ForeColor = Color.White;
-            lblCurrentTime.Location = new Point(600, 38);
+            lblCurrentTime.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblCurrentTime.Location = new Point(400, 38); // Will be adjusted dynamically
             lblCurrentTime.Name = "lblCurrentTime";
             lblCurrentTime.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
 
@@ -123,7 +125,7 @@
             btnClose.FlatAppearance.BorderSize = 0;
             btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnClose.ForeColor = Color.White;
-            btnClose.Location = new Point(1320, 15);
+            btnClose.Location = new Point(this.Width - 60, 15); // Dynamic positioning
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(40, 30);
             btnClose.Text = "✕";
@@ -138,7 +140,7 @@
             btnMaximize.FlatAppearance.BorderSize = 0;
             btnMaximize.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnMaximize.ForeColor = Color.White;
-            btnMaximize.Location = new Point(1275, 15);
+            btnMaximize.Location = new Point(this.Width - 105, 15); // Dynamic positioning
             btnMaximize.Name = "btnMaximize";
             btnMaximize.Size = new Size(40, 30);
             btnMaximize.Text = "□";
@@ -153,7 +155,7 @@
             btnMinimize.FlatAppearance.BorderSize = 0;
             btnMinimize.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnMinimize.ForeColor = Color.White;
-            btnMinimize.Location = new Point(1230, 15);
+            btnMinimize.Location = new Point(this.Width - 150, 15); // Dynamic positioning
             btnMinimize.Name = "btnMinimize";
             btnMinimize.Size = new Size(40, 30);
             btnMinimize.Text = "−";
@@ -426,7 +428,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(236, 240, 241);
-            ClientSize = new Size(1400, 800);
+            ClientSize = new Size(1200, 700); // Reduced default size for better laptop compatibility
+            MinimumSize = new Size(1000, 600); // Set minimum size for usability
             Controls.Add(PanelMain);
             Controls.Add(panelSidebar);
             Controls.Add(panelHeader);

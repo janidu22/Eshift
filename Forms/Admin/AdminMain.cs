@@ -54,7 +54,90 @@ namespace Eshift.Forms.Admin
             // Add hover effects to navigation buttons
             AddHoverEffects();
 
+            // Make form responsive
+            SetupResponsiveLayout();
+
             this.FormBorderStyle = FormBorderStyle.None;
+        }
+
+        private void SetupResponsiveLayout()
+        {
+            // Set minimum size for usability
+            this.MinimumSize = new Size(1000, 700);
+            
+            // Handle form resize
+            this.Resize += AdminMain_Resize;
+            this.Load += AdminMain_Load;
+            
+            // Make sure form starts maximized for better experience
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void AdminMain_Load(object sender, EventArgs e)
+        {
+            // Auto-adjust for different screen sizes
+            Screen currentScreen = Screen.FromControl(this);
+            
+            // Ensure form doesn't exceed screen bounds
+            if (this.WindowState != FormWindowState.Maximized)
+            {
+                int maxWidth = currentScreen.WorkingArea.Width;
+                int maxHeight = currentScreen.WorkingArea.Height;
+                
+                this.Size = new Size(
+                    Math.Min(this.Width, maxWidth),
+                    Math.Min(this.Height, maxHeight)
+                );
+                
+                this.CenterToScreen();
+            }
+        }
+
+        private void AdminMain_Resize(object sender, EventArgs e)
+        {
+            // Handle responsive adjustments when form is resized
+            AdjustControlsForScreenSize();
+        }
+
+        private void AdjustControlsForScreenSize()
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            // Adjust header label positions based on form width
+            int formWidth = this.Width;
+            
+            // Position welcome label dynamically
+            if (lblWelcome != null && panelHeader != null)
+            {
+                lblWelcome.Location = new Point(
+                    Math.Max(300, formWidth - 600), // Keep it on the right but not too close to buttons
+                    15
+                );
+            }
+            
+            if (lblCurrentTime != null && panelHeader != null)
+            {
+                lblCurrentTime.Location = new Point(
+                    Math.Max(300, formWidth - 600),
+                    38
+                );
+            }
+
+            // Adjust window control buttons dynamically
+            if (btnClose != null)
+            {
+                btnClose.Location = new Point(formWidth - 60, 15);
+            }
+            
+            if (btnMaximize != null)
+            {
+                btnMaximize.Location = new Point(formWidth - 105, 15);
+            }
+            
+            if (btnMinimize != null)
+            {
+                btnMinimize.Location = new Point(formWidth - 150, 15);
+            }
         }
 
         private void SetProfilePicture()

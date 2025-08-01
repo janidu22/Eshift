@@ -24,6 +24,10 @@ namespace Eshift.Forms.Admin
             NudCapacity.Minimum = 0;
             NudCapacity.Maximum = 10000;
             NudCapacity.Increment = 10;
+            
+            // Apply responsive design
+            this.ApplyResponsiveDesign();
+            this.QuickLaptopFix();
         }
 
 
