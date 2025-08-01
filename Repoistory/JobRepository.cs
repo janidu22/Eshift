@@ -364,7 +364,7 @@ namespace Eshift.Repoistory
                 LEFT JOIN Containers c ON tu.ContainerId = c.ContainerId
                 LEFT JOIN Jobs j ON l.JobId = j.JobId";
 
-            // Build WHERE clause based on date parameters
+          
             if (fromDate.HasValue && toDate.HasValue)
             {
                 query += " WHERE j.RequestedDate >= @FromDate AND j.RequestedDate <= @ToDate";

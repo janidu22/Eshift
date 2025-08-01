@@ -70,7 +70,6 @@
             Name = "LoadingForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "LoadingForm";
-         
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
