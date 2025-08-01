@@ -259,7 +259,9 @@
             // 
             viewJobsDt.AllowUserToAddRows = false;
             viewJobsDt.AllowUserToDeleteRows = false;
-            viewJobsDt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            viewJobsDt.AllowUserToResizeColumns = true;
+            viewJobsDt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            viewJobsDt.ScrollBars = ScrollBars.Both;
             viewJobsDt.BackgroundColor = Color.White;
             viewJobsDt.BorderStyle = BorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -272,6 +274,7 @@
             viewJobsDt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             viewJobsDt.ColumnHeadersHeight = 40;
             viewJobsDt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            viewJobsDt.ColumnHeadersVisible = true;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.White;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);

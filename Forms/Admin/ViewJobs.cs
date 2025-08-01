@@ -200,8 +200,69 @@ namespace Eshift.Forms.Admin
         {
             _allJobsTable = await _customerRepository.GetAllJobsWithPaymentStatusAsync();
             viewJobsDt.DataSource = _allJobsTable;
+            ConfigureDataGridColumns();
             viewJobsDt.ClearSelection();
+        }
+
+        private void ConfigureDataGridColumns()
+        {
+            if (viewJobsDt.Columns.Count == 0) return;
+
+            // Ensure headers are visible and properly styled
+            viewJobsDt.ColumnHeadersVisible = true;
+            viewJobsDt.ColumnHeadersHeight = 40;
+            viewJobsDt.EnableHeadersVisualStyles = false;
+            
+            // Apply header styling
+            viewJobsDt.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(44, 62, 80);
+            viewJobsDt.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            viewJobsDt.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            viewJobsDt.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Set specific column widths and visibility
+            viewJobsDt.Columns["JobId"].Width = 60;
+            viewJobsDt.Columns["JobId"].HeaderText = "Job ID";
+
+            viewJobsDt.Columns["CustomerName"].Width = 120;
+            viewJobsDt.Columns["CustomerName"].HeaderText = "Customer";
+
             viewJobsDt.Columns["CustomerId"].Visible = false;
+
+            viewJobsDt.Columns["StartLocation"].Width = 100;
+            viewJobsDt.Columns["StartLocation"].HeaderText = "Start Location";
+
+            viewJobsDt.Columns["Destination"].Width = 100;
+            viewJobsDt.Columns["Destination"].HeaderText = "Destination";
+
+            viewJobsDt.Columns["RequestedDate"].Width = 90;
+            viewJobsDt.Columns["RequestedDate"].HeaderText = "Request Date";
+            viewJobsDt.Columns["RequestedDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+
+            viewJobsDt.Columns["JobStatus"].Width = 80;
+            viewJobsDt.Columns["JobStatus"].HeaderText = "Status";
+
+            viewJobsDt.Columns["Lorry"].Width = 80;
+            viewJobsDt.Columns["Lorry"].HeaderText = "Lorry";
+
+            viewJobsDt.Columns["Driver"].Width = 100;
+            viewJobsDt.Columns["Driver"].HeaderText = "Driver";
+
+            viewJobsDt.Columns["Assistant"].Width = 100;
+            viewJobsDt.Columns["Assistant"].HeaderText = "Assistant";
+
+            viewJobsDt.Columns["PaymentStatus"].Width = 90;
+            viewJobsDt.Columns["PaymentStatus"].HeaderText = "Payment";
+
+            viewJobsDt.Columns["PaymentMethod"].Width = 70;
+            viewJobsDt.Columns["PaymentMethod"].HeaderText = "Method";
+
+            viewJobsDt.Columns["Amount"].Width = 80;
+            viewJobsDt.Columns["Amount"].HeaderText = "Amount";
+            viewJobsDt.Columns["Amount"].DefaultCellStyle.Format = "C2";
+
+            // Hide less important columns to save space
+            viewJobsDt.Columns["CreatedAt"].Visible = false;
+            viewJobsDt.Columns["UpdatedAt"].Visible = false;
         }
 
         private async void UpdateJobBtn_Click(object sender, EventArgs e)
